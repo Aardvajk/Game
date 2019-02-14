@@ -1,0 +1,33 @@
+matrix world;
+matrix viewproj;
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+    vector normal   : NORMAL;
+    vector color    : COLOR;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+	vector color    : COLOR;
+};
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+    vector p = mul(input.position, world);
+    vector n = vector(0, 0, -8, 0) - p;
+
+    input.normal.w = 0;
+
+	float s = dot(normalize(n), normalize(mul(normalize(input.normal), world)));
+	if(s < 0) s = 0;
+	
+    output.position = mul(p, viewproj);
+	output.color = input.color * s;
+	
+    return output;
+}
