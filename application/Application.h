@@ -1,11 +1,11 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "graphics/Graphics.h"
+
 #include "states/State.h"
 
 #include <GxApplication/GxApplication.h>
-
-#include <GxGraphics/GxExclusiveGraphicsDevice.h>
 
 #include <pcx/scoped_ptr.h>
 
@@ -19,7 +19,7 @@ public:
 private:
     void update(float &accumulator, float delta);
 
-    Gx::ExclusiveGraphicsDevice device;
+    Graphics graphics;
     pcx::scoped_ptr<State> state;
 };
 

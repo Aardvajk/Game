@@ -30,14 +30,16 @@ SOURCES += \
         main.cpp \
         application/Application.cpp \
     models/Model.cpp \
-    states/GameState.cpp
+    states/GameState.cpp \
+    graphics/Graphics.cpp
         
 
 HEADERS += \
     application/Application.h \
     models/Model.h \
     states/State.h \
-    states/GameState.h
+    states/GameState.h \
+    graphics/Graphics.h
 
 DISTFILES += \
     basevertex.txt

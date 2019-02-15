@@ -1,10 +1,10 @@
 #include "GameState.h"
 
-#include <GxGraphics/GxGraphicsDevice.h>
+#include "graphics/Graphics.h"
 
 #include <GxMaths/GxColor.h>
 
-GameState::GameState(Gx::GraphicsDevice &device) : device(device)
+GameState::GameState(Graphics &graphics) : graphics(graphics)
 {
 }
 
@@ -15,5 +15,5 @@ bool GameState::update(float delta)
 
 void GameState::render(float blend)
 {
-    device.clear({ 0.2f, 0.5f, 0.8f }, 1.0f);
+    graphics.device.clear({ 0.2f, 0.5f, 0.8f }, 1.0f);
 }

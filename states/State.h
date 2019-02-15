@@ -4,7 +4,7 @@
 class State
 {
 public:
-    State() = default;
+    virtual ~State(){ }
 
     virtual bool update(float delta) = 0;
     virtual void render(float blend) = 0;

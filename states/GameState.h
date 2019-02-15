@@ -5,23 +5,18 @@
 
 #include "models/Model.h"
 
-namespace Gx
-{
-
-class GraphicsDevice;
-
-}
+class Graphics;
 
 class GameState : public State
 {
 public:
-    GameState(Gx::GraphicsDevice &device);
+    GameState(Graphics &graphics);
 
     virtual bool update(float delta) override;
     virtual void render(float blend) override;
 
 private:
-    Gx::GraphicsDevice &device;
+    Graphics &graphics;
     Model model;
 };
 

@@ -6,9 +6,9 @@
 
 #include <GxMaths/GxColor.h>
 
-Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), device(hwnd(), settings)
+Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), graphics(hwnd(), settings)
 {
-    state = new GameState(device);
+    state = new GameState(graphics);
     show();
 }
 
@@ -21,15 +21,15 @@ int Application::exec()
 
     while(loop())
     {
-        if(!device.isOk())
+        if(!graphics.device.isOk())
         {
-            if(device.isReadyToReset())
+            if(graphics.device.isReadyToReset())
             {
-                device.reset();
+                graphics.reset();
             }
         }
     
-        if(device.isOk())
+        if(graphics.device.isOk())
         {
             accumulator += timer.elapsed(Gx::Timer::Flag::Restart);
             update(accumulator, delta);
@@ -52,7 +52,7 @@ void Application::update(float &accumulator, float delta)
         accumulator -= delta;
     }
 
-    device.begin();
+    graphics.device.begin();
     state->render(accumulator / delta);
-    device.end();
+    graphics.device.end();
 }
