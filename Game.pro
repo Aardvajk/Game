@@ -29,17 +29,19 @@ LIBS += "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/d3d9.l
 SOURCES += \
         main.cpp \
         application/Application.cpp \
-    models/Model.cpp \
     states/GameState.cpp \
-    graphics/Graphics.cpp
+    graphics/Graphics.cpp \
+    graphics/vertices/MeshVertex.cpp \ 
+    debug/DebugMesh.cpp
         
 
 HEADERS += \
     application/Application.h \
-    models/Model.h \
     states/State.h \
     states/GameState.h \
-    graphics/Graphics.h
+    graphics/Graphics.h \
+    graphics/vertices/MeshVertex.h \ 
+    debug/DebugMesh.h
 
 DISTFILES += \
-    basevertex.txt
+    meshvertex.txt

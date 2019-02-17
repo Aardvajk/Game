@@ -1,6 +1,8 @@
 matrix world;
 matrix viewproj;
 
+vector light;
+
 struct VS_INPUT
 {
     vector position : POSITION;
@@ -19,15 +21,15 @@ VS_OUTPUT main(VS_INPUT input)
     VS_OUTPUT output = (VS_OUTPUT)0;
 
     vector p = mul(input.position, world);
-    vector n = vector(0, 0, -8, 0) - p;
+    vector n = light - p;
 
     input.normal.w = 0;
 
-	float s = dot(normalize(n), normalize(mul(normalize(input.normal), world)));
-	if(s < 0) s = 0;
-	
+    float s = dot(normalize(n), normalize(mul(normalize(input.normal), world)));
+    if(s < 0) s = 0;
+
     output.position = mul(p, viewproj);
-	output.color = input.color * s;
+    output.color = input.color * s;
 	
     return output;
 }

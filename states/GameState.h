@@ -3,9 +3,13 @@
 
 #include "states/State.h"
 
-#include "models/Model.h"
+#include "graphics/Graphics.h"
 
-class Graphics;
+#include <GxMaths/GxTransform.h>
+
+#include <GxGraphics/GxVertexBuffer.h>
+
+#include <pcx/signals.h>
 
 class GameState : public State
 {
@@ -16,8 +20,20 @@ public:
     virtual void render(float blend) override;
 
 private:
+    void deviceReset();
+
+    pcx::connections cx;
+
     Graphics &graphics;
-    Model model;
+
+    Graphics::Handle<Gx::VertexBuffer> cuboid;
+    unsigned cuboidCount;
+
+    Graphics::Handle<Gx::VertexBuffer> capsule;
+    unsigned capsuleCount;
+
+    Gx::Transform cam;
+    Gx::Vec2 prevMouse;
 };
 
 #endif // GAMESTATE_H
