@@ -13,8 +13,8 @@
 
 GameState::GameState(Graphics &graphics) : graphics(graphics), cam(Gx::Vec3(0, 0, -10), Gx::Vec2(0, 0))
 {
-    cuboid = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600, sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
-    capsule = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600, sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
+    cuboid = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
+    capsule = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
 
     cx.connect(graphics.deviceReset, this, &deviceReset);
 
@@ -93,5 +93,5 @@ void GameState::render(float blend)
 void GameState::deviceReset()
 {
     cuboidCount = debugCuboidToBuffer(*cuboid, { 2, 2, 2 }, Gx::Color(1, 0, 0));
-    capsuleCount = debugCapsuleToBuffer(*capsule, 10, 10, 0.5f, 2.0f, Gx::Color(0, 1, 0));
+    capsuleCount = debugCapsuleToBuffer(*capsule, 16, 16, 0.5f, 2.0f, Gx::Color(0, 1, 0));
 }
