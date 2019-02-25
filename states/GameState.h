@@ -9,12 +9,14 @@
 
 #include <GxGraphics/GxVertexBuffer.h>
 
+#include <GxPhysics/GxPhysicsModel.h>
+
 #include <pcx/signals.h>
 
 class GameState : public State
 {
 public:
-    GameState(Graphics &graphics);
+    explicit GameState(Graphics &graphics);
 
     virtual bool update(float delta) override;
     virtual void render(float blend) override;
@@ -25,12 +27,10 @@ private:
     pcx::connections cx;
 
     Graphics &graphics;
+    Graphics::Handle<Gx::VertexBuffer> buffer;
+    unsigned count;
 
-    Graphics::Handle<Gx::VertexBuffer> cuboid;
-    unsigned cuboidCount;
-
-    Graphics::Handle<Gx::VertexBuffer> capsule;
-    unsigned capsuleCount;
+    Gx::PhysicsModel physics;
 
     Gx::Transform cam;
     Gx::Vec2 prevMouse;

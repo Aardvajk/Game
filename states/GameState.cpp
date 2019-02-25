@@ -2,22 +2,26 @@
 
 #include "graphics/Graphics.h"
 
+#include <GxCore/GxDebug.h>
+
 #include <GxMaths/GxColor.h>
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxRange.h>
 
+#include <GxGraphics/GxBufferStream.h>
+
 #include "debug/DebugMesh.h"
 
 #include "graphics/vertices/MeshVertex.h"
 
+#include <pcx/datastream.h>
+
 GameState::GameState(Graphics &graphics) : graphics(graphics), cam(Gx::Vec3(0, 0, -10), Gx::Vec2(0, 0))
 {
-    cuboid = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
-    capsule = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
+    buffer = graphics.resources.add(new Gx::VertexBuffer(graphics.device, { 25600 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
 
     cx.connect(graphics.deviceReset, this, &deviceReset);
-
     deviceReset();
 }
 
@@ -63,10 +67,9 @@ bool GameState::update(float delta)
         }
     }
 
-    prevMouse = mouse;
-
     cam.setPosition(pos);
 
+    prevMouse = mouse;
     return true;
 }
 
@@ -75,7 +78,7 @@ void GameState::render(float blend)
     auto look = Gx::Vec3(0, 0, 1).transformedNormal(cam.rotation().matrix());
     auto up = Gx::Vec3(0, 1, 0).transformedNormal(cam.rotation().matrix());
 
-    graphics.device.clear({ 0.2f, 0.5f, 0.8f }, 1.0f);
+    graphics.device.clear({ 0.2f, 0.25f, 0.3f }, 1.0f);
 
     graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
     graphics.device.setVertexShader(*graphics.meshShader);
@@ -83,15 +86,22 @@ void GameState::render(float blend)
     graphics.meshShader->setMatrix(graphics.device, "viewproj", Gx::Matrix::lookAt(cam.position(), cam.position() + look, up) * Gx::Matrix::perspective(M_PI * 0.25f, 1024.0f / 768.0f, { 0.1f, 100.0f }));
     graphics.meshShader->setVector(graphics.device, "light", cam.position());
 
-    graphics.meshShader->setMatrix(graphics.device, "world", Gx::Matrix::translation({ -2, 0, 0 }));
-    graphics.device.renderTriangleList(*cuboid, cuboidCount);
-
-    graphics.meshShader->setMatrix(graphics.device, "world", Gx::Matrix::translation({ 2, 0, 0 }));
-    graphics.device.renderTriangleList(*capsule, capsuleCount);
+    graphics.meshShader->setMatrix(graphics.device, "world", Gx::Matrix::identity());
+    graphics.device.renderTriangleList(*buffer, count);
 }
 
 void GameState::deviceReset()
 {
-    cuboidCount = debugCuboidToBuffer(*cuboid, { 2, 2, 2 }, Gx::Color(1, 0, 0));
-    capsuleCount = debugCapsuleToBuffer(*capsule, 16, 16, 0.5f, 2.0f, Gx::Color(0, 1, 0));
+    pcx::data_ifstream ds("C:/Users/aardv/Desktop/map.dat");
+
+    ds.get<int>();
+
+    auto bytes = ds.get<unsigned>();
+
+    auto v = buffer->lock(Gx::Graphics::Lock::Flag::Discard);
+    ds.read(static_cast<char*>(v), bytes);
+
+    buffer->unlock();
+
+    count = (bytes / sizeof(MeshVertex)) / 3;
 }

@@ -24,7 +24,8 @@ LIBS += "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/d3d9.l
         "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/dxerr.lib" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libuser32.a" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libgdi32.a" \
-        "C:/mingw64/x86_64-w64-mingw32.shared/lib/libpsapi.a"
+        "C:/mingw64/x86_64-w64-mingw32.shared/lib/libpsapi.a" \
+        "C:/lib/Bullet/build-Bullet/release/libBullet.a"
 
 SOURCES += \
         main.cpp \
@@ -32,7 +33,9 @@ SOURCES += \
     states/GameState.cpp \
     graphics/Graphics.cpp \
     graphics/vertices/MeshVertex.cpp \ 
-    debug/DebugMesh.cpp
+    debug/DebugMesh.cpp \
+    models/Model.cpp \
+    scene/Scene.cpp
         
 
 HEADERS += \
@@ -41,7 +44,11 @@ HEADERS += \
     states/GameState.h \
     graphics/Graphics.h \
     graphics/vertices/MeshVertex.h \ 
-    debug/DebugMesh.h
+    debug/DebugMesh.h \
+    tsf.h \
+    models/Model.h \
+    scene/Scene.h \
+    scene/nodes/SceneNode.h
 
 DISTFILES += \
     meshvertex.txt
