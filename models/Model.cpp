@@ -10,12 +10,29 @@
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 
-#include <stdexcept>
 #include <map>
 
 #include <pcx/datastream.h>
 
-inline pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Vec3 &v){ return ds >> v.x >> v.y >> v.z; }
+namespace
+{
+
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Vec3 &v)
+{
+    return ds >> v.x >> v.y >> v.z;
+}
+
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &v)
+{
+    v.clear();
+
+    auto n = ds.get<std::size_t>();
+    for(std::size_t i = 0; i < n; ++i) v.push_back(ds.get<std::size_t>());
+
+    return ds;
+}
+
+}
 
 bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path)
 {
@@ -32,7 +49,16 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     auto tag = ds.get<std::string>();
     while(tag.length())
     {
-        if(tag == "mesh")
+        if(tag == "staticpolyhedron")
+        {
+            auto pos = ds.get<Gx::Vec3>();
+
+            auto vs = ds.get<std::vector<Gx::Vec3> >();
+            auto fs = ds.get<std::vector<Gx::PolyhedronShape::Face> >();
+
+            bodies.push_back(physics.createBody(new Gx::PolyhedronShape(vs, fs), Gx::Matrix::translation(pos), 0));
+        }
+        else if(tag == "internalmesh")
         {
             auto id = ds.get<std::string>();
 
@@ -46,16 +72,9 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
             nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], Gx::Matrix::translation(pos))));
         }
-        else
-        {
-            throw std::runtime_error("invalid level file format");
-        }
 
         tag = ds.get<std::string>();
     }
-
-    bodies.push_back(physics.createBody(Gx::PolyhedronShape::cuboid({ 1, 1, 1 }), Gx::Matrix::translation({ 0, 3, 0 }), 1.0f));
-    bodies.push_back(physics.createBody(Gx::PolyhedronShape::cuboid({ 3, 1, 2 }), Gx::Matrix::translation({ -2, 1, 0 }), 1.0f));
 
     return true;
 }
