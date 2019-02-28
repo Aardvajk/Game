@@ -5,13 +5,15 @@
 
 #include "graphics/Graphics.h"
 
+#include "models/Model.h"
+
+#include "scene/Scene.h"
+
 #include <GxMaths/GxTransform.h>
 
 #include <GxGraphics/GxVertexBuffer.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
-
-#include <pcx/signals.h>
 
 class GameState : public State
 {
@@ -22,15 +24,11 @@ public:
     virtual void render(float blend) override;
 
 private:
-    void deviceReset();
-
-    pcx::connections cx;
-
     Graphics &graphics;
-    Graphics::Handle<Gx::VertexBuffer> buffer;
-    unsigned count;
 
     Gx::PhysicsModel physics;
+    Model model;
+    Scene scene;
 
     Gx::Transform cam;
     Gx::Vec2 prevMouse;

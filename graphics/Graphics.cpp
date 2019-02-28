@@ -30,6 +30,9 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
 {
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
     meshShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Game/Game/meshvertex.dat")));
+    colorShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Game/Game/colorvertex.dat")));
+
+    genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }
 
 void Graphics::reset()

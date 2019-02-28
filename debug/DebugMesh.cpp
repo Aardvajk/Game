@@ -1,13 +1,14 @@
 #include "DebugMesh.h"
 
-#include <GxGraphics/GxVertexBuffer.h>
-#include <GxGraphics/GxBufferStream.h>
-
 #include <vector>
 #include <cmath>
 
+#include <pcx/datastream.h>
+
 namespace
 {
+
+inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 
 class Face
 {
@@ -44,7 +45,7 @@ Gx::Vec3 average(const std::vector<Gx::Vec3> &values)
     return v;
 }
 
-unsigned writeSmoothMesh(Gx::VertexBuffer &buffer, const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
+pcx::buffer writeSmoothMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
 {
     std::vector<std::vector<Gx::Vec3> > normals(vs.size());
 
@@ -64,25 +65,21 @@ unsigned writeSmoothMesh(Gx::VertexBuffer &buffer, const std::vector<Gx::Vec3> &
     std::vector<Gx::Vec3> vn(vs.size());
     for(std::size_t i = 0; i < normals.size(); ++i) vn[i] = average(normals[i]);
 
-    Gx::BufferStream<Gx::VertexBuffer> stream(buffer, Gx::Graphics::Lock::Flag::Discard);
-    unsigned count = 0;
+    pcx::data_osstream ds;
 
     for(auto i: fs)
     {
-        stream << vs[i[0]] << vn[i[0]] << Gx::Rgba(color);
-        stream << vs[i[1]] << vn[i[1]] << Gx::Rgba(color);
-        stream << vs[i[2]] << vn[i[2]] << Gx::Rgba(color);
-
-        ++count;
+        ds << vs[i[0]] << vn[i[0]] << Gx::Rgba(color);
+        ds << vs[i[1]] << vn[i[1]] << Gx::Rgba(color);
+        ds << vs[i[2]] << vn[i[2]] << Gx::Rgba(color);
     }
 
-    return count;
+    return ds.data();
 }
 
-unsigned writeFlatMesh(Gx::VertexBuffer &buffer, const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
+pcx::buffer writeFlatMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
 {
-    Gx::BufferStream<Gx::VertexBuffer> ds(buffer, Gx::Graphics::Lock::Flag::Discard);
-    unsigned count = 0;
+    pcx::data_osstream ds;
 
     for(std::size_t i = 0; i < fs.size(); ++i)
     {
@@ -92,16 +89,14 @@ unsigned writeFlatMesh(Gx::VertexBuffer &buffer, const std::vector<Gx::Vec3> &vs
         ds << vs[e[0]] << n << Gx::Rgba(color);
         ds << vs[e[1]] << n << Gx::Rgba(color);
         ds << vs[e[2]] << n << Gx::Rgba(color);
-
-        ++count;
     }
 
-    return count;
+    return ds.data();
 }
 
 }
 
-unsigned debugCuboidToBuffer(Gx::VertexBuffer &buffer, const Gx::Vec3 &dims, const Gx::Color &color)
+pcx::buffer debugCuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color)
 {
     std::vector<Gx::Vec3> vs;
 
@@ -132,10 +127,10 @@ unsigned debugCuboidToBuffer(Gx::VertexBuffer &buffer, const Gx::Vec3 &dims, con
     fs.push_back({ 3, 2, 6 });
     fs.push_back({ 3, 6, 7 });
 
-    return writeFlatMesh(buffer, vs, fs, color);
+    return writeFlatMesh(vs, fs, color);
 }
 
-unsigned debugCapsuleToBuffer(Gx::VertexBuffer &buffer, unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color)
+pcx::buffer debugCapsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color)
 {
     std::vector<Gx::Vec3> vs;
     std::vector<Face> fs;
@@ -213,5 +208,5 @@ unsigned debugCapsuleToBuffer(Gx::VertexBuffer &buffer, unsigned rings, unsigned
         }
     }
 
-    return writeSmoothMesh(buffer, vs, fs, color);
+    return writeSmoothMesh(vs, fs, color);
 }

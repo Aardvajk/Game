@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include "graphics/VertexBuffer.h"
+
 #include <GxGraphics/GxExclusiveGraphicsDevice.h>
 #include <GxGraphics/GxGraphicsResource.h>
 #include <GxGraphics/GxVertexDeclaration.h>
@@ -25,6 +27,9 @@ public:
 
     Handle<Gx::VertexDeclaration> meshVertexDec;
     Handle<Gx::VertexShader> meshShader;
+    Handle<Gx::VertexShader> colorShader;
+
+    Handle<VertexBuffer> genericBuffer;
 };
 
 #endif // GRAPHICS_H

@@ -35,7 +35,11 @@ SOURCES += \
     graphics/vertices/MeshVertex.cpp \ 
     debug/DebugMesh.cpp \
     models/Model.cpp \
-    scene/Scene.cpp
+    scene/Scene.cpp \
+    scene/nodes/StaticMeshNode.cpp \
+    graphics/VertexBuffer.cpp \
+    debug/DebugRender.cpp \
+    graphics/VertexStream.cpp
         
 
 HEADERS += \
@@ -45,10 +49,14 @@ HEADERS += \
     graphics/Graphics.h \
     graphics/vertices/MeshVertex.h \ 
     debug/DebugMesh.h \
-    tsf.h \
     models/Model.h \
     scene/Scene.h \
-    scene/nodes/SceneNode.h
+    scene/nodes/SceneNode.h \
+    scene/nodes/StaticMeshNode.h \
+    graphics/VertexBuffer.h \
+    scene/SceneParams.h \
+    debug/DebugRender.h \
+    graphics/VertexStream.h
 
 DISTFILES += \
     meshvertex.txt

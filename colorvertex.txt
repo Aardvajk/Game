@@ -1,0 +1,24 @@
+matrix world;
+matrix viewproj;
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+    vector color    : COLOR;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+	vector color    : COLOR;
+};
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+	output.position = mul(input.position, mul(world, viewproj));
+    output.color = input.color;
+	
+    return output;
+}

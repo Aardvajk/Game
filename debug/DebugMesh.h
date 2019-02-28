@@ -4,14 +4,9 @@
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxColor.h>
 
-namespace Gx
-{
+#include <pcx/buffer.h>
 
-class VertexBuffer;
-
-}
-
-unsigned debugCuboidToBuffer(Gx::VertexBuffer &buffer, const Gx::Vec3 &dims, const Gx::Color &color);
-unsigned debugCapsuleToBuffer(Gx::VertexBuffer &buffer, unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color);
+pcx::buffer debugCuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color);
+pcx::buffer debugCapsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color);
 
 #endif // DEBUGMESH_H
