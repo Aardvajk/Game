@@ -39,7 +39,8 @@ SOURCES += \
     scene/nodes/StaticMeshNode.cpp \
     graphics/VertexBuffer.cpp \
     debug/DebugRender.cpp \
-    graphics/VertexStream.cpp
+    graphics/VertexStream.cpp \
+    entities/pc/Pc.cpp
         
 
 HEADERS += \
@@ -56,7 +57,9 @@ HEADERS += \
     graphics/VertexBuffer.h \
     scene/SceneParams.h \
     debug/DebugRender.h \
-    graphics/VertexStream.h
+    graphics/VertexStream.h \
+    entities/pc/Pc.h \
+    entities/Entity.h
 
 DISTFILES += \
     meshvertex.txt

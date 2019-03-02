@@ -15,6 +15,8 @@
 
 #include <GxPhysics/GxPhysicsModel.h>
 
+class Pc;
+
 class GameState : public State
 {
 public:
@@ -32,6 +34,8 @@ private:
 
     Gx::Transform cam;
     Gx::Vec2 prevMouse;
+
+    Pc *pc;
 };
 
 #endif // GAMESTATE_H

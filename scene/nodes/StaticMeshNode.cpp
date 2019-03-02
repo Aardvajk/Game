@@ -9,6 +9,11 @@ StaticMeshNode::StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &trans
 {
 }
 
+void StaticMeshNode::updateTransform(const Gx::Matrix &transform)
+{
+    tr = transform;
+}
+
 void StaticMeshNode::render(Graphics &graphics) const
 {
     graphics.meshShader->setMatrix(graphics.device, "world", tr);

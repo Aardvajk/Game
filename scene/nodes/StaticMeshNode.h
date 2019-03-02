@@ -12,6 +12,8 @@ class StaticMeshNode : public SceneNode
 public:
     StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &transform);
 
+    void updateTransform(const Gx::Matrix &transform);
+
     virtual void render(Graphics &graphics) const override;
 
 private:
