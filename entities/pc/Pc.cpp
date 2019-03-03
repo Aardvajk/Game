@@ -4,6 +4,7 @@
 #include "scene/nodes/StaticMeshNode.h"
 
 #include "debug/DebugMesh.h"
+#include "debug/DebugText.h"
 
 #include <GxPhysics/GxBody.h>
 
@@ -22,7 +23,7 @@ void Pc::update(Gx::PhysicsModel &physics, const Gx::Transform &camera, float de
     Gx::Vec3 forw, right;
     camera.flatVectors(forw, right);
 
-    float speed = 2.0f * delta;
+    float speed = 4.0f * delta;
     Gx::Vec3 step(0, 0, 0);
 
     if(!(GetAsyncKeyState(VK_RBUTTON) & 0x8000))
@@ -39,4 +40,6 @@ void Pc::update(Gx::PhysicsModel &physics, const Gx::Transform &camera, float de
 
     kcc.move(physics, step);
     node->updateTransform(Gx::Matrix::translation(kcc.position()));
+
+    if(kcc.grounded()) DebugText() << "Grounded";
 }

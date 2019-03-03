@@ -21,6 +21,7 @@ class GameState : public State
 {
 public:
     explicit GameState(Graphics &graphics);
+    virtual ~GameState() override;
 
     virtual bool update(float delta) override;
     virtual void render(float blend) override;

@@ -16,6 +16,7 @@
 #include <GxGraphics/GxBufferStream.h>
 
 #include "debug/DebugMesh.h"
+#include "debug/DebugText.h"
 
 #include "graphics/vertices/MeshVertex.h"
 
@@ -25,13 +26,22 @@
 
 GameState::GameState(Graphics &graphics) : graphics(graphics), cam(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f)), pc(nullptr)
 {
-    model.load(graphics, scene, physics, "C:/Users/aardv/Desktop/map.dat");
+    DebugText::init(graphics);
+    model.load(graphics, scene, physics, "C:/Projects/Game/Game/map.dat");
 
     pc = new Pc(graphics, scene);
 }
 
+GameState::~GameState()
+{
+    DebugText::release();
+}
+
 bool GameState::update(float delta)
 {
+    DebugRender::clear();
+    DebugText::clear();
+
     auto pos = cam.position();
 
     Gx::Vec3 forw, right;
@@ -80,11 +90,9 @@ bool GameState::update(float delta)
         cam.setPosition(pos);
     }
 
-    prevMouse = mouse;
-
-    DebugRender::clear();
-
     pc->update(physics, cam, delta);
+
+    prevMouse = mouse;
 
     return true;
 }
@@ -103,4 +111,5 @@ void GameState::render(float blend)
     scene.render(graphics, params);
 
     DebugRender::render(graphics, params);
+    DebugText::render(graphics);
 }
