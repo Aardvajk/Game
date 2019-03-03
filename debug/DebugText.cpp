@@ -20,7 +20,7 @@ DebugText::~DebugText()
 
 void DebugText::init(Graphics &graphics)
 {
-    font = graphics.resources.add(new Gx::Font(graphics.device, { 12, "Arial", Gx::Font::Flag::Bold }));
+    font = graphics.resources.add(new Gx::Font(graphics.device, { 13, "Consolas", Gx::Font::Flag::Bold }));
 }
 
 void DebugText::release()
@@ -37,6 +37,6 @@ void DebugText::render(Graphics &graphics)
 {
     if(!curr.empty())
     {
-        font->draw(2, 754, curr, Gx::Color(1, 1, 1));
+        font->draw(2, 2, curr, Gx::Color(1, 1, 1));
     }
 }

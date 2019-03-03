@@ -22,6 +22,7 @@
 
 #include "entities/pc/Pc.h"
 
+#include "application/Application.h"
 #include <pcx/datastream.h>
 
 GameState::GameState(Graphics &graphics) : graphics(graphics), cam(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f)), pc(nullptr)
