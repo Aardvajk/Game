@@ -2,6 +2,7 @@
 #define PC_H
 
 #include "entities/Entity.h"
+#include "entities/Kcc.h"
 
 #include "graphics/Graphics.h"
 
@@ -25,9 +26,9 @@ public:
 
 private:
     Graphics::Handle<VertexBuffer> mesh;
-    Gx::Vec3 pos;
-
     pcx::scoped_ptr<StaticMeshNode> node;
+
+    Kcc kcc;
 };
 
 #endif // PC_H
