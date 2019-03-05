@@ -8,27 +8,32 @@
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxTransform.h>
+#include <GxMaths/GxBlendValue.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
 
 #include <pcx/scoped_ptr.h>
 
-class Scene;
-class StaticMeshNode;
+class Events;
 class Physics;
+class Scene;
+class SceneParams;
+class StaticMeshNode;
 
 class Pc : public Entity
 {
 public:
     Pc(Graphics &graphics, Scene &scene);
 
-    void update(Gx::PhysicsModel &physics, const Gx::Transform &camera, float delta);
+    void update(Events &events, Gx::PhysicsModel &physics, const Gx::Transform &camera, float delta);
+    void prepareScene(SceneParams &params, float blend);
 
 private:
     Graphics::Handle<VertexBuffer> mesh;
     pcx::scoped_ptr<StaticMeshNode> node;
 
     Kcc kcc;
+    Gx::BlendVec3 pos;
 };
 
 #endif // PC_H

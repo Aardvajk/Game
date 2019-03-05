@@ -1,5 +1,7 @@
 #include "GameState.h"
 
+#include "application/Events.h"
+
 #include "graphics/Graphics.h"
 
 #include "scene/SceneParams.h"
@@ -22,10 +24,7 @@
 
 #include "entities/pc/Pc.h"
 
-#include "application/Application.h"
-#include <pcx/datastream.h>
-
-GameState::GameState(Graphics &graphics) : graphics(graphics), cam(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f)), pc(nullptr)
+GameState::GameState(Graphics &graphics) : cam(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f)), pc(nullptr)
 {
     DebugText::init(graphics);
     model.load(graphics, scene, physics, "C:/Projects/Game/Game/map.dat");
@@ -38,7 +37,7 @@ GameState::~GameState()
     DebugText::release();
 }
 
-bool GameState::update(float delta)
+bool GameState::update(Events &events, float delta)
 {
     DebugRender::clear();
     DebugText::clear();
@@ -50,36 +49,25 @@ bool GameState::update(float delta)
 
     float speed = 10.0f * delta;
 
-    POINT p;
-    GetCursorPos(&p);
-
-    Gx::Vec2 mouse;
-    mouse.x = static_cast<float>(p.x);
-    mouse.y = static_cast<float>(p.y);
-
-    if(GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+    if(events.isKeyDown(VK_RBUTTON))
     {
-        if(GetAsyncKeyState('A') & 0x8000) pos -= right * speed;
-        if(GetAsyncKeyState('D') & 0x8000) pos += right * speed;
+        if(events.isKeyDown('A')) pos -= right * speed;
+        if(events.isKeyDown('D')) pos += right * speed;
 
-        if(GetAsyncKeyState('W') & 0x8000) pos += forw * speed;
-        if(GetAsyncKeyState('S') & 0x8000) pos -= forw * speed;
+        if(events.isKeyDown('W')) pos += forw * speed;
+        if(events.isKeyDown('S')) pos -= forw * speed;
 
-        if(GetAsyncKeyState('R') & 0x8000) pos.y += speed;
-        if(GetAsyncKeyState('F') & 0x8000) pos.y -= speed;
-
-        mouse.x = static_cast<float>(p.x);
-        mouse.y = static_cast<float>(p.y);
+        if(events.isKeyDown('R')) pos.y += speed;
+        if(events.isKeyDown('F')) pos.y -= speed;
 
         if(GetAsyncKeyState(VK_RBUTTON) & 0x8000)
         {
-            if(prevMouse != mouse)
+            auto diff = events.rawMouseDelta();
+            if(diff.length())
             {
-                float turn = 0.4f;
+                float turn = 0.6f;
 
                 Gx::Vec2 dims = Gx::Vec2(1024.0f, 768.0f) * 0.5f;
-                Gx::Vec2 diff = mouse - prevMouse;
-
                 Gx::Vec2 ang = cam.angle();
 
                 ang += Gx::Vec2((diff.x / dims.x) * turn, (diff.y / dims.y) * turn);
@@ -91,14 +79,12 @@ bool GameState::update(float delta)
         cam.setPosition(pos);
     }
 
-    pc->update(physics, cam, delta);
-
-    prevMouse = mouse;
+    pc->update(events, physics, cam, delta);
 
     return true;
 }
 
-void GameState::render(float blend)
+void GameState::render(Graphics &graphics, float blend)
 {
     auto look = Gx::Vec3(0, 0, 1).transformedNormal(cam.rotation().matrix());
     auto up = Gx::Vec3(0, 1, 0).transformedNormal(cam.rotation().matrix());
@@ -108,6 +94,8 @@ void GameState::render(float blend)
     params.view = Gx::Matrix::lookAt(cam.position(), cam.position() + look, up);
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, 1024.0f / 768.0f, { 0.1f, 100.0f });
     params.camera = cam;
+
+    pc->prepareScene(params, blend);
 
     scene.render(graphics, params);
 

@@ -3,8 +3,6 @@
 
 #include "states/State.h"
 
-#include "graphics/Graphics.h"
-
 #include "models/Model.h"
 
 #include "scene/Scene.h"
@@ -23,18 +21,15 @@ public:
     explicit GameState(Graphics &graphics);
     virtual ~GameState() override;
 
-    virtual bool update(float delta) override;
-    virtual void render(float blend) override;
+    virtual bool update(Events &events, float delta) override;
+    virtual void render(Graphics &graphics, float blend) override;
 
 private:
-    Graphics &graphics;
-
     Gx::PhysicsModel physics;
     Model model;
     Scene scene;
 
     Gx::Transform cam;
-    Gx::Vec2 prevMouse;
 
     Pc *pc;
 };

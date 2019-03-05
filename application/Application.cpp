@@ -39,20 +39,49 @@ int Application::exec()
     return 0;
 }
 
+void Application::activationEvent(bool state)
+{
+    events.act = state;
+    if(!state)
+    {
+        events.keys.clear();
+    }
+}
+
+void Application::rawMouseEvent(int x, int y)
+{
+    events.rawMouse += Gx::Vec2(static_cast<float>(x), static_cast<float>(y));
+}
+
+void Application::keyPressedEvent(int key)
+{
+    if(events.act)
+    {
+        events.keys.insert(key);
+        events.keyDown(key);
+    }
+}
+
+void Application::keyReleasedEvent(int key)
+{
+    events.keys.erase(key);
+}
+
 void Application::update(float &accumulator, float delta)
 {
     while(accumulator >= delta)
     {
-        if(!state->update(delta))
+        if(!state->update(events, delta))
         {
             close();
             return;
         }
 
+        events.rawMouse = Gx::Vec2(0, 0);
         accumulator -= delta;
     }
 
     graphics.device.begin();
-    state->render(accumulator / delta);
+    state->render(graphics, accumulator / delta);
     graphics.device.end();
 }

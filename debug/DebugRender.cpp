@@ -10,7 +10,6 @@
 
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
-
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 
 #include <vector>
