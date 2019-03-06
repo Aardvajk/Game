@@ -7,9 +7,7 @@
 
 #include "scene/Scene.h"
 
-#include <GxMaths/GxTransform.h>
-
-#include <GxGraphics/GxVertexBuffer.h>
+#include "maths/Camera.h"
 
 #include <GxPhysics/GxPhysicsModel.h>
 
@@ -29,7 +27,7 @@ private:
     Model model;
     Scene scene;
 
-    Gx::Transform cam;
+    Camera cam;
 
     Pc *pc;
 };

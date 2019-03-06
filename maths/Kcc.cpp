@@ -54,17 +54,12 @@ Gx::Vec3 transformVelocity(const Gx::Vec3 &v, const Gx::Vec3 &n)
     return p.normalized() * v.length();
 }
 
-Gx::Vec3 getDownVector(const Gx::Vec3 &n)
-{
-    return transformVelocity(Gx::Vec3(0, -1, 0), n.normalized());
-}
-
 Gx::Vec3 slopeCorrection(const Gx::Vec3 &separation)
 {
     auto d = separation.normalized().dot(Gx::Vec3(0, 1, 0));
     if(d >= 0 && d < 0.8f)
     {
-        return getDownVector(separation) * separation.length();
+        return transformVelocity(Gx::Vec3(0, -1, 0), separation.normalized()) * separation.length();
     }
 
     return Gx::Vec3(0, 0, 0);
@@ -139,7 +134,7 @@ std::pair<Gx::Vec3, bool> moveImp(Gx::PhysicsModel &physics, const Gx::CapsuleSh
 
     auto sep = separatingVector(physics, shape, pos + mv);
 
-    if(!flying)
+    if(!flying && floor)
     {
         mv += slopeCorrection(sep);
     }
@@ -164,6 +159,8 @@ Kcc::Kcc(float radius, float height, const Gx::Vec3 &position) : sh(radius, heig
 void Kcc::move(Gx::PhysicsModel &physics, const Gx::Vec3 &step)
 {
     auto m = moveImp(physics, sh, pos, step);
+
+    auto old = pos;
 
     pos = m.first;
     gr = m.second;

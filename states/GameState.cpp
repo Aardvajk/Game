@@ -24,7 +24,7 @@
 
 #include "entities/pc/Pc.h"
 
-GameState::GameState(Graphics &graphics) : cam(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f)), pc(nullptr)
+GameState::GameState(Graphics &graphics) : pc(nullptr)
 {
     DebugText::init(graphics);
     model.load(graphics, scene, physics, "C:/Projects/Game/Game/map.dat");
@@ -42,58 +42,19 @@ bool GameState::update(Events &events, float delta)
     DebugRender::clear();
     DebugText::clear();
 
-    auto pos = cam.position();
-
-    Gx::Vec3 forw, right;
-    cam.flatVectors(forw, right);
-
-    float speed = 10.0f * delta;
-
-    if(events.isKeyDown(VK_RBUTTON))
-    {
-        if(events.isKeyDown('A')) pos -= right * speed;
-        if(events.isKeyDown('D')) pos += right * speed;
-
-        if(events.isKeyDown('W')) pos += forw * speed;
-        if(events.isKeyDown('S')) pos -= forw * speed;
-
-        if(events.isKeyDown('R')) pos.y += speed;
-        if(events.isKeyDown('F')) pos.y -= speed;
-
-        if(GetAsyncKeyState(VK_RBUTTON) & 0x8000)
-        {
-            auto diff = events.rawMouseDelta();
-            if(diff.length())
-            {
-                float turn = 0.6f;
-
-                Gx::Vec2 dims = Gx::Vec2(1024.0f, 768.0f) * 0.5f;
-                Gx::Vec2 ang = cam.angle();
-
-                ang += Gx::Vec2((diff.x / dims.x) * turn, (diff.y / dims.y) * turn);
-
-                cam.setAngle(ang);
-            }
-        }
-
-        cam.setPosition(pos);
-    }
-
-    pc->update(events, physics, cam, delta);
+    cam.update(events, delta);
+    pc->update(events, physics, cam.transform(), delta);
 
     return true;
 }
 
 void GameState::render(Graphics &graphics, float blend)
 {
-    auto look = Gx::Vec3(0, 0, 1).transformedNormal(cam.rotation().matrix());
-    auto up = Gx::Vec3(0, 1, 0).transformedNormal(cam.rotation().matrix());
-
     SceneParams params;
 
-    params.view = Gx::Matrix::lookAt(cam.position(), cam.position() + look, up);
+    params.view = cam.viewMatrix(blend);
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, 1024.0f / 768.0f, { 0.1f, 100.0f });
-    params.camera = cam;
+    params.camera = cam.transform();
 
     pc->prepareScene(params, blend);
 

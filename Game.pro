@@ -41,9 +41,10 @@ SOURCES += \
     debug/DebugRender.cpp \
     graphics/VertexStream.cpp \
     entities/pc/Pc.cpp \
-    entities/Kcc.cpp \
+    maths/Kcc.cpp \
     debug/DebugText.cpp \
-    application/Events.cpp
+    application/Events.cpp \
+    maths/Camera.cpp
         
 
 HEADERS += \
@@ -63,9 +64,10 @@ HEADERS += \
     graphics/VertexStream.h \
     entities/pc/Pc.h \
     entities/Entity.h \
-    entities/Kcc.h \
+    maths/Kcc.h \
     debug/DebugText.h \
-    application/Events.h
+    application/Events.h \
+    maths/Camera.h
 
 DISTFILES += \
     meshvertex.txt

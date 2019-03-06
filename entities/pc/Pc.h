@@ -2,7 +2,8 @@
 #define PC_H
 
 #include "entities/Entity.h"
-#include "entities/Kcc.h"
+
+#include "maths/Kcc.h"
 
 #include "graphics/Graphics.h"
 
