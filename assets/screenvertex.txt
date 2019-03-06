@@ -1,0 +1,31 @@
+float dx;
+float dy;
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+    vector diffuse  : COLOR;
+    float2 texcoord : TEXCOORD;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+    vector diffuse  : COLOR;
+    float2 texcoord : TEXCOORD;
+};
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+    output.position.x = ((input.position.x / dx) - 0.5f) * 2;
+    output.position.y = -((input.position.y / dy) - 0.5f) * 2;
+    output.position.z = 0;
+    output.position.w = 1;
+
+    output.diffuse = input.diffuse;
+    output.texcoord = input.texcoord;
+
+    return output;
+}

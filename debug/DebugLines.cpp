@@ -1,4 +1,4 @@
-#include "DebugRender.h"
+#include "DebugLines.h"
 
 #include "graphics/Graphics.h"
 #include "graphics/VertexBuffer.h"
@@ -37,17 +37,17 @@ struct EdgeHash
 
 }
 
-void DebugRender::clear()
+void DebugLines::clear()
 {
     lines.clear();
 }
 
-void DebugRender::addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color)
+void DebugLines::addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color)
 {
     lines.push_back({ start, end, color });
 }
 
-void DebugRender::addPhysics(const Gx::PhysicsModel &physics)
+void DebugLines::addPhysics(const Gx::PhysicsModel &physics)
 {
     for(int index = 0; index < physics.count(); ++index)
     {
@@ -74,7 +74,7 @@ void DebugRender::addPhysics(const Gx::PhysicsModel &physics)
     }
 }
 
-void DebugRender::render(Graphics &graphics, const SceneParams &params)
+void DebugLines::render(Graphics &graphics, const SceneParams &params)
 {
     if(auto vs = VertexStream(*graphics.genericBuffer))
     {

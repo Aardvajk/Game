@@ -1,5 +1,5 @@
-#ifndef DEBUGRENDER_H
-#define DEBUGRENDER_H
+#ifndef DEBUGLINES_H
+#define DEBUGLINES_H
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxColor.h>
@@ -16,7 +16,7 @@ class PhysicsModel;
 
 }
 
-namespace DebugRender
+namespace DebugLines
 {
 
 void clear();
@@ -28,4 +28,4 @@ void render(Graphics &graphics, const SceneParams &params);
 
 }
 
-#endif // DEBUGRENDER_H
+#endif // DEBUGLINES_H

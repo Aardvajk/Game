@@ -6,7 +6,7 @@
 
 #include "scene/SceneParams.h"
 
-#include "debug/DebugRender.h"
+#include "debug/DebugLines.h"
 
 #include <GxCore/GxDebug.h>
 
@@ -39,7 +39,7 @@ GameState::~GameState()
 
 bool GameState::update(Events &events, float delta)
 {
-    DebugRender::clear();
+    DebugLines::clear();
     DebugText::clear();
 
     cam.update(events, delta);
@@ -60,6 +60,6 @@ void GameState::render(Graphics &graphics, float blend)
 
     scene.render(graphics, params);
 
-    DebugRender::render(graphics, params);
+    DebugLines::render(graphics, params);
     DebugText::render(graphics);
 }

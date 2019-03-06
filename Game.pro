@@ -38,13 +38,13 @@ SOURCES += \
     scene/Scene.cpp \
     scene/nodes/StaticMeshNode.cpp \
     graphics/VertexBuffer.cpp \
-    debug/DebugRender.cpp \
     graphics/VertexStream.cpp \
     entities/pc/Pc.cpp \
     maths/Kcc.cpp \
     debug/DebugText.cpp \
     application/Events.cpp \
-    maths/Camera.cpp
+    maths/Camera.cpp \
+    debug/DebugLines.cpp
         
 
 HEADERS += \
@@ -60,14 +60,14 @@ HEADERS += \
     scene/nodes/StaticMeshNode.h \
     graphics/VertexBuffer.h \
     scene/SceneParams.h \
-    debug/DebugRender.h \
     graphics/VertexStream.h \
     entities/pc/Pc.h \
     entities/Entity.h \
     maths/Kcc.h \
     debug/DebugText.h \
     application/Events.h \
-    maths/Camera.h
+    maths/Camera.h \
+    debug/DebugLines.h
 
 DISTFILES += \
     meshvertex.txt
