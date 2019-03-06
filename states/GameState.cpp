@@ -27,7 +27,7 @@
 GameState::GameState(Graphics &graphics) : pc(nullptr)
 {
     DebugText::init(graphics);
-    model.load(graphics, scene, physics, "C:/Projects/Game/Game/map.dat");
+    model.load(graphics, scene, physics, "assets/map.dat");
 
     pc = new Pc(graphics, scene);
 }
