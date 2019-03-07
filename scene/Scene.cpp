@@ -8,6 +8,8 @@
 #include <GxGraphics/GxVertexDeclaration.h>
 #include <GxGraphics/GxShader.h>
 
+Scene::Scene() = default;
+
 void Scene::render(Graphics &graphics, const SceneParams &params)
 {
     graphics.device.clear({ 0.2f, 0.25f, 0.3f }, 1.0f);

@@ -36,13 +36,8 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &
 
 }
 
-Model::Model()
-{
-}
-
-Model::~Model()
-{
-}
+Model::Model() = default;
+Model::~Model() = default;
 
 bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path)
 {

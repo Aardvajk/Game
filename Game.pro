@@ -48,7 +48,8 @@ SOURCES += \
     debug/DebugRender.cpp \
     graphics/vertices/ColorVertex.cpp \
     application/ResourcePath.cpp \
-    graphics/vertices/TextureVertex.cpp
+    graphics/vertices/TextureVertex.cpp \
+    states/State.cpp
         
 
 HEADERS += \

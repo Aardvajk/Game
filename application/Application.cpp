@@ -12,9 +12,7 @@ Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(
     show();
 }
 
-Application::~Application()
-{
-}
+Application::~Application() = default;
 
 int Application::exec()
 {

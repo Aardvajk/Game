@@ -12,7 +12,7 @@ class SceneNode;
 class Scene : public pcx::non_copyable
 {
 public:
-    Scene() = default;
+    Scene();
 
     template<typename T> T *addNode(T *node){ ns.push_back(node); return node; }
 

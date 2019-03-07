@@ -162,7 +162,6 @@ void Kcc::move(Gx::PhysicsModel &physics, const Gx::Vec3 &step)
 
     pos = m.first;
     gr = m.second;
-
 }
 
 const Gx::CapsuleShape &Kcc::shape() const

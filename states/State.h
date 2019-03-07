@@ -8,7 +8,7 @@ class Graphics;
 class State
 {
 public:
-    virtual ~State(){ }
+    virtual ~State();
 
     virtual bool update(AppParams &params, Events &events, float delta) = 0;
     virtual void render(Graphics &graphics, float blend) = 0;

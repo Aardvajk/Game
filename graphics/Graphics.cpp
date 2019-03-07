@@ -48,9 +48,7 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }
 
-Graphics::~Graphics()
-{
-}
+Graphics::~Graphics() = default;
 
 void Graphics::reset()
 {

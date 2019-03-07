@@ -5,9 +5,7 @@
 
 #include <cstring>
 
-VertexBuffer::VertexBuffer()
-{
-}
+VertexBuffer::VertexBuffer() = default;
 
 VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, unsigned bytes, Gx::Graphics::Usage::Flags usage, Gx::Graphics::Pool pool) : n(0)
 {
