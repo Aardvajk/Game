@@ -5,7 +5,9 @@
 
 #include "graphics/vertices/MeshVertex.h"
 
-void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Texture &texture)
+#include <GxGraphics/GxTexture.h>
+
+void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture)
 {
     graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
 
@@ -15,17 +17,17 @@ void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Texture &textu
 
     if(auto os = VertexStream(*graphics.genericBuffer))
     {
-        Gx::Vec2 pos(5, 5);
-        Gx::Vec2 size(256, 265);
-        Gx::Color color(1, 1, 1);
+        auto pos = rect.position;
+        auto size = (rect.size.width && rect.size.height) ? rect.size : texture.size();
+        auto color = Gx::Color(1, 1, 1);
 
         os << Gx::Vec3(pos.x, pos.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        os << Gx::Vec3(pos.x + size.x, pos.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 0);
-        os << Gx::Vec3(pos.x, pos.y + size.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(0, 1);
+        os << Gx::Vec3(pos.x + size.width, pos.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 0);
+        os << Gx::Vec3(pos.x, pos.y + size.height, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(0, 1);
 
-        os << Gx::Vec3(pos.x + size.x, pos.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 0);
-        os << Gx::Vec3(pos.x + size.x, pos.y + size.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 1);
-        os << Gx::Vec3(pos.x, pos.y + size.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(0, 1);
+        os << Gx::Vec3(pos.x + size.width, pos.y, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 0);
+        os << Gx::Vec3(pos.x + size.width, pos.y + size.height, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(1, 1);
+        os << Gx::Vec3(pos.x, pos.y + size.height, 0) << Gx::Vec3() << Gx::Rgba(color) << Gx::Vec2(0, 1);
     }
 
     graphics.device.setZBufferEnable(false);

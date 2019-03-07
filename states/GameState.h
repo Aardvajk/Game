@@ -11,8 +11,6 @@
 
 #include "maths/Camera.h"
 
-#include <GxGraphics/GxTexture.h>
-
 #include <GxPhysics/GxPhysicsModel.h>
 
 class Pc;
@@ -34,8 +32,6 @@ private:
     Camera cam;
 
     Pc *pc;
-
-    Graphics::Handle<Gx::Texture> tex;
 };
 
 #endif // GAMESTATE_H
