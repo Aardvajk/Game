@@ -25,10 +25,11 @@ public:
     Gx::ExclusiveGraphicsDevice device;
     pcx::resource_map<Gx::GraphicsResource> resources;
 
+    Handle<Gx::VertexDeclaration> colorVertexDec;
     Handle<Gx::VertexDeclaration> meshVertexDec;
 
-    Handle<Gx::VertexShader> meshShader;
     Handle<Gx::VertexShader> colorShader;
+    Handle<Gx::VertexShader> meshShader;
     Handle<Gx::VertexShader> screenShader;
 
     Handle<VertexBuffer> genericBuffer;

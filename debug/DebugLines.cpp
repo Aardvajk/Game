@@ -4,7 +4,7 @@
 #include "graphics/VertexBuffer.h"
 #include "graphics/VertexStream.h"
 
-#include "graphics/vertices/MeshVertex.h"
+#include "graphics/vertices/ColorVertex.h"
 
 #include "scene/SceneParams.h"
 
@@ -80,12 +80,12 @@ void DebugLines::render(Graphics &graphics, const SceneParams &params)
     {
         for(auto line: lines)
         {
-            vs << line.start << Gx::Vec3(0, 0, 0) << Gx::Rgba(line.color);
-            vs << line.end << Gx::Vec3(0, 0, 0) << Gx::Rgba(line.color);
+            vs << line.start << Gx::Rgba(line.color);
+            vs << line.end << Gx::Rgba(line.color);
         }
     }
 
-    graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
+    graphics.device.setVertexDeclaration(*graphics.colorVertexDec);
     graphics.device.setVertexShader(*graphics.colorShader);
 
     graphics.colorShader->setMatrix(graphics.device, "world", Gx::Matrix::identity());
@@ -94,7 +94,7 @@ void DebugLines::render(Graphics &graphics, const SceneParams &params)
     graphics.device.setZBufferEnable(false);
     graphics.device.setZWriteEnable(false);
 
-    graphics.genericBuffer->renderLineList(graphics.device, sizeof(MeshVertex));
+    graphics.genericBuffer->renderLineList(graphics.device, sizeof(ColorVertex));
 
     graphics.device.setZBufferEnable(true);
     graphics.device.setZWriteEnable(true);

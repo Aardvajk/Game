@@ -8,6 +8,7 @@
 namespace
 {
 
+inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
 inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 
 class Face
@@ -69,9 +70,9 @@ pcx::buffer writeSmoothMesh(const std::vector<Gx::Vec3> &vs, const std::vector<F
 
     for(auto i: fs)
     {
-        ds << vs[i[0]] << vn[i[0]] << Gx::Rgba(color);
-        ds << vs[i[1]] << vn[i[1]] << Gx::Rgba(color);
-        ds << vs[i[2]] << vn[i[2]] << Gx::Rgba(color);
+        ds << vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        ds << vs[i[1]] << vn[i[1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        ds << vs[i[2]] << vn[i[2]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
     }
 
     return ds.data();
@@ -86,9 +87,9 @@ pcx::buffer writeFlatMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Fac
         auto &e = fs[i];
         auto n = normal(vs[e[0]], vs[e[1]], vs[e[2]]);
 
-        ds << vs[e[0]] << n << Gx::Rgba(color);
-        ds << vs[e[1]] << n << Gx::Rgba(color);
-        ds << vs[e[2]] << n << Gx::Rgba(color);
+        ds << vs[e[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        ds << vs[e[1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        ds << vs[e[2]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
     }
 
     return ds.data();
@@ -96,7 +97,7 @@ pcx::buffer writeFlatMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Fac
 
 }
 
-pcx::buffer debugCuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color)
+pcx::buffer DebugMesh::cuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color)
 {
     std::vector<Gx::Vec3> vs;
 
@@ -130,7 +131,7 @@ pcx::buffer debugCuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color)
     return writeFlatMesh(vs, fs, color);
 }
 
-pcx::buffer debugCapsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color)
+pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color)
 {
     std::vector<Gx::Vec3> vs;
     std::vector<Face> fs;

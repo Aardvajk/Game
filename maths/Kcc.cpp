@@ -10,6 +10,8 @@
 
 #include <utility>
 
+#include "debug/DebugLines.h"
+
 namespace
 {
 
@@ -164,6 +166,8 @@ void Kcc::move(Gx::PhysicsModel &physics, const Gx::Vec3 &step)
 
     pos = m.first;
     gr = m.second;
+
+    DebugLines::addLine(pos, pos + Gx::Vec3(pos - old).normalized(), { 1, 1, 1 });
 }
 
 const Gx::CapsuleShape &Kcc::shape() const

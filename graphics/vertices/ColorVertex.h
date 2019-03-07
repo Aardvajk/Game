@@ -1,19 +1,17 @@
-#ifndef MESHVERTEX_H
-#define MESHVERTEX_H
+#ifndef COLORVERTEX_H
+#define COLORVERTEX_H
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxColor.h>
 
 #include <GxGraphics/GxVertexDeclaration.h>
 
-struct MeshVertex
+struct ColorVertex
 {
     Gx::Vec3 position;
-    Gx::Vec3 normal;
     Gx::Rgba color;
-    Gx::Vec2 texCoords;
 
     static std::vector<Gx::VertexElement> declaration();
 };
 
-#endif // MESHVERTEX_H
+#endif // COLORVERTEX_H

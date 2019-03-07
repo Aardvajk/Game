@@ -15,7 +15,7 @@
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.25f, 1.0f, { 0, 2, -0.5f })
 {
-    mesh = graphics.resources.add(new VertexBuffer(graphics.device, debugCapsuleToBuffer(16, 16, kcc.shape().radius(), kcc.shape().height(), Gx::Color(1.0f, 0.0f, 0.0f)), { }, Gx::Graphics::Pool::Managed));
+    mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::capsuleToBuffer(16, 16, kcc.shape().radius(), kcc.shape().height(), Gx::Color(1.0f, 0.0f, 0.0f)), { }, Gx::Graphics::Pool::Managed));
     node = scene.addNode(new StaticMeshNode(mesh.get(), Gx::Matrix::translation(kcc.position())));
 
     pos.set(kcc.position());

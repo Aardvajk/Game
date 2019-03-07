@@ -3,11 +3,15 @@
 
 #include "states/State.h"
 
+#include "graphics/Graphics.h"
+
 #include "models/Model.h"
 
 #include "scene/Scene.h"
 
 #include "maths/Camera.h"
+
+#include <GxGraphics/GxTexture.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
 
@@ -30,6 +34,8 @@ private:
     Camera cam;
 
     Pc *pc;
+
+    Graphics::Handle<Gx::Texture> tex;
 };
 
 #endif // GAMESTATE_H

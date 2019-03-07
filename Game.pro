@@ -44,7 +44,9 @@ SOURCES += \
     debug/DebugText.cpp \
     application/Events.cpp \
     maths/Camera.cpp \
-    debug/DebugLines.cpp
+    debug/DebugLines.cpp \
+    debug/DebugRender.cpp \
+    graphics/vertices/ColorVertex.cpp
         
 
 HEADERS += \
@@ -67,7 +69,9 @@ HEADERS += \
     debug/DebugText.h \
     application/Events.h \
     maths/Camera.h \
-    debug/DebugLines.h
+    debug/DebugLines.h \
+    debug/DebugRender.h \
+    graphics/vertices/ColorVertex.h
 
 DISTFILES += \
     meshvertex.txt

@@ -7,6 +7,7 @@
 #include "scene/SceneParams.h"
 
 #include "debug/DebugLines.h"
+#include "debug/DebugRender.h"
 
 #include <GxCore/GxDebug.h>
 
@@ -30,6 +31,8 @@ GameState::GameState(Graphics &graphics) : pc(nullptr)
     model.load(graphics, scene, physics, "assets/map.dat");
 
     pc = new Pc(graphics, scene);
+
+    tex = graphics.resources.add(new Gx::Texture(graphics.device, "assets/puppy.png", { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed }));
 }
 
 GameState::~GameState()
@@ -62,4 +65,6 @@ void GameState::render(Graphics &graphics, float blend)
 
     DebugLines::render(graphics, params);
     DebugText::render(graphics);
+
+//    DebugRender::drawScreenTexture(graphics, *tex);
 }

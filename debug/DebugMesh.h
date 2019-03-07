@@ -6,7 +6,12 @@
 
 #include <pcx/buffer.h>
 
-pcx::buffer debugCuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color);
-pcx::buffer debugCapsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color);
+namespace DebugMesh
+{
+
+pcx::buffer cuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color);
+pcx::buffer capsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color);
+
+}
 
 #endif // DEBUGMESH_H
