@@ -6,7 +6,7 @@
 
 #include <GxMaths/GxColor.h>
 
-Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), graphics(hwnd(), settings)
+Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), params{ settings.size }, graphics(hwnd(), settings)
 {
     state = new GameState(graphics);
     show();
@@ -71,7 +71,7 @@ void Application::update(float &accumulator, float delta)
 {
     while(accumulator >= delta)
     {
-        if(!state->update(events, delta))
+        if(!state->update(params, events, delta))
         {
             close();
             return;

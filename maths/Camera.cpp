@@ -6,7 +6,7 @@ Camera::Camera() : tr(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f))
 {
 }
 
-void Camera::update(Events &events, float delta)
+void Camera::update(Events &events, const Gx::SizeF &size, float delta)
 {
     tr.store();
 
@@ -36,7 +36,7 @@ void Camera::update(Events &events, float delta)
             {
                 float turn = 0.6f;
 
-                Gx::Vec2 dims = Gx::Vec2(1024.0f, 768.0f) * 0.5f;
+                Gx::Vec2 dims = Gx::Vec2(size.width, size.height) * 0.5f;
                 ang += Gx::Vec2((diff.x / dims.x) * turn, (diff.y / dims.y) * turn);
             }
         }

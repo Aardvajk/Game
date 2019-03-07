@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "application/AppParams.h"
 #include "application/Events.h"
 
 #include "graphics/Graphics.h"
@@ -27,6 +28,7 @@ protected:
 private:
     void update(float &accumulator, float delta);
 
+    AppParams params;
     Events events;
     Graphics graphics;
     pcx::scoped_ptr<State> state;

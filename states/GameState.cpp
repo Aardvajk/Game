@@ -1,5 +1,6 @@
 #include "GameState.h"
 
+#include "application/AppParams.h"
 #include "application/Events.h"
 
 #include "graphics/Graphics.h"
@@ -38,12 +39,12 @@ GameState::~GameState()
     DebugText::release();
 }
 
-bool GameState::update(Events &events, float delta)
+bool GameState::update(AppParams &params, Events &events, float delta)
 {
     DebugLines::clear();
     DebugText::clear();
 
-    cam.update(events, delta);
+    cam.update(events, params.size, delta);
     pc->update(events, physics, cam.transform(), delta);
 
     return true;
@@ -54,7 +55,7 @@ void GameState::render(Graphics &graphics, float blend)
     SceneParams params;
 
     params.view = cam.viewMatrix(blend);
-    params.proj = Gx::Matrix::perspective(M_PI * 0.25f, 1024.0f / 768.0f, { 0.1f, 100.0f });
+    params.proj = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
     params.camera = cam.transform();
 
     pc->prepareScene(params, blend);

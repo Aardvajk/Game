@@ -27,7 +27,7 @@ std::vector<char> load(const std::string &path)
 
 }
 
-Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, settings)
+Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, settings), size(settings.size)
 {
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));

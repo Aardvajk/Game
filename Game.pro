@@ -71,7 +71,8 @@ HEADERS += \
     maths/Camera.h \
     debug/DebugLines.h \
     debug/DebugRender.h \
-    graphics/vertices/ColorVertex.h
+    graphics/vertices/ColorVertex.h \
+    application/AppParams.h
 
 DISTFILES += \
     meshvertex.txt

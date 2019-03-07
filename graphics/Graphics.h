@@ -33,6 +33,8 @@ public:
     Handle<Gx::VertexShader> screenShader;
 
     Handle<VertexBuffer> genericBuffer;
+
+    Gx::SizeF size;
 };
 
 #endif // GRAPHICS_H

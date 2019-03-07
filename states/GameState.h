@@ -21,7 +21,7 @@ public:
     explicit GameState(Graphics &graphics);
     virtual ~GameState() override;
 
-    virtual bool update(Events &events, float delta) override;
+    virtual bool update(AppParams &params, Events &events, float delta) override;
     virtual void render(Graphics &graphics, float blend) override;
 
 private:
