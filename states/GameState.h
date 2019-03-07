@@ -26,7 +26,6 @@ private:
     Gx::PhysicsModel physics;
     Model model;
     Scene scene;
-
     Camera cam;
 };
 
