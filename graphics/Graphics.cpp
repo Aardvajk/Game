@@ -1,5 +1,7 @@
 #include "Graphics.h"
 
+#include "application/ResourcePath.h"
+
 #include "graphics/vertices/ColorVertex.h"
 #include "graphics/vertices/MeshVertex.h"
 
@@ -32,9 +34,9 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
 
-    colorShader = resources.add(new Gx::VertexShader(device, load("assets/colorvertex.dat")));
-    meshShader = resources.add(new Gx::VertexShader(device, load("assets/meshvertex.dat")));
-    screenShader = resources.add(new Gx::VertexShader(device, load("assets/screenvertex.dat")));
+    colorShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/colorvertex.dat"))));
+    meshShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/meshvertex.dat"))));
+    screenShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/screenvertex.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }

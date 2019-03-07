@@ -2,6 +2,7 @@
 
 #include "application/AppParams.h"
 #include "application/Events.h"
+#include "application/ResourcePath.h"
 
 #include "graphics/Graphics.h"
 
@@ -29,7 +30,7 @@
 GameState::GameState(Graphics &graphics) : pc(nullptr)
 {
     DebugText::init(graphics);
-    model.load(graphics, scene, physics, "assets/map.dat");
+    model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
 
     pc = new Pc(graphics, scene);
 }
