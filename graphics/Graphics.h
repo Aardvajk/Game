@@ -1,20 +1,27 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "graphics/VertexBuffer.h"
-
 #include <GxGraphics/GxExclusiveGraphicsDevice.h>
-#include <GxGraphics/GxGraphicsResource.h>
-#include <GxGraphics/GxVertexDeclaration.h>
-#include <GxGraphics/GxShader.h>
 
 #include <pcx/resource_map.h>
 #include <pcx/signals.h>
+
+namespace Gx
+{
+
+class GraphicsResource;
+class VertexDeclaration;
+class VertexShader;
+
+}
+
+class VertexBuffer;
 
 class Graphics
 {
 public:
     Graphics(HWND hw, const Gx::DisplaySettings &settings);
+    ~Graphics();
 
     template<typename T> using Handle = pcx::resource_handle<Gx::GraphicsResource, T>;
 

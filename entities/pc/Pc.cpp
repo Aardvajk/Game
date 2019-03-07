@@ -2,11 +2,15 @@
 
 #include "application/Events.h"
 
+#include "graphics/VertexBuffer.h"
+
 #include "scene/Scene.h"
 #include "scene/nodes/StaticMeshNode.h"
 
 #include "debug/DebugMesh.h"
 #include "debug/DebugText.h"
+
+#include <GxMaths/GxTransform.h>
 
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>

@@ -2,6 +2,8 @@
 
 #include "application/Events.h"
 
+#include <GxMaths/GxSize.h>
+
 Camera::Camera() : tr(Gx::Vec3(0, 3, -10), Gx::Vec2(0, 0.3f))
 {
 }

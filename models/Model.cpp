@@ -1,13 +1,15 @@
 #include "Model.h"
 
 #include "scene/Scene.h"
-
 #include "scene/nodes/StaticMeshNode.h"
+
+#include "graphics/VertexBuffer.h"
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
+#include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 
 #include <map>
@@ -32,6 +34,14 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &
     return ds;
 }
 
+}
+
+Model::Model()
+{
+}
+
+Model::~Model()
+{
 }
 
 bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path)

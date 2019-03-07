@@ -2,14 +2,9 @@
 #define MODEL_H
 
 #include "graphics/Graphics.h"
-#include "graphics/VertexBuffer.h"
-
-#include "scene/nodes/SceneNode.h"
 
 #include <string>
 #include <vector>
-
-#include <GxPhysics/GxBody.h>
 
 #include <pcx/non_copyable.h>
 #include <pcx/ptr_vector.h>
@@ -21,13 +16,15 @@ namespace Gx
 {
 
 class PhysicsModel;
+class Body;
 
 }
 
 class Model : public pcx::non_copyable
 {
 public:
-    Model() = default;
+    Model();
+    ~Model();
 
     bool load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path);
 

@@ -2,8 +2,13 @@
 
 #include "application/ResourcePath.h"
 
+#include "graphics/VertexBuffer.h"
 #include "graphics/vertices/ColorVertex.h"
 #include "graphics/vertices/MeshVertex.h"
+
+#include <GxGraphics/GxGraphicsTypes.h>
+#include <GxGraphics/GxVertexDeclaration.h>
+#include <GxGraphics/GxShader.h>
 
 #include <fstream>
 
@@ -39,6 +44,10 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     screenShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/screenvertex.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
+}
+
+Graphics::~Graphics()
+{
 }
 
 void Graphics::reset()

@@ -7,11 +7,8 @@
 
 #include "graphics/Graphics.h"
 
-#include <GxMaths/GxVector.h>
-#include <GxMaths/GxTransform.h>
 #include <GxMaths/GxBlendValue.h>
-
-#include <GxPhysics/GxPhysicsModel.h>
+#include <GxMaths/GxVector.h>
 
 #include <pcx/scoped_ptr.h>
 
@@ -20,6 +17,14 @@ class Physics;
 class Scene;
 class SceneParams;
 class StaticMeshNode;
+
+namespace Gx
+{
+
+class PhysicsModel;
+class Transform;
+
+}
 
 class Pc : public Entity
 {

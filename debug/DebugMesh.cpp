@@ -1,5 +1,8 @@
 #include "DebugMesh.h"
 
+#include <GxMaths/GxVector.h>
+#include <GxMaths/GxColor.h>
+
 #include <vector>
 #include <cmath>
 

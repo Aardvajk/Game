@@ -1,10 +1,14 @@
 #include "DebugRender.h"
 
 #include "graphics/Graphics.h"
+#include "graphics/VertexBuffer.h"
 #include "graphics/VertexStream.h"
 
 #include "graphics/vertices/MeshVertex.h"
 
+#include <GxMaths/GxRect.h>
+
+#include <GxGraphics/GxShader.h>
 #include <GxGraphics/GxTexture.h>
 
 void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture)

@@ -1,10 +1,15 @@
 #ifndef DEBUGMESH_H
 #define DEBUGMESH_H
 
-#include <GxMaths/GxVector.h>
-#include <GxMaths/GxColor.h>
-
 #include <pcx/buffer.h>
+
+namespace Gx
+{
+
+class Vec3;
+class Color;
+
+}
 
 namespace DebugMesh
 {

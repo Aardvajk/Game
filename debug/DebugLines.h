@@ -1,16 +1,14 @@
 #ifndef DEBUGLINES_H
 #define DEBUGLINES_H
 
-#include <GxMaths/GxVector.h>
-#include <GxMaths/GxColor.h>
-
-#include <pcx/aligned_store.h>
-
 class Graphics;
 class SceneParams;
 
 namespace Gx
 {
+
+class Vec3;
+class Color;
 
 class PhysicsModel;
 

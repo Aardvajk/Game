@@ -3,8 +3,10 @@
 #include "graphics/Graphics.h"
 
 #include "scene/SceneParams.h"
-
 #include "scene/nodes/SceneNode.h"
+
+#include <GxGraphics/GxVertexDeclaration.h>
+#include <GxGraphics/GxShader.h>
 
 void Scene::render(Graphics &graphics, const SceneParams &params)
 {

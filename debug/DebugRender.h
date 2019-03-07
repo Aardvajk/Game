@@ -1,13 +1,12 @@
 #ifndef DEBUGRENDER_H
 #define DEBUGRENDER_H
 
-#include <GxMaths/GxRect.h>
-
 class Graphics;
 
 namespace Gx
 {
 
+class Rect;
 class Texture;
 
 }

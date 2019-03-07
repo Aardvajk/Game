@@ -3,9 +3,15 @@
 
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxTransform.h>
-#include <GxMaths/GxSize.h>
 
 class Events;
+
+namespace Gx
+{
+
+class SizeF;
+
+}
 
 class Camera
 {

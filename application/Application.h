@@ -6,16 +6,17 @@
 
 #include "graphics/Graphics.h"
 
-#include "states/State.h"
-
 #include <GxApplication/GxApplication.h>
 
 #include <pcx/scoped_ptr.h>
+
+class State;
 
 class Application : public Gx::Application
 {
 public:
     Application(const Gx::DisplaySettings &settings);
+    virtual ~Application() override;
 
     int exec();
 

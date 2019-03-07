@@ -12,6 +12,10 @@ Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(
     show();
 }
 
+Application::~Application()
+{
+}
+
 int Application::exec()
 {
     Gx::Timer timer;

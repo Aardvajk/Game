@@ -8,6 +8,11 @@
 
 #include "scene/SceneParams.h"
 
+#include <GxMaths/GxVector.h>
+#include <GxMaths/GxColor.h>
+
+#include <GxGraphics/GxShader.h>
+
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>

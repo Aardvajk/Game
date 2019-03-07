@@ -3,8 +3,6 @@
 
 #include "states/State.h"
 
-#include "graphics/Graphics.h"
-
 #include "models/Model.h"
 
 #include "scene/Scene.h"
@@ -13,6 +11,7 @@
 
 #include <GxPhysics/GxPhysicsModel.h>
 
+class Graphics;
 class Pc;
 
 class GameState : public State

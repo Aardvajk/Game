@@ -5,6 +5,8 @@
 
 #include "graphics/vertices/MeshVertex.h"
 
+#include <GxGraphics/GxShader.h>
+
 StaticMeshNode::StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &transform) : mesh(mesh), tr(transform)
 {
 }
