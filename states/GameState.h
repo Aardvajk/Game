@@ -12,7 +12,6 @@
 #include <GxPhysics/GxPhysicsModel.h>
 
 class Graphics;
-class Pc;
 
 class GameState : public State
 {
@@ -29,8 +28,6 @@ private:
     Scene scene;
 
     Camera cam;
-
-    Pc *pc;
 };
 
 #endif // GAMESTATE_H

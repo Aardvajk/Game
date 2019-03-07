@@ -1,5 +1,6 @@
 #include "Pc.h"
 
+#include "application/FrameParams.h"
 #include "application/Events.h"
 
 #include "graphics/VertexBuffer.h"
@@ -25,12 +26,12 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.25f, 1.0f, { 0, 2, -0.5f })
     pos.set(kcc.position());
 }
 
-void Pc::update(Events &events, Gx::PhysicsModel &physics, const Gx::Transform &camera, float delta)
+void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     pos.store();
 
     Gx::Vec3 forw, right;
-    camera.flatVectors(forw, right);
+    params.camera.transform().flatVectors(forw, right);
 
     float speed = 4.0f * delta;
     Gx::Vec3 step(0, 0, 0);
@@ -53,7 +54,7 @@ void Pc::update(Events &events, Gx::PhysicsModel &physics, const Gx::Transform &
     if(kcc.grounded()) DebugText() << "Grounded";
 }
 
-void Pc::prepareScene(SceneParams &params, float blend)
+void Pc::prepareScene(const SceneParams &params, float blend)
 {
     node->updateTransform(Gx::Matrix::translation(pos.value(blend)));
 }

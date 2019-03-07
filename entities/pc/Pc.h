@@ -12,27 +12,16 @@
 
 #include <pcx/scoped_ptr.h>
 
-class Events;
-class Physics;
 class Scene;
-class SceneParams;
 class StaticMeshNode;
-
-namespace Gx
-{
-
-class PhysicsModel;
-class Transform;
-
-}
 
 class Pc : public Entity
 {
 public:
     Pc(Graphics &graphics, Scene &scene);
 
-    void update(Events &events, Gx::PhysicsModel &physics, const Gx::Transform &camera, float delta);
-    void prepareScene(SceneParams &params, float blend);
+    virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) override;
+    virtual void prepareScene(const SceneParams &params, float blend) override;
 
 private:
     Graphics::Handle<VertexBuffer> mesh;

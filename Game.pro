@@ -49,7 +49,8 @@ SOURCES += \
     graphics/vertices/ColorVertex.cpp \
     application/ResourcePath.cpp \
     graphics/vertices/TextureVertex.cpp \
-    states/State.cpp
+    states/State.cpp \
+    entities/Entity.cpp
         
 
 HEADERS += \
@@ -77,7 +78,8 @@ HEADERS += \
     graphics/vertices/ColorVertex.h \
     application/AppParams.h \
     application/ResourcePath.h \
-    graphics/vertices/TextureVertex.h
+    graphics/vertices/TextureVertex.h \
+    application/FrameParams.h
 
 DISTFILES += \
     meshvertex.txt

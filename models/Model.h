@@ -11,6 +11,10 @@
 
 class Scene;
 class SceneNode;
+class SceneParams;
+class Entity;
+class FrameParams;
+class Events;
 
 namespace Gx
 {
@@ -28,10 +32,14 @@ public:
 
     bool load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path);
 
+    void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta);
+    void prepareScene(const SceneParams &params, float blend);
+
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     pcx::ptr_vector<SceneNode> nodes;
     pcx::ptr_vector<Gx::Body> bodies;
+    pcx::ptr_vector<Entity> entities;
 };
 
 #endif // MODEL_H

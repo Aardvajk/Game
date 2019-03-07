@@ -1,6 +1,7 @@
 #include "GameState.h"
 
 #include "application/AppParams.h"
+#include "application/FrameParams.h"
 #include "application/Events.h"
 #include "application/ResourcePath.h"
 
@@ -25,14 +26,10 @@
 
 #include "graphics/vertices/MeshVertex.h"
 
-#include "entities/pc/Pc.h"
-
-GameState::GameState(Graphics &graphics) : pc(nullptr)
+GameState::GameState(Graphics &graphics)
 {
     DebugText::init(graphics);
     model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
-
-    pc = new Pc(graphics, scene);
 }
 
 GameState::~GameState()
@@ -40,13 +37,18 @@ GameState::~GameState()
     DebugText::release();
 }
 
-bool GameState::update(AppParams &params, Events &events, float delta)
+bool GameState::update(AppParams &app, Events &events, float delta)
 {
     DebugLines::clear();
     DebugText::clear();
 
-    cam.update(events, params.size, delta);
-    pc->update(events, physics, cam.transform(), delta);
+    cam.update(events, app.size, delta);
+    physics.update(delta);
+
+    FrameParams params;
+    params.camera = cam;
+
+    model.update(params, events, physics, delta);
 
     return true;
 }
@@ -61,7 +63,7 @@ void GameState::render(Graphics &graphics, float blend)
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
     params.light = Gx::Vec3(pos.x, 10, pos.z - 5);
 
-    pc->prepareScene(params, blend);
+    model.prepareScene(params, blend);
 
     scene.render(graphics, params);
 

@@ -5,6 +5,9 @@
 
 #include "graphics/VertexBuffer.h"
 
+#include "entities/Entity.h"
+#include "entities/pc/Pc.h"
+
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
 
@@ -81,6 +84,23 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         tag = ds.get<std::string>();
     }
 
+    entities.push_back(new Pc(graphics, scene));
+
     return true;
 }
 
+void Model::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
+{
+    for(auto &e: entities)
+    {
+        e.update(params, events, physics, delta);
+    }
+}
+
+void Model::prepareScene(const SceneParams &params, float blend)
+{
+    for(auto &e: entities)
+    {
+        e.prepareScene(params, blend);
+    }
+}
