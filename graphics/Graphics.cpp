@@ -4,6 +4,7 @@
 
 #include "graphics/vertices/ColorVertex.h"
 #include "graphics/vertices/MeshVertex.h"
+#include "graphics/vertices/TextureVertex.h"
 
 #include <fstream>
 
@@ -33,6 +34,7 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
 {
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
+    textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
 
     colorShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/colorvertex.dat"))));
     meshShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/meshvertex.dat"))));

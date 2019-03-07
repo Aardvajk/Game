@@ -47,7 +47,8 @@ SOURCES += \
     debug/DebugLines.cpp \
     debug/DebugRender.cpp \
     graphics/vertices/ColorVertex.cpp \
-    application/ResourcePath.cpp
+    application/ResourcePath.cpp \
+    graphics/vertices/TextureVertex.cpp
         
 
 HEADERS += \
@@ -74,7 +75,8 @@ HEADERS += \
     debug/DebugRender.h \
     graphics/vertices/ColorVertex.h \
     application/AppParams.h \
-    application/ResourcePath.h
+    application/ResourcePath.h \
+    graphics/vertices/TextureVertex.h
 
 DISTFILES += \
     meshvertex.txt
