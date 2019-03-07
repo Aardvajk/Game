@@ -28,7 +28,7 @@ void Scene::beginType(Graphics &graphics, const SceneParams &params)
     graphics.device.setVertexShader(*graphics.meshShader);
 
     graphics.meshShader->setMatrix(graphics.device, "viewproj", params.view * params.proj);
-    graphics.meshShader->setVector(graphics.device, "light", params.camera.position());
+    graphics.meshShader->setVector(graphics.device, "light", params.light);
 }
 
 void Scene::endType(Graphics &graphics)

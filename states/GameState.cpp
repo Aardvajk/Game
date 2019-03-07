@@ -53,11 +53,13 @@ bool GameState::update(AppParams &params, Events &events, float delta)
 
 void GameState::render(Graphics &graphics, float blend)
 {
+    auto pos = cam.transform().position();
+
     SceneParams params;
 
     params.view = cam.viewMatrix(blend);
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
-    params.camera = cam.transform();
+    params.light = Gx::Vec3(pos.x, 10, pos.z - 5);
 
     pc->prepareScene(params, blend);
 

@@ -1,8 +1,8 @@
 #ifndef SCENEPARAMS_H
 #define SCENEPARAMS_H
 
+#include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
-#include <GxMaths/GxTransform.h>
 
 class SceneParams
 {
@@ -12,7 +12,7 @@ public:
     Gx::Matrix view;
     Gx::Matrix proj;
 
-    Gx::Transform camera;
+    Gx::Vec3 light;
 };
 
 #endif // SCENEPARAMS_H

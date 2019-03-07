@@ -34,6 +34,7 @@ public:
 
     Handle<Gx::VertexDeclaration> colorVertexDec;
     Handle<Gx::VertexDeclaration> meshVertexDec;
+    Handle<Gx::VertexDeclaration> textureVertexDec;
 
     Handle<Gx::VertexShader> colorShader;
     Handle<Gx::VertexShader> meshShader;
