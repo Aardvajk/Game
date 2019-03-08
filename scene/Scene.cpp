@@ -10,29 +10,59 @@
 
 Scene::Scene() = default;
 
-void Scene::render(Graphics &graphics, const SceneParams &params)
+void Scene::render(RenderPass pass, Graphics &graphics, const SceneParams &params)
 {
-    graphics.device.clear({ 0.2f, 0.25f, 0.3f }, 1.0f);
+    RenderType curr = RenderType::Null;
 
-    beginType(graphics, params);
-
-    for(auto n: ns)
+    for(auto i: ns)
     {
-        n->render(graphics);
+        if(i->pass(pass))
+        {
+            RenderType type = i->type();
+
+            if(curr != type)
+            {
+                endType(graphics);
+
+                curr = type;
+                beginType(pass, type, graphics, params);
+            }
+
+            if(curr != RenderType::Null)
+            {
+                i->render(pass, graphics, params);
+            }
+        }
     }
 
     endType(graphics);
 }
 
-void Scene::beginType(Graphics &graphics, const SceneParams &params)
+void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, const SceneParams &params)
 {
-    graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
-    graphics.device.setVertexShader(*graphics.meshShader);
+    if(type == RenderType::Color)
+    {
+        graphics.device.setVertexDeclaration(*graphics.colorVertexDec);
+        graphics.device.setVertexShader(*graphics.colorShader);
 
-    graphics.meshShader->setMatrix(graphics.device, "viewproj", params.view * params.proj);
-    graphics.meshShader->setVector(graphics.device, "light", params.light);
+        graphics.colorShader->setMatrix(graphics.device, "world", Gx::Matrix::identity());
+        graphics.colorShader->setMatrix(graphics.device, "viewproj", params.view * params.proj);
+
+        graphics.device.setZBufferEnable(false);
+        graphics.device.setZWriteEnable(false);
+    }
+    else if(type == RenderType::Mesh)
+    {
+        graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
+        graphics.device.setVertexShader(*graphics.meshShader);
+
+        graphics.meshShader->setMatrix(graphics.device, "viewproj", params.view * params.proj);
+        graphics.meshShader->setVector(graphics.device, "light", params.light);
+    }
 }
 
 void Scene::endType(Graphics &graphics)
 {
+    graphics.device.setZBufferEnable(true);
+    graphics.device.setZWriteEnable(true);
 }

@@ -6,6 +6,7 @@
 
 #include "graphics/vertices/ColorVertex.h"
 
+#include "scene/Scene.h"
 #include "scene/SceneParams.h"
 
 #include <GxMaths/GxVector.h>
@@ -79,7 +80,7 @@ void DebugLines::addPhysics(const Gx::PhysicsModel &physics)
     }
 }
 
-void DebugLines::render(Graphics &graphics, const SceneParams &params)
+void DebugLines::render(Graphics &graphics, Scene &scene, const SceneParams &params)
 {
     if(auto vs = VertexStream(*graphics.genericBuffer))
     {
@@ -90,17 +91,9 @@ void DebugLines::render(Graphics &graphics, const SceneParams &params)
         }
     }
 
-    graphics.device.setVertexDeclaration(*graphics.colorVertexDec);
-    graphics.device.setVertexShader(*graphics.colorShader);
-
-    graphics.colorShader->setMatrix(graphics.device, "world", Gx::Matrix::identity());
-    graphics.colorShader->setMatrix(graphics.device, "viewproj", params.view * params.proj);
-
-    graphics.device.setZBufferEnable(false);
-    graphics.device.setZWriteEnable(false);
+    scene.beginType(RenderPass::Normal, RenderType::Color, graphics, params);
 
     graphics.genericBuffer->renderLineList(graphics.device, sizeof(ColorVertex));
 
-    graphics.device.setZBufferEnable(true);
-    graphics.device.setZWriteEnable(true);
+    scene.endType(graphics);
 }

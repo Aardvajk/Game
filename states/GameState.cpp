@@ -55,6 +55,8 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
 void GameState::render(Graphics &graphics, float blend)
 {
+    graphics.device.clear({ 0.2f, 0.25f, 0.3f }, 1.0f);
+
     auto pos = cam.transform().position();
 
     SceneParams params;
@@ -65,8 +67,8 @@ void GameState::render(Graphics &graphics, float blend)
 
     model.prepareScene(params, blend);
 
-    scene.render(graphics, params);
+    scene.render(RenderPass::Normal, graphics, params);
 
-    DebugLines::render(graphics, params);
+    DebugLines::render(graphics, scene, params);
     DebugText::render(graphics);
 }

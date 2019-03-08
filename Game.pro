@@ -79,7 +79,8 @@ HEADERS += \
     application/AppParams.h \
     application/ResourcePath.h \
     graphics/vertices/TextureVertex.h \
-    application/FrameParams.h
+    application/FrameParams.h \
+    scene/RenderTypes.h
 
 DISTFILES += \
     meshvertex.txt

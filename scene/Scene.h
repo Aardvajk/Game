@@ -1,6 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "scene/RenderTypes.h"
+
 #include <vector>
 
 #include <pcx/non_copyable.h>
@@ -16,12 +18,12 @@ public:
 
     template<typename T> T *addNode(T *node){ ns.push_back(node); return node; }
 
-    void render(Graphics &graphics, const SceneParams &params);
+    void render(RenderPass pass, Graphics &graphics, const SceneParams &params);
 
-private:
-    void beginType(Graphics &graphics, const SceneParams &params);
+    void beginType(RenderPass pass, RenderType type, Graphics &graphics, const SceneParams &params);
     void endType(Graphics &graphics);
 
+private:
     std::vector<SceneNode*> ns;
 };
 

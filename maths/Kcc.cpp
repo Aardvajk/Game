@@ -2,6 +2,7 @@
 
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxQuaternion.h>
+#include <GxMaths/GxColor.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
