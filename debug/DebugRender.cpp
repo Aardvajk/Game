@@ -15,9 +15,9 @@ void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, co
 {
     graphics.device.setVertexDeclaration(*graphics.textureVertexDec);
 
-    graphics.device.setVertexShader(*graphics.screenShader);
-    graphics.screenShader->setFloat(graphics.device, "dx", graphics.size.width);
-    graphics.screenShader->setFloat(graphics.device, "dy", graphics.size.height);
+    graphics.setVertexShader(*graphics.screenVertexShader);
+    graphics.currentVertexShader()->setFloat(graphics.device, "dx", graphics.size.width);
+    graphics.currentVertexShader()->setFloat(graphics.device, "dy", graphics.size.height);
 
     if(auto os = VertexStream(*graphics.genericBuffer))
     {

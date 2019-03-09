@@ -13,7 +13,7 @@ StaticMeshNode::StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &trans
 
 bool StaticMeshNode::pass(RenderPass type) const
 {
-    return type == RenderPass::Normal;
+    return true;
 }
 
 RenderType StaticMeshNode::type() const
@@ -21,9 +21,9 @@ RenderType StaticMeshNode::type() const
     return RenderType::Mesh;
 }
 
-void StaticMeshNode::render(RenderPass pass, Graphics &graphics, const SceneParams &params) const
+void StaticMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const
 {
-    graphics.meshShader->setMatrix(graphics.device, "world", tr);
+    graphics.currentVertexShader()->setMatrix(graphics.device, "world", tr);
     mesh->renderTriangleList(graphics.device, sizeof(MeshVertex));
 }
 

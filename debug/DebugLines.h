@@ -2,7 +2,6 @@
 #define DEBUGLINES_H
 
 class Graphics;
-class Scene;
 class SceneParams;
 
 namespace Gx
@@ -23,7 +22,7 @@ void addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color)
 
 void addPhysics(const Gx::PhysicsModel &physics);
 
-void render(Graphics &graphics, Scene &scene, const SceneParams &params);
+void render(Graphics &graphics, const SceneParams &params);
 
 }
 

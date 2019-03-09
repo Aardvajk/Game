@@ -11,6 +11,7 @@ public:
 
     Gx::Matrix view;
     Gx::Matrix proj;
+    Gx::Matrix depth;
 
     Gx::Vec3 light;
 };

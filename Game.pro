@@ -50,7 +50,8 @@ SOURCES += \
     application/ResourcePath.cpp \
     graphics/vertices/TextureVertex.cpp \
     states/State.cpp \
-    entities/Entity.cpp
+    entities/Entity.cpp \
+    debug/ShaderCompiler.cpp
         
 
 HEADERS += \
@@ -80,7 +81,13 @@ HEADERS += \
     application/ResourcePath.h \
     graphics/vertices/TextureVertex.h \
     application/FrameParams.h \
-    scene/RenderTypes.h
+    scene/RenderTypes.h \
+    debug/ShaderCompiler.h
 
 DISTFILES += \
-    meshvertex.txt
+    assets/shaders/colorvertex.txt \
+    assets/shaders/depthvertex.txt \
+    assets/shaders/meshvertex.txt \
+    assets/shaders/screenvertex.txt \
+    assets/shaders/depthpixel.txt
+

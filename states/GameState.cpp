@@ -26,7 +26,7 @@
 
 #include "graphics/vertices/MeshVertex.h"
 
-GameState::GameState(Graphics &graphics)
+GameState::GameState(Graphics &graphics) : scene(graphics)
 {
     DebugText::init(graphics);
     model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
@@ -55,20 +55,19 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
 void GameState::render(Graphics &graphics, float blend)
 {
-    graphics.device.clear({ 0.2f, 0.25f, 0.3f }, 1.0f);
-
     auto pos = cam.transform().position();
 
     SceneParams params;
 
     params.view = cam.viewMatrix(blend);
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
+    params.depth = Gx::Matrix::lookAt(pos, pos + Gx::Vec3(0, -1, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 40, 40 }, { -100, 100 });
+
     params.light = Gx::Vec3(pos.x, 10, pos.z - 5);
 
     model.prepareScene(params, blend);
+    scene.render(graphics, params);
 
-    scene.render(RenderPass::Normal, graphics, params);
-
-    DebugLines::render(graphics, scene, params);
+    DebugLines::render(graphics, params);
     DebugText::render(graphics);
 }

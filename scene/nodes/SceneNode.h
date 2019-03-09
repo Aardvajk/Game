@@ -16,7 +16,7 @@ public:
     virtual bool pass(RenderPass type) const = 0;
     virtual RenderType type() const = 0;
 
-    virtual void render(RenderPass pass, Graphics &graphics, const SceneParams &params) const = 0;
+    virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const = 0;
 };
 
 #endif // SCENENODE_H

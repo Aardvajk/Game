@@ -33,17 +33,31 @@ std::vector<char> load(const std::string &path)
     return bs;
 }
 
+class Cache
+{
+public:
+    Cache() : vs(nullptr), ps(nullptr) { }
+
+    Gx::VertexShader *vs;
+    Gx::PixelShader *ps;
+};
+
 }
 
 Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, settings), size(settings.size)
 {
+    cache.alloc<Cache>();
+
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
     textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
 
-    colorShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/colorvertex.dat"))));
-    meshShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/meshvertex.dat"))));
-    screenShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/screenvertex.dat"))));
+    colorVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/colorvertex.dat"))));
+    meshVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/meshvertex.dat"))));
+    screenVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/screenvertex.dat"))));
+    depthVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/depthvertex.dat"))));
+
+    depthPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/depthpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }
@@ -65,5 +79,39 @@ void Graphics::reset()
     }
 
     deviceReset();
+}
+
+void Graphics::setVertexShader(Gx::VertexShader &shader)
+{
+    device.setVertexShader(shader);
+    cache.get<Cache>().vs = &shader;
+}
+
+void Graphics::setVertexShader()
+{
+    device.setVertexShader();
+    cache.get<Cache>().vs = nullptr;
+}
+
+void Graphics::setPixelShader(Gx::PixelShader &shader)
+{
+    device.setPixelShader(shader);
+    cache.get<Cache>().ps = &shader;
+}
+
+void Graphics::setPixelShader()
+{
+    device.setPixelShader();
+    cache.get<Cache>().ps = nullptr;
+}
+
+Gx::VertexShader *Graphics::currentVertexShader()
+{
+    return cache.get<Cache>().vs;
+}
+
+Gx::PixelShader *Graphics::currentPixelShader()
+{
+    return cache.get<Cache>().ps;
 }
 

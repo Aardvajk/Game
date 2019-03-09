@@ -5,6 +5,7 @@
 
 #include <pcx/resource_map.h>
 #include <pcx/signals.h>
+#include <pcx/aligned_store.h>
 
 namespace Gx
 {
@@ -12,6 +13,7 @@ namespace Gx
 class GraphicsResource;
 class VertexDeclaration;
 class VertexShader;
+class PixelShader;
 
 }
 
@@ -27,6 +29,15 @@ public:
 
     void reset();
 
+    void setVertexShader(Gx::VertexShader &shader);
+    void setVertexShader();
+
+    void setPixelShader(Gx::PixelShader &shader);
+    void setPixelShader();
+
+    Gx::VertexShader *currentVertexShader();
+    Gx::PixelShader *currentPixelShader();
+
     pcx::signal<> deviceReset;
 
     Gx::ExclusiveGraphicsDevice device;
@@ -36,13 +47,18 @@ public:
     Handle<Gx::VertexDeclaration> meshVertexDec;
     Handle<Gx::VertexDeclaration> textureVertexDec;
 
-    Handle<Gx::VertexShader> colorShader;
-    Handle<Gx::VertexShader> meshShader;
-    Handle<Gx::VertexShader> screenShader;
+    Handle<Gx::VertexShader> colorVertexShader;
+    Handle<Gx::VertexShader> meshVertexShader;
+    Handle<Gx::VertexShader> screenVertexShader;
+    Handle<Gx::VertexShader> depthVertexShader;
+
+    Handle<Gx::PixelShader> depthPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
 
     Gx::SizeF size;
+
+    pcx::aligned_store<16> cache;
 };
 
 #endif // GRAPHICS_H

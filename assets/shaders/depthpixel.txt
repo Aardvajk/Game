@@ -1,0 +1,17 @@
+struct PS_INPUT
+{
+    vector depth : TEXCOORD;
+};
+
+struct PS_OUTPUT
+{
+    vector diffuse  : COLOR;
+};
+
+PS_OUTPUT main(PS_INPUT input)
+{
+    PS_OUTPUT output = (PS_OUTPUT)0;
+
+    output.diffuse = input.depth;
+    return output;
+}

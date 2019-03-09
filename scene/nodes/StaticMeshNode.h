@@ -15,7 +15,7 @@ public:
     virtual bool pass(RenderPass type) const override;
     virtual RenderType type() const override;
 
-    virtual void render(RenderPass pass, Graphics &graphics, const SceneParams &params) const override;
+    virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const override;
 
     void updateTransform(const Gx::Matrix &transform);
 

@@ -3,7 +3,8 @@
 
 enum class RenderPass
 {
-    Normal
+    Normal,
+    Depth
 };
 
 enum class RenderType
