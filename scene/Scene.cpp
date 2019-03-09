@@ -41,7 +41,7 @@ void Scene::render(Graphics &graphics, SceneParams &params)
 
     render(RenderPass::Normal, graphics, params);
 
-    DebugRender::drawScreenTexture(graphics, { { 5, 5, }, { 256, 256 } }, *depthTex);
+    DebugRender::drawScreenTexture(graphics, { { 5, 5, }, { 256, 256 } }, *depthTex, graphics.unpackPixelShader.get());
 }
 
 void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)

@@ -8,13 +8,14 @@ namespace Gx
 
 class Rect;
 class Texture;
+class PixelShader;
 
 }
 
 namespace DebugRender
 {
 
-void drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture);
+void drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture, const Gx::PixelShader *pixelShader);
 
 }
 

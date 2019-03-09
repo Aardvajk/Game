@@ -11,7 +11,7 @@
 #include <GxGraphics/GxShader.h>
 #include <GxGraphics/GxTexture.h>
 
-void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture)
+void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, const Gx::Texture &texture, const Gx::PixelShader *pixelShader)
 {
     graphics.device.setVertexDeclaration(*graphics.textureVertexDec);
 
@@ -37,8 +37,18 @@ void DebugRender::drawScreenTexture(Graphics &graphics, const Gx::Rect &rect, co
     graphics.device.setZBufferEnable(false);
     graphics.device.setTexture(0, texture);
 
+    if(pixelShader)
+    {
+        graphics.device.setPixelShader(*pixelShader);
+    }
+
     graphics.genericBuffer->renderTriangleList(graphics.device, sizeof(TextureVertex));
 
     graphics.device.setZBufferEnable(true);
     graphics.device.setTexture(0);
+
+    if(pixelShader)
+    {
+        graphics.device.setPixelShader();
+    }
 }

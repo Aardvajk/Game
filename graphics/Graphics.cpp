@@ -58,6 +58,7 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     depthVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/depthvertex.dat"))));
 
     depthPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/depthpixel.dat"))));
+    unpackPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/unpackpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }

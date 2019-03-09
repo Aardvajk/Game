@@ -12,12 +12,26 @@ struct VS_OUTPUT
     vector depth    : TEXCOORD;
 };
 
+vector pack(float depth)
+{
+    const vector bias = vector(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0, 0.0);
+
+    vector color;
+
+    color.r = depth;
+    color.g = frac(color.r * 255.0);
+    color.b = frac(color.g * 255.0);
+    color.a = frac(color.b * 255.0);
+
+    return color - (color.rgba * bias);
+}
+
 VS_OUTPUT main(VS_INPUT input)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 
 	output.position = mul(input.position, mul(world, viewproj));
-    output.depth = vector(1 - (output.position.z / output.position.w), 0, 0, 0);
+    output.depth = pack(1 - (output.position.z / output.position.w));
 
 	return output;
 }

@@ -89,5 +89,6 @@ DISTFILES += \
     assets/shaders/depthvertex.txt \
     assets/shaders/meshvertex.txt \
     assets/shaders/screenvertex.txt \
-    assets/shaders/depthpixel.txt
+    assets/shaders/depthpixel.txt \
+    assets/shaders/unpackpixel.txt
 

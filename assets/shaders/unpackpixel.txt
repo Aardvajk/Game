@@ -1,0 +1,29 @@
+sampler shadow : register(s0);
+
+struct PS_INPUT
+{
+    float2 texcoord : TEXCOORD;
+};
+
+struct PS_OUTPUT
+{
+    vector diffuse  : COLOR;
+};
+
+float unpack(vector color)
+{
+    const vector shifts = vector(1.0, 1.0 / 255.0, 1.0 / (255.0 * 255.0), 1.0 / (255.0 * 255.0 * 255.0));
+    return dot(color, shifts);
+}
+
+PS_OUTPUT main(PS_INPUT input)
+{
+    PS_OUTPUT output = (PS_OUTPUT)0;
+
+    output.diffuse = tex2D(shadow, input.texcoord);
+
+    float r = unpack(output.diffuse);
+    output.diffuse = vector(r, r, r, 1);
+
+    return output;
+}

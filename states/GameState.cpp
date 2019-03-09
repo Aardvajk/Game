@@ -61,7 +61,7 @@ void GameState::render(Graphics &graphics, float blend)
 
     params.view = cam.viewMatrix(blend);
     params.proj = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
-    params.depth = Gx::Matrix::lookAt(pos, pos + Gx::Vec3(0, -1, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 40, 40 }, { -100, 100 });
+    params.depth = Gx::Matrix::lookAt({ 0, 0, 0 }, { 0, -1, 0 }, Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 40, 40 }, { -100, 100 });
 
     params.light = Gx::Vec3(pos.x, 10, pos.z - 5);
 
