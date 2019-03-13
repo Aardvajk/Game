@@ -2,20 +2,26 @@
 
 #include "states/GameState.h"
 
+#include "debug/DebugText.h"
+#include "debug/MemUsage.h"
+
 #include <GxCore/GxTimer.h>
 
 #include <GxMaths/GxColor.h>
 
-#include <GxGraphics/GxFont.h>
+#include <pcx/str.h>
 
 Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), params{ settings.size }, graphics(hwnd(), settings)
 {
+    DebugText::acquire(graphics);
+
     state = new GameState(events, graphics);
     show();
 }
 
 Application::~Application()
 {
+    DebugText::release();
 }
 
 int Application::exec()
@@ -75,10 +81,10 @@ void Application::keyReleasedEvent(int key)
 
 void Application::update(float &accumulator, float delta)
 {
-    fpsCounter.update(delta);
-
     while(accumulator >= delta)
     {
+        fps.update(delta);
+
         if(!state->update(params, events, delta))
         {
             close();
@@ -89,7 +95,19 @@ void Application::update(float &accumulator, float delta)
         accumulator -= delta;
     }
 
+    fps.frame();
+
     graphics.device.begin();
+
     state->render(graphics, accumulator / delta);
+    renderDebugInfo();
+
     graphics.device.end();
+}
+
+void Application::renderDebugInfo()
+{
+    auto s = pcx::str("FPS:", fps.framesPerSecond(), " Mem:", MemUsage::current(), "mb Peak:", MemUsage::peak(), "mb");
+
+    DebugText::draw(params.size.width - (DebugText::width(s) + 2), params.size.height - (DebugText::height() + 2), s);
 }

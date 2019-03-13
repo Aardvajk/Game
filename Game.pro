@@ -53,7 +53,9 @@ SOURCES += \
     debug/ShaderCompiler.cpp \
     scene/nodes/PcNode.cpp \
     entities/TestBox.cpp \
-    application/FpsCounter.cpp
+    application/FpsCounter.cpp \
+    debug/DebugText.cpp \
+    debug/MemUsage.cpp
         
 
 HEADERS += \
@@ -86,7 +88,9 @@ HEADERS += \
     debug/ShaderCompiler.h \
     scene/nodes/PcNode.h \
     entities/TestBox.h \
-    application/FpsCounter.h
+    application/FpsCounter.h \
+    debug/DebugText.h \
+    debug/MemUsage.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \

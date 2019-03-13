@@ -36,7 +36,7 @@ private:
     Graphics graphics;
     pcx::scoped_ptr<State> state;
 
-    FpsCounter fpsCounter;
+    FpsCounter fps;
 };
 
 #endif // APPLICATION_H
