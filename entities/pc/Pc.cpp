@@ -6,12 +6,15 @@
 #include "graphics/VertexBuffer.h"
 
 #include "scene/Scene.h"
-#include "scene/nodes/StaticMeshNode.h"
+#include "scene/SceneParams.h"
+#include "scene/nodes/PcNode.h"
 
 #include "debug/DebugMesh.h"
-#include "debug/DebugText.h"
 
+#include <GxMaths/GxVector.h>
+#include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxTransform.h>
+#include <GxMaths/GxRange.h>
 
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
@@ -20,8 +23,8 @@
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.25f, 1.0f, { 0, 2, -0.5f })
 {
-    mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::capsuleToBuffer(16, 16, kcc.shape().radius(), kcc.shape().height(), Gx::Color(1.0f, 0.0f, 0.0f)), { }, Gx::Graphics::Pool::Managed));
-    node = scene.addNode(new StaticMeshNode(mesh.get(), Gx::Matrix::translation(kcc.position())));
+    mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(32, 32, kcc.shape().radius(), kcc.shape().height()), Gx::Color(1.0f, 0.0f, 0.0f)), { }, Gx::Graphics::Pool::Managed));
+    node = scene.addNode(new PcNode(mesh.get(), Gx::Matrix::translation(kcc.position())));
 
     pos.set(kcc.position());
 }
@@ -50,11 +53,12 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     kcc.move(physics, step);
     pos.set(kcc.position());
-
-    if(kcc.grounded()) DebugText() << "Grounded";
 }
 
-void Pc::prepareScene(const SceneParams &params, float blend)
+void Pc::prepareScene(SceneParams &params, float blend)
 {
-    node->updateTransform(Gx::Matrix::translation(pos.value(blend)));
+    auto bp = pos.value(blend);
+    params.playerDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 1, 0), bp + Gx::Vec3(0, -1, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 0.6f, 0.6f }, { -100, 100 });
+
+    node->updateTransform(Gx::Matrix::translation(bp));
 }

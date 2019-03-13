@@ -51,9 +51,11 @@ public:
     Handle<Gx::VertexShader> meshVertexShader;
     Handle<Gx::VertexShader> screenVertexShader;
     Handle<Gx::VertexShader> depthVertexShader;
+    Handle<Gx::VertexShader> surfaceVertexShader;
 
     Handle<Gx::PixelShader> depthPixelShader;
     Handle<Gx::PixelShader> unpackPixelShader;
+    Handle<Gx::PixelShader> shadowPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
 

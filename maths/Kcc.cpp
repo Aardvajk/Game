@@ -84,7 +84,7 @@ Gx::Vec3 separatingVector(Gx::PhysicsModel &physics, const Gx::Shape &shape, con
 
             for(auto &b: r)
             {
-                auto r = physics.convexIntersection(shape, to, b->shape(), b->transform());
+                auto r = physics.convexIntersection(shape, to, b->shape(), b->matrix());
 
                 if(r)
                 {

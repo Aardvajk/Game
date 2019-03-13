@@ -1,5 +1,5 @@
-#ifndef STATICMESHNODE_H
-#define STATICMESHNODE_H
+#ifndef PCNODE_H
+#define PCNODE_H
 
 #include "scene/nodes/SceneNode.h"
 
@@ -7,21 +7,21 @@
 
 class VertexBuffer;
 
-class StaticMeshNode : public SceneNode
+class PcNode : public SceneNode
 {
 public:
-    StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &transform);
+    PcNode(const VertexBuffer *mesh, const Gx::Matrix &transform);
 
     virtual bool pass(RenderPass type) const override;
     virtual RenderType type() const override;
 
     virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const override;
 
-    void updateTransform(const Gx::Matrix &value);
+    void updateTransform(const Gx::Matrix &transform);
 
 private:
     const VertexBuffer *mesh;
     Gx::Matrix tr;
 };
 
-#endif // STATICMESHNODE_H
+#endif // PCODE_H

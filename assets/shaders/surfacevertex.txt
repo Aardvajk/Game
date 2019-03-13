@@ -1,37 +1,41 @@
 matrix world;
 matrix viewproj;
 
-vector light;
-
 struct VS_INPUT
 {
     vector position : POSITION;
     float3 normal   : NORMAL;
-    vector color    : COLOR;
+    vector diffuse  : COLOR;
 };
 
 struct VS_OUTPUT
 {
     vector position : POSITION;
-	vector color    : COLOR;
+    vector diffuse  : COLOR;
+    vector vpos     : TEXCOORD0;
+    float3 normal   : TEXCOORD1;
 };
+
+float3 light;
 
 VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
 
-    vector p = mul(input.position, world);
+    output.position = mul(input.position, mul(world, viewproj));
 
     float3 normal = mul(input.normal, (float3x3)world);
     normal = normalize(normal);
 
-    float3 tolight = normalize((float3)light);
+    float3 tolight = normalize(light);
 
     float s = dot(normal, tolight);
     if(s < 0.3f) s = 0.3f;
 
-    output.position = mul(p, viewproj);
-    output.color = input.color * s;
-	
+    output.diffuse = input.diffuse * s;
+
+    output.vpos = mul(input.position, world);
+    output.normal = mul(input.normal, (float3x3)world);
+
     return output;
 }

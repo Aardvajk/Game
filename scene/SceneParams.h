@@ -9,9 +9,11 @@ class SceneParams
 public:
     SceneParams() = default;
 
-    Gx::Matrix view;
-    Gx::Matrix proj;
-    Gx::Matrix depth;
+    Gx::Matrix viewMatrix;
+    Gx::Matrix projMatrix;
+
+    Gx::Matrix playerDepthMatrix;
+    Gx::Matrix mainDepthMatrix;
 
     Gx::Vec3 light;
 };

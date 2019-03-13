@@ -23,7 +23,7 @@ PS_OUTPUT main(PS_INPUT input)
     output.diffuse = tex2D(shadow, input.texcoord);
 
     float r = unpack(output.diffuse);
-    output.diffuse = vector(r, r, r, 1);
+    output.diffuse = vector(r, 0, 0, 1);
 
     return output;
 }

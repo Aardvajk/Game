@@ -20,7 +20,7 @@ public:
     virtual ~Entity();
 
     virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) = 0;
-    virtual void prepareScene(const SceneParams &params, float blend) = 0;
+    virtual void prepareScene(SceneParams &params, float blend) = 0;
 };
 
 #endif // ENTITY_H

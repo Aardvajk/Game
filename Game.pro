@@ -41,7 +41,6 @@ SOURCES += \
     graphics/VertexStream.cpp \
     entities/pc/Pc.cpp \
     maths/Kcc.cpp \
-    debug/DebugText.cpp \
     application/Events.cpp \
     maths/Camera.cpp \
     debug/DebugLines.cpp \
@@ -51,7 +50,10 @@ SOURCES += \
     graphics/vertices/TextureVertex.cpp \
     states/State.cpp \
     entities/Entity.cpp \
-    debug/ShaderCompiler.cpp
+    debug/ShaderCompiler.cpp \
+    scene/nodes/PcNode.cpp \
+    entities/TestBox.cpp \
+    application/FpsCounter.cpp
         
 
 HEADERS += \
@@ -71,7 +73,6 @@ HEADERS += \
     entities/pc/Pc.h \
     entities/Entity.h \
     maths/Kcc.h \
-    debug/DebugText.h \
     application/Events.h \
     maths/Camera.h \
     debug/DebugLines.h \
@@ -82,7 +83,10 @@ HEADERS += \
     graphics/vertices/TextureVertex.h \
     application/FrameParams.h \
     scene/RenderTypes.h \
-    debug/ShaderCompiler.h
+    debug/ShaderCompiler.h \
+    scene/nodes/PcNode.h \
+    entities/TestBox.h \
+    application/FpsCounter.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \
@@ -90,5 +94,7 @@ DISTFILES += \
     assets/shaders/meshvertex.txt \
     assets/shaders/screenvertex.txt \
     assets/shaders/depthpixel.txt \
-    assets/shaders/unpackpixel.txt
+    assets/shaders/unpackpixel.txt \
+    assets/shaders/shadowpixel.txt \
+    assets/shaders/surfacevertex.txt
 

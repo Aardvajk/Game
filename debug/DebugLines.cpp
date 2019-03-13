@@ -8,6 +8,8 @@
 
 #include "scene/SceneParams.h"
 
+#include "debug/DebugMesh.h"
+
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxColor.h>
 
@@ -16,6 +18,8 @@
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
+#include <GxPhysics/GxShapes/GxCapsuleShape.h>
+#include <GxPhysics/GxShapes/GxSphereShape.h>
 
 #include <vector>
 #include <unordered_set>
@@ -57,49 +61,69 @@ void DebugLines::addPhysics(const Gx::PhysicsModel &physics)
     for(int index = 0; index < physics.count(); ++index)
     {
         auto &body = physics.body(index);
-        auto tr = body.transform();
+        auto tr = body.matrix();
+
+        DebugMesh m;
+
+        if(auto c = dynamic_cast<const Gx::PolyhedronShape*>(&body.shape()))
+        {
+            m = DebugMesh(c->vertices(), c->faces());
+        }
+        else if(auto c = dynamic_cast<const Gx::CapsuleShape*>(&body.shape()))
+        {
+            m = DebugMesh::capsule(8, 8, c->radius(), c->height());
+        }
+        else if(auto c = dynamic_cast<const Gx::SphereShape*>(&body.shape()))
+        {
+            m = DebugMesh::capsule(8, 8, c->radius(), c->radius() * 2);
+        }
 
         std::unordered_set<std::pair<std::size_t, std::size_t>, EdgeHash> edges;
 
-        if(auto poly = dynamic_cast<const Gx::PolyhedronShape*>(&body.shape()))
+        for(auto &face: m.fs)
         {
-            for(auto &face: poly->faces())
+            for(std::size_t i = 0; i < face.size(); ++i)
             {
-                for(std::size_t i = 0; i < face.size(); ++i)
-                {
-                    edges.insert(EdgeHash::edge(face[i], face[i < face.size() - 1 ? i + 1 : 0]));
-                }
+                edges.insert(EdgeHash::edge(face[i], face[i < face.size() - 1 ? i + 1 : 0]));
             }
+        }
 
-            for(auto edge: edges)
-            {
-                addLine(poly->vertices()[edge.first].transformedCoord(tr), poly->vertices()[edge.second].transformedCoord(tr), { 1, 1, 1 });
-            }
+        for(auto edge: edges)
+        {
+            addLine(m.vs[edge.first].transformedCoord(tr), m.vs[edge.second].transformedCoord(tr), { 1, 1, 1 });
         }
     }
 }
 
 void DebugLines::render(Graphics &graphics, const SceneParams &params)
 {
-    if(auto vs = VertexStream(*graphics.genericBuffer))
-    {
-        for(auto line: lines)
-        {
-            vs << line.start << Gx::Rgba(line.color);
-            vs << line.end << Gx::Rgba(line.color);
-        }
-    }
-
     graphics.device.setVertexDeclaration(*graphics.colorVertexDec);
     graphics.setVertexShader(*graphics.colorVertexShader);
 
     graphics.currentVertexShader()->setMatrix(graphics.device, "world", Gx::Matrix::identity());
-    graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.view * params.proj);
+    graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.viewMatrix * params.projMatrix);
 
     graphics.device.setZBufferEnable(false);
     graphics.device.setZWriteEnable(false);
 
-    graphics.genericBuffer->renderLineList(graphics.device, sizeof(ColorVertex));
+    std::size_t chunk = 200;
+    std::size_t start = 0;
+
+    while(start < lines.size())
+    {
+        if(auto vs = VertexStream(*graphics.genericBuffer))
+        {
+            for(std::size_t index = start; index < lines.size() && index < start + chunk; ++index)
+            {
+                vs << lines[index].start << Gx::Rgba(lines[index].color);
+                vs << lines[index].end << Gx::Rgba(lines[index].color);
+            }
+        }
+
+        graphics.genericBuffer->renderLineList(graphics.device, sizeof(ColorVertex));
+
+        start += chunk;
+    }
 
     graphics.device.setZBufferEnable(true);
     graphics.device.setZWriteEnable(true);

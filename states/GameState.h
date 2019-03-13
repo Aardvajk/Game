@@ -11,22 +11,31 @@
 
 #include <GxPhysics/GxPhysicsModel.h>
 
+#include <pcx/signals.h>
+
 class Graphics;
 
 class GameState : public State
 {
 public:
-    explicit GameState(Graphics &graphics);
-    virtual ~GameState() override;
+    explicit GameState(Events &events, Graphics &graphics);
 
     virtual bool update(AppParams &params, Events &events, float delta) override;
     virtual void render(Graphics &graphics, float blend) override;
 
 private:
+    void keyPressed(int key);
+
+    Graphics &graphics;
+
+    pcx::connections cx;
+
     Gx::PhysicsModel physics;
     Model model;
     Scene scene;
     Camera cam;
+
+    bool drawPhysics;
 };
 
 #endif // GAMESTATE_H

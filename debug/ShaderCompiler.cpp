@@ -21,6 +21,8 @@ enum class Type
 
 bool compileShader(Type type, const std::string &sourcePath, const std::string &destPath)
 {
+    Gx::Debug() << "compiling shader: " << sourcePath << "\n";
+
     ID3DXBuffer *buffer = 0, *errors = 0;
 
     HRESULT r = D3DXCompileShaderFromFile(sourcePath.c_str(), nullptr, 0, "main", type == Type::Vertex ? "vs_3_0" : "ps_3_0", 0, &buffer, &errors, NULL);

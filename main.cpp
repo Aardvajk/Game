@@ -10,8 +10,6 @@
 #include <exception>
 #include <cstdlib>
 
-#include <GxMaths/GxVector.h>
-
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
     try

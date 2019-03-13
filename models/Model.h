@@ -32,8 +32,10 @@ public:
 
     bool load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path);
 
+    void addEntity(Entity *e);
+
     void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta);
-    void prepareScene(const SceneParams &params, float blend);
+    void prepareScene(SceneParams &params, float blend);
 
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;

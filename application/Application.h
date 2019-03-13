@@ -3,6 +3,7 @@
 
 #include "application/AppParams.h"
 #include "application/Events.h"
+#include "application/FpsCounter.h"
 
 #include "graphics/Graphics.h"
 
@@ -28,11 +29,14 @@ protected:
 
 private:
     void update(float &accumulator, float delta);
+    void renderDebugInfo();
 
     AppParams params;
     Events events;
     Graphics graphics;
     pcx::scoped_ptr<State> state;
+
+    FpsCounter fpsCounter;
 };
 
 #endif // APPLICATION_H

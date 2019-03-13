@@ -89,6 +89,11 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     return true;
 }
 
+void Model::addEntity(Entity *e)
+{
+    entities.push_back(e);
+}
+
 void Model::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     for(auto &e: entities)
@@ -97,7 +102,7 @@ void Model::update(const FrameParams &params, Events &events, Gx::PhysicsModel &
     }
 }
 
-void Model::prepareScene(const SceneParams &params, float blend)
+void Model::prepareScene(SceneParams &params, float blend)
 {
     for(auto &e: entities)
     {

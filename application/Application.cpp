@@ -6,13 +6,17 @@
 
 #include <GxMaths/GxColor.h>
 
+#include <GxGraphics/GxFont.h>
+
 Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), params{ settings.size }, graphics(hwnd(), settings)
 {
-    state = new GameState(graphics);
+    state = new GameState(events, graphics);
     show();
 }
 
-Application::~Application() = default;
+Application::~Application()
+{
+}
 
 int Application::exec()
 {
@@ -71,6 +75,8 @@ void Application::keyReleasedEvent(int key)
 
 void Application::update(float &accumulator, float delta)
 {
+    fpsCounter.update(delta);
+
     while(accumulator >= delta)
     {
         if(!state->update(params, events, delta))

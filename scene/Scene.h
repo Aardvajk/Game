@@ -35,8 +35,11 @@ private:
     void beginType(RenderPass pass, RenderType type, Graphics &graphics, SceneParams &params);
     void endType(Graphics &graphics);
 
-    Graphics::Handle<Gx::Texture> depthTex;
-    Graphics::Handle<Gx::DepthStencilSurface> depthStencil;
+    Graphics::Handle<Gx::Texture> playerDepthTex;
+    Graphics::Handle<Gx::DepthStencilSurface> playerDepthStencil;
+
+    Graphics::Handle<Gx::Texture> mainDepthTex;
+    Graphics::Handle<Gx::DepthStencilSurface> mainDepthStencil;
 
     std::vector<SceneNode*> ns;
 };

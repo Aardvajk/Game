@@ -1,22 +1,36 @@
 #ifndef DEBUGMESH_H
 #define DEBUGMESH_H
 
+#include <GxMaths/GxVector.h>
+
+#include <GxPhysics/GxShapes/GxPolyhedronShape.h>
+
 #include <pcx/buffer.h>
+
+#include <vector>
 
 namespace Gx
 {
 
-class Vec3;
 class Color;
 
 }
 
-namespace DebugMesh
+class DebugMesh
 {
+public:
+    DebugMesh();
+    DebugMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Gx::PolyhedronShape::Face> &fs);
 
-pcx::buffer cuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color);
-pcx::buffer capsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color);
+    static DebugMesh cuboid(const Gx::Vec3 &dims);
+    static DebugMesh capsule(unsigned rings, unsigned segments, float radius, float height);
+    static DebugMesh tetrahedron(float radius);
 
-}
+    static pcx::buffer flatMesh(const DebugMesh &m, const Gx::Color &color);
+    static pcx::buffer smoothMesh(const DebugMesh &m, const Gx::Color &color);
+
+    std::vector<Gx::Vec3> vs;
+    std::vector<Gx::PolyhedronShape::Face> fs;
+};
 
 #endif // DEBUGMESH_H

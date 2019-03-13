@@ -1,6 +1,5 @@
 #include "DebugMesh.h"
 
-#include <GxMaths/GxVector.h>
 #include <GxMaths/GxColor.h>
 
 #include <vector>
@@ -13,19 +12,6 @@ namespace
 
 inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
 inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
-
-class Face
-{
-public:
-    Face() = default;
-    Face(std::initializer_list<std::size_t> indices){ std::size_t i = 0; for(auto index: indices) e[i++] = index; }
-
-    std::size_t &operator[](std::size_t index){ return e[index]; }
-    std::size_t operator[](std::size_t index) const { return e[index]; }
-
-private:
-    std::size_t e[3];
-};
 
 Gx::Vec3 normal(const Gx::Vec3 &v0, const Gx::Vec3 &v1, const Gx::Vec3 &v2)
 {
@@ -49,95 +35,44 @@ Gx::Vec3 average(const std::vector<Gx::Vec3> &values)
     return v;
 }
 
-pcx::buffer writeSmoothMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
-{
-    std::vector<std::vector<Gx::Vec3> > normals(vs.size());
-
-    for(auto i: fs)
-    {
-        Gx::Vec3 a = vs[i[0]];
-        Gx::Vec3 b = vs[i[1]];
-        Gx::Vec3 c = vs[i[2]];
-
-        Gx::Vec3 n = normal(a, b, c);
-
-        normals[i[0]].push_back(n);
-        normals[i[1]].push_back(n);
-        normals[i[2]].push_back(n);
-    }
-
-    std::vector<Gx::Vec3> vn(vs.size());
-    for(std::size_t i = 0; i < normals.size(); ++i) vn[i] = average(normals[i]);
-
-    pcx::data_osstream ds;
-
-    for(auto i: fs)
-    {
-        ds << vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        ds << vs[i[1]] << vn[i[1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        ds << vs[i[2]] << vn[i[2]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-    }
-
-    return ds.data();
 }
 
-pcx::buffer writeFlatMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Face> &fs, Gx::Color color)
+DebugMesh::DebugMesh()
 {
-    pcx::data_osstream ds;
-
-    for(std::size_t i = 0; i < fs.size(); ++i)
-    {
-        auto &e = fs[i];
-        auto n = normal(vs[e[0]], vs[e[1]], vs[e[2]]);
-
-        ds << vs[e[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        ds << vs[e[1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        ds << vs[e[2]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-    }
-
-    return ds.data();
 }
 
+DebugMesh::DebugMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Gx::PolyhedronShape::Face> &fs) : vs(vs), fs(fs)
+{
 }
 
-pcx::buffer DebugMesh::cuboidToBuffer(const Gx::Vec3 &dims, const Gx::Color &color)
+DebugMesh DebugMesh::cuboid(const Gx::Vec3 &dims)
 {
-    std::vector<Gx::Vec3> vs;
-
+    DebugMesh m;
     Gx::Vec3 d = dims / 2;
 
-    vs.push_back(Gx::Vec3(-d.x, d.y, -d.z));
-    vs.push_back(Gx::Vec3(d.x, d.y, -d.z));
-    vs.push_back(Gx::Vec3(d.x, -d.y, -d.z));
-    vs.push_back(Gx::Vec3(-d.x, -d.y, -d.z));
+    m.vs.push_back(Gx::Vec3(-d.x, d.y, -d.z));
+    m.vs.push_back(Gx::Vec3(d.x, d.y, -d.z));
+    m.vs.push_back(Gx::Vec3(d.x, -d.y, -d.z));
+    m.vs.push_back(Gx::Vec3(-d.x, -d.y, -d.z));
 
-    vs.push_back(Gx::Vec3(-d.x, d.y, d.z));
-    vs.push_back(Gx::Vec3(d.x, d.y, d.z));
-    vs.push_back(Gx::Vec3(d.x, -d.y, d.z));
-    vs.push_back(Gx::Vec3(-d.x, -d.y, d.z));
+    m.vs.push_back(Gx::Vec3(-d.x, d.y, d.z));
+    m.vs.push_back(Gx::Vec3(d.x, d.y, d.z));
+    m.vs.push_back(Gx::Vec3(d.x, -d.y, d.z));
+    m.vs.push_back(Gx::Vec3(-d.x, -d.y, d.z));
 
-    std::vector<Face> fs;
+    m.fs.push_back({ 0, 1, 2, 3 });
+    m.fs.push_back({ 1, 5, 6, 2 });
+    m.fs.push_back({ 4, 0, 3, 7 });
+    m.fs.push_back({ 5, 4, 7, 6 });
+    m.fs.push_back({ 4, 5, 1, 0 });
+    m.fs.push_back({ 3, 2, 6, 7 });
 
-    fs.push_back({ 0, 1, 2 });
-    fs.push_back({ 0, 2, 3 });
-    fs.push_back({ 1, 5, 6 });
-    fs.push_back({ 1, 6, 2 });
-    fs.push_back({ 4, 0, 3 });
-    fs.push_back({ 4, 3, 7 });
-    fs.push_back({ 5, 4, 7 });
-    fs.push_back({ 5, 7, 6 });
-    fs.push_back({ 4, 5, 1 });
-    fs.push_back({ 4, 1, 0 });
-    fs.push_back({ 3, 2, 6 });
-    fs.push_back({ 3, 6, 7 });
-
-    return writeFlatMesh(vs, fs, color);
+    return m;
 }
 
-pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float radius, float height, const Gx::Color &color)
+DebugMesh DebugMesh::capsule(unsigned rings, unsigned segments, float radius, float height)
 {
-    std::vector<Gx::Vec3> vs;
-    std::vector<Face> fs;
+    DebugMesh m;
 
     const float twoPi = M_PI * 2;
     const float ydiff = 1.0f / (rings - 1.0f);
@@ -153,11 +88,11 @@ pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float 
     {
         if(ring == 0)
         {
-            vs.push_back(Gx::Vec3(0, radius + ht, 0));
+            m.vs.push_back(Gx::Vec3(0, radius + ht, 0));
         }
         else if(ring == rings - 1)
         {
-            vs.push_back(Gx::Vec3(0, -(radius + ht), 0));
+            m.vs.push_back(Gx::Vec3(0, -(radius + ht), 0));
         }
         else
         {
@@ -170,7 +105,7 @@ pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float 
                 float h = ht;
                 if(ydelta < 0) h = -ht;
 
-                vs.push_back(Gx::Vec3(-std::sin(a) * xdelta, ydelta + h, std::cos(a) * xdelta));
+                m.vs.push_back(Gx::Vec3(-std::sin(a) * xdelta, ydelta + h, std::cos(a) * xdelta));
                 a += xdiff;
             }
         }
@@ -185,17 +120,17 @@ pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float 
             for(unsigned i = 0; i < segments; ++i)
             {
                 unsigned j = (i < segments - 1 ? i + 1 : 0);
-                fs.push_back(Face({ start, start + 1 + j, start + 1 + i }));
+                m.fs.push_back({ start, start + 1 + j, start + 1 + i });
             }
         }
         else if(ring == rings - 2)
         {
-            unsigned base = vs.size() - 1;
+            unsigned base = m.vs.size() - 1;
 
             for(unsigned i = 0; i < segments; ++i)
             {
                 unsigned j = (i < segments - 1 ? i + 1 : 0);
-                fs.push_back(Face({ start + base - segments + i, start + base - segments + j, start + base }));
+                m.fs.push_back({ start + base - segments + i, start + base - segments + j, start + base });
             }
         }
         else
@@ -206,11 +141,79 @@ pcx::buffer DebugMesh::capsuleToBuffer(unsigned rings, unsigned segments, float 
             {
                 unsigned j = (i < segments - 1 ? i + 1 : 0);
 
-                fs.push_back(Face({ start + vertex + i, start + vertex + j, start + vertex + j + segments }));
-                fs.push_back(Face({ start + vertex + i, start + vertex + j + segments, start + vertex + i + segments }));
+                m.fs.push_back({ start + vertex + i, start + vertex + j, start + vertex + j + segments, start + vertex + i + segments });
+//                m.fs.push_back({ start + vertex + i, start + vertex + j + segments, start + vertex + i + segments });
             }
         }
     }
 
-    return writeSmoothMesh(vs, fs, color);
+    return m;
+}
+
+DebugMesh DebugMesh::tetrahedron(float radius)
+{
+    DebugMesh m;
+
+    m.vs = { { radius, radius, radius }, { -radius,  radius, -radius }, { radius, -radius, -radius }, { -radius, -radius, radius } };
+    m.fs = { { 1, 2, 3 }, { 0, 3, 2 }, { 0, 1, 3 }, { 0, 2, 1 } };
+
+    return m;
+}
+
+pcx::buffer DebugMesh::flatMesh(const DebugMesh &m, const Gx::Color &color)
+{
+    pcx::data_osstream ds;
+
+    for(std::size_t i = 0; i < m.fs.size(); ++i)
+    {
+        auto &e = m.fs[i];
+        auto n = normal(m.vs[e[0]], m.vs[e[1]], m.vs[e[2]]);
+
+        for(std::size_t j = 1; j < e.size() - 1; ++j)
+        {
+            ds << m.vs[e[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            ds << m.vs[e[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            ds << m.vs[e[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        }
+    }
+
+    return ds.data();
+}
+
+pcx::buffer DebugMesh::smoothMesh(const DebugMesh &m, const Gx::Color &color)
+{
+    std::vector<std::vector<Gx::Vec3> > normals(m.vs.size());
+
+    for(auto i: m.fs)
+    {
+        Gx::Vec3 a = m.vs[i[0]];
+        Gx::Vec3 b = m.vs[i[1]];
+        Gx::Vec3 c = m.vs[i[2]];
+
+        Gx::Vec3 n = normal(a, b, c);
+
+        for(std::size_t j = 1; j < i.size() - 1; ++j)
+        {
+            normals[i[0]].push_back(n);
+            normals[i[j]].push_back(n);
+            normals[i[j + 1]].push_back(n);
+        }
+    }
+
+    std::vector<Gx::Vec3> vn(m.vs.size());
+    for(std::size_t i = 0; i < normals.size(); ++i) vn[i] = average(normals[i]);
+
+    pcx::data_osstream ds;
+
+    for(auto i: m.fs)
+    {
+        for(std::size_t j = 1; j < i.size() - 1; ++j)
+        {
+            ds << m.vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            ds << m.vs[i[j]] << vn[i[j]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            ds << m.vs[i[j + 1]] << vn[i[j + 1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+        }
+    }
+
+    return ds.data();
 }
