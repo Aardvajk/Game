@@ -23,6 +23,7 @@
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
 #include <GxPhysics/GxShapes/GxSphereShape.h>
+#include <GxPhysics/GxShapes/GxConeShape.h>
 
 #include <vector>
 #include <unordered_set>
@@ -139,7 +140,11 @@ void DebugLines::addPhysics(const Gx::PhysicsModel &physics)
         }
         else if(auto c = dynamic_cast<const Gx::SphereShape*>(&body.shape()))
         {
-            m = DebugMesh::capsule(8, 8, c->radius(), c->radius() * 2);
+            m = DebugMesh::sphere(8, 8, c->radius());
+        }
+        else if(auto c = dynamic_cast<const Gx::ConeShape*>(&body.shape()))
+        {
+            m = DebugMesh::cone(8, c->radius(), c->height());
         }
 
         std::unordered_set<std::pair<std::size_t, std::size_t>, EdgeHash> edges;

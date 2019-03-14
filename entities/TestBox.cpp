@@ -12,12 +12,13 @@
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
 #include <GxPhysics/GxShapes/GxSphereShape.h>
+#include <GxPhysics/GxShapes/GxConeShape.h>
 
 TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position) : tr(Gx::Transform(position, { 0, 0 }))
 {
     auto r = [](){ return (std::rand() % 100) / 100.0f; };
 
-    int type = std::rand() % 4;
+    int type = std::rand() % 5;
 
     if(type == 0)
     {
@@ -47,6 +48,14 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
         mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(m, Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), 1.0f);
+    }
+    else if(type == 4)
+    {
+        float radius = dims.x * 0.5f;
+        float height = radius * (2 + (std::rand() % 2));
+
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::cone(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), 1.0f);
     }
 
     node = scene.addNode(new StaticMeshNode(mesh.get(), Gx::Matrix::translation(position)));

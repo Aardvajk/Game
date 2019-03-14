@@ -26,6 +26,7 @@ public:
     static DebugMesh capsule(unsigned rings, unsigned segments, float radius, float height);
     static DebugMesh sphere(unsigned rings, unsigned segments, float radius);
     static DebugMesh tetrahedron(float radius);
+    static DebugMesh cone(unsigned segments, float radius, float height);
 
     static pcx::buffer flatMesh(const DebugMesh &m, const Gx::Color &color);
     static pcx::buffer smoothMesh(const DebugMesh &m, const Gx::Color &color);

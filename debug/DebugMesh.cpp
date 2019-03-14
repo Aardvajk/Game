@@ -164,6 +164,38 @@ DebugMesh DebugMesh::tetrahedron(float radius)
     return m;
 }
 
+DebugMesh DebugMesh::cone(unsigned segments, float radius, float height)
+{
+    DebugMesh m;
+
+    const float twoPi = M_PI * 2;
+    const float halfHt = height / 2;
+    const float inc = twoPi / segments;
+
+    m.vs.push_back({ 0, halfHt, 0 });
+
+    for(float a = 0; a < twoPi; a += inc)
+    {
+        m.vs.push_back({ std::sin(a) * radius, -halfHt, std::cos(a) * radius });
+    }
+
+    for(std::size_t i = 1; i < m.vs.size(); ++i)
+    {
+        std::size_t j = i < m.vs.size() - 1 ? i + 1 : 1;
+
+        m.fs.push_back({ 0, i, j });
+    }
+
+    for(std::size_t i = 2; i < m.vs.size(); ++i)
+    {
+        std::size_t j = i < m.vs.size() - 1 ? i + 1 : 2;
+
+        m.fs.push_back({ 1, j, i });
+    }
+
+    return m;
+}
+
 pcx::buffer DebugMesh::flatMesh(const DebugMesh &m, const Gx::Color &color)
 {
     pcx::data_osstream ds;
