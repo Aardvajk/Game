@@ -35,6 +35,60 @@ Gx::Vec3 average(const std::vector<Gx::Vec3> &values)
     return v;
 }
 
+pcx::buffer complexMesh(const DebugMesh &m, const Gx::Color &color, bool mixed)
+{
+    std::vector<std::vector<Gx::Vec3> > normals(m.vs.size());
+
+    for(auto i: m.fs)
+    {
+        Gx::Vec3 a = m.vs[i[0]];
+        Gx::Vec3 b = m.vs[i[1]];
+        Gx::Vec3 c = m.vs[i[2]];
+
+        Gx::Vec3 n = normal(a, b, c);
+
+        for(std::size_t j = 1; j < i.size() - 1; ++j)
+        {
+            normals[i[0]].push_back(n);
+            normals[i[j]].push_back(n);
+            normals[i[j + 1]].push_back(n);
+        }
+    }
+
+    std::vector<Gx::Vec3> vn(m.vs.size());
+    for(std::size_t i = 0; i < normals.size(); ++i) vn[i] = average(normals[i]);
+
+    pcx::data_osstream ds;
+
+    for(std::size_t n = 0; n < m.fs.size(); ++n)
+    {
+        auto i = m.fs[n];
+
+        if(mixed && n < m.ft.size() && m.ft[n] == DebugMesh::FaceType::Flat)
+        {
+            for(std::size_t j = 1; j < i.size() - 1; ++j)
+            {
+                auto n = normal(m.vs[i[0]], m.vs[i[j]], m.vs[i[j + 1]]);
+
+                ds << m.vs[i[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            }
+        }
+        else
+        {
+            for(std::size_t j = 1; j < i.size() - 1; ++j)
+            {
+                ds << m.vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[j]] << vn[i[j]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[j + 1]] << vn[i[j + 1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            }
+        }
+    }
+
+    return ds.data();
+}
+
 }
 
 DebugMesh::DebugMesh()
@@ -184,6 +238,7 @@ DebugMesh DebugMesh::cone(unsigned segments, float radius, float height)
         std::size_t j = i < m.vs.size() - 1 ? i + 1 : 1;
 
         m.fs.push_back({ 0, i, j });
+        m.ft.push_back(FaceType::Smooth);
     }
 
     for(std::size_t i = 2; i < m.vs.size(); ++i)
@@ -191,6 +246,7 @@ DebugMesh DebugMesh::cone(unsigned segments, float radius, float height)
         std::size_t j = i < m.vs.size() - 1 ? i + 1 : 2;
 
         m.fs.push_back({ 1, j, i });
+        m.ft.push_back(FaceType::Flat);
     }
 
     return m;
@@ -218,38 +274,10 @@ pcx::buffer DebugMesh::flatMesh(const DebugMesh &m, const Gx::Color &color)
 
 pcx::buffer DebugMesh::smoothMesh(const DebugMesh &m, const Gx::Color &color)
 {
-    std::vector<std::vector<Gx::Vec3> > normals(m.vs.size());
+    return complexMesh(m, color, false);
+}
 
-    for(auto i: m.fs)
-    {
-        Gx::Vec3 a = m.vs[i[0]];
-        Gx::Vec3 b = m.vs[i[1]];
-        Gx::Vec3 c = m.vs[i[2]];
-
-        Gx::Vec3 n = normal(a, b, c);
-
-        for(std::size_t j = 1; j < i.size() - 1; ++j)
-        {
-            normals[i[0]].push_back(n);
-            normals[i[j]].push_back(n);
-            normals[i[j + 1]].push_back(n);
-        }
-    }
-
-    std::vector<Gx::Vec3> vn(m.vs.size());
-    for(std::size_t i = 0; i < normals.size(); ++i) vn[i] = average(normals[i]);
-
-    pcx::data_osstream ds;
-
-    for(auto i: m.fs)
-    {
-        for(std::size_t j = 1; j < i.size() - 1; ++j)
-        {
-            ds << m.vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-            ds << m.vs[i[j]] << vn[i[j]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-            ds << m.vs[i[j + 1]] << vn[i[j + 1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-        }
-    }
-
-    return ds.data();
+pcx::buffer DebugMesh::mixedMesh(const DebugMesh &m, const Gx::Color &color)
+{
+    return complexMesh(m, color, true);
 }

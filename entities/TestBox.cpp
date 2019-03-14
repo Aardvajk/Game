@@ -54,7 +54,7 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         float radius = dims.x * 0.5f;
         float height = radius * (2 + (std::rand() % 2));
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::cone(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cone(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), 1.0f);
     }
 

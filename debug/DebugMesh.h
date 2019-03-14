@@ -19,6 +19,12 @@ class Color;
 class DebugMesh
 {
 public:
+    enum class FaceType
+    {
+        Flat,
+        Smooth
+    };
+
     DebugMesh();
     DebugMesh(const std::vector<Gx::Vec3> &vs, const std::vector<Gx::PolyhedronShape::Face> &fs);
 
@@ -30,9 +36,11 @@ public:
 
     static pcx::buffer flatMesh(const DebugMesh &m, const Gx::Color &color);
     static pcx::buffer smoothMesh(const DebugMesh &m, const Gx::Color &color);
+    static pcx::buffer mixedMesh(const DebugMesh &m, const Gx::Color &color);
 
     std::vector<Gx::Vec3> vs;
     std::vector<Gx::PolyhedronShape::Face> fs;
+    std::vector<FaceType> ft;
 };
 
 #endif // DEBUGMESH_H
