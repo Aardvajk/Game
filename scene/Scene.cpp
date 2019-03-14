@@ -3,8 +3,6 @@
 #include "scene/SceneParams.h"
 #include "scene/nodes/SceneNode.h"
 
-#include "debug/DebugRender.h"
-
 #include <GxMaths/GxRect.h>
 
 #include <GxGraphics/GxVertexDeclaration.h>
@@ -50,9 +48,6 @@ void Scene::render(Graphics &graphics, SceneParams &params)
     graphics.device.clear({ 0.4f, 0.6f, 0.8f }, 1.0f);
 
     render(RenderPass::Normal, graphics, params);
-
-    DebugRender::drawScreenTexture(graphics, { { 5, 5, }, { 256, 256 } }, *mainDepthTex, graphics.unpackPixelShader.get());
-    DebugRender::drawScreenTexture(graphics, { { 270, 5, }, { 64, 64 } }, *playerDepthTex, graphics.unpackPixelShader.get());
 }
 
 void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)

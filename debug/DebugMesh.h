@@ -24,6 +24,7 @@ public:
 
     static DebugMesh cuboid(const Gx::Vec3 &dims);
     static DebugMesh capsule(unsigned rings, unsigned segments, float radius, float height);
+    static DebugMesh sphere(unsigned rings, unsigned segments, float radius);
     static DebugMesh tetrahedron(float radius);
 
     static pcx::buffer flatMesh(const DebugMesh &m, const Gx::Color &color);

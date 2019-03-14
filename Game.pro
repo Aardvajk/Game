@@ -6,7 +6,8 @@ CONFIG -= qt
 DEFINES -= UNICODE
 
 INCLUDEPATH += "C:/Projects/Gx/Gx" \
-               "C:/Projects/pcx"
+               "C:/Projects/pcx" \
+               "C:/lib/Bullet/src"
 
 LIBS += "C:/Projects/Gx/build-Gx/release/libgx.a" \
         "C:/Projects/pcx/build-pcx/release/libpcx.a"
@@ -43,7 +44,6 @@ SOURCES += \
     maths/Kcc.cpp \
     application/Events.cpp \
     maths/Camera.cpp \
-    debug/DebugLines.cpp \
     debug/DebugRender.cpp \
     graphics/vertices/ColorVertex.cpp \
     application/ResourcePath.cpp \
@@ -77,7 +77,6 @@ HEADERS += \
     maths/Kcc.h \
     application/Events.h \
     maths/Camera.h \
-    debug/DebugLines.h \
     debug/DebugRender.h \
     graphics/vertices/ColorVertex.h \
     application/AppParams.h \

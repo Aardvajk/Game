@@ -11,7 +11,7 @@
 
 #include "entities/TestBox.h"
 
-#include "debug/DebugLines.h"
+#include "debug/DebugRender.h"
 
 #include <GxCore/GxDebug.h>
 
@@ -31,6 +31,7 @@ GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), s
 
 bool GameState::update(AppParams &app, Events &events, float delta)
 {
+    DebugPoints::clear();
     DebugLines::clear();
 
     if(drawPhysics)
@@ -64,19 +65,17 @@ void GameState::render(Graphics &graphics, float blend)
     model.prepareScene(params, blend);
     scene.render(graphics, params);
 
+    DebugPoints::render(graphics, params);
     DebugLines::render(graphics, params);
-}
-
-float randomSize()
-{
-    return 1.0f + ((std::rand() % 16) / 20.0f);
 }
 
 void GameState::keyPressed(int key)
 {
     if(key == 'P')
     {
-        auto dims = Gx::Vec3(randomSize(), randomSize(), randomSize());
+        auto r = [](){ return 1.0f + ((std::rand() % 16) / 20.0f); };
+
+        auto dims = Gx::Vec3(r(), r(), r());
         auto pos = Gx::Vec3((std::rand() % 30) - 15, 10, (std::rand() % 20) - 10);
 
         model.addEntity(new TestBox(graphics, scene, physics, dims, pos));

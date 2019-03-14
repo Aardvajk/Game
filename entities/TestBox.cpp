@@ -13,44 +13,40 @@
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
 #include <GxPhysics/GxShapes/GxSphereShape.h>
 
-float randomColor()
-{
-    return (std::rand() % 100) / 100.0f;
-}
-
 TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position) : tr(Gx::Transform(position, { 0, 0 }))
 {
+    auto r = [](){ return (std::rand() % 100) / 100.0f; };
+
     int type = std::rand() % 4;
 
     if(type == 0)
     {
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(DebugMesh::cuboid(dims), Gx::Color(randomColor(), randomColor(), randomColor())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::PolyhedronShape(dims), Gx::Matrix::translation(position), 1.0f);
+        auto m = DebugMesh::cuboid(dims);
+
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(m, Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), 1.0f);
     }
     else if(type == 1)
     {
         float radius = dims.x * 0.5f;
         float height = radius * (3 + (std::rand() % 2));
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(16, 16, radius, height), Gx::Color(randomColor(), randomColor(), randomColor())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(16, 16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::CapsuleShape(radius, height), Gx::Matrix::translation(position), 1.0f);
     }
     else if(type == 2)
     {
         float radius = dims.x * 0.5f;
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(16, 16, radius, radius * 2), Gx::Color(randomColor(), randomColor(), randomColor())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::sphere(16, 16, radius), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::SphereShape(radius), Gx::Matrix::translation(position), 1.0f);
     }
     else if(type == 3)
     {
-        float radius = dims.x * 0.5f;
+        auto m = DebugMesh::tetrahedron(dims.x * 0.5f);
 
-        std::vector<Gx::Vec3> vs = { { radius, radius, radius }, { -radius,  radius, -radius }, { radius, -radius, -radius }, { -radius, -radius, radius } };
-        std::vector<Gx::PolyhedronShape::Face> fs = { { 1, 2, 3 }, { 0, 3, 2 }, { 0, 1, 3 }, { 0, 2, 1 } };
-
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(DebugMesh::tetrahedron(radius), Gx::Color(randomColor(), randomColor(), randomColor())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::PolyhedronShape(vs, fs), Gx::Matrix::translation(position), 1.0f);
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(m, Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), 1.0f);
     }
 
     node = scene.addNode(new StaticMeshNode(mesh.get(), Gx::Matrix::translation(position)));

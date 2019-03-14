@@ -142,12 +142,16 @@ DebugMesh DebugMesh::capsule(unsigned rings, unsigned segments, float radius, fl
                 unsigned j = (i < segments - 1 ? i + 1 : 0);
 
                 m.fs.push_back({ start + vertex + i, start + vertex + j, start + vertex + j + segments, start + vertex + i + segments });
-//                m.fs.push_back({ start + vertex + i, start + vertex + j + segments, start + vertex + i + segments });
             }
         }
     }
 
     return m;
+}
+
+DebugMesh DebugMesh::sphere(unsigned rings, unsigned segments, float radius)
+{
+    return capsule(rings, segments, radius, radius * 2);
 }
 
 DebugMesh DebugMesh::tetrahedron(float radius)

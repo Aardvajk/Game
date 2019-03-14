@@ -64,3 +64,8 @@ void VertexBuffer::renderLineList(Gx::GraphicsDevice &device, unsigned stride) c
 {
     device.renderLineList(vb, (n / stride) / 2);
 }
+
+void VertexBuffer::renderPointList(Gx::GraphicsDevice &device, unsigned stride) const
+{
+    device.renderPointList(vb, n / stride);
+}

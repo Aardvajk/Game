@@ -25,6 +25,7 @@ public:
 
     void renderTriangleList(Gx::GraphicsDevice &device, unsigned stride) const;
     void renderLineList(Gx::GraphicsDevice &device, unsigned stride) const;
+    void renderPointList(Gx::GraphicsDevice &device, unsigned stride) const;
 
 private:
     friend class VertexStream;
