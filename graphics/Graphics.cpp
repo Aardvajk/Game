@@ -10,6 +10,7 @@
 #include <GxGraphics/GxGraphicsTypes.h>
 #include <GxGraphics/GxVertexDeclaration.h>
 #include <GxGraphics/GxShader.h>
+#include <GxGraphics/GxTexture.h>
 
 #include <fstream>
 
@@ -63,6 +64,7 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     shadowPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/shadowpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
+    genericTexture = resources.add(new Gx::Texture(device, resourcePath("assets/textures/generic.png"), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed }));
 }
 
 Graphics::~Graphics() = default;

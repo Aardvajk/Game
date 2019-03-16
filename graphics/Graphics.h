@@ -14,6 +14,7 @@ class GraphicsResource;
 class VertexDeclaration;
 class VertexShader;
 class PixelShader;
+class Texture;
 
 }
 
@@ -58,6 +59,7 @@ public:
     Handle<Gx::PixelShader> shadowPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
+    Handle<Gx::Texture> genericTexture;
 
     Gx::SizeF size;
 

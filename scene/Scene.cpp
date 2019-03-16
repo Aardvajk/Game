@@ -136,6 +136,8 @@ void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, Scen
 
             graphics.device.setTexture(1, *mainDepthTex);
             graphics.device.setTextureFilter(1, Gx::Texture::Filter::None);
+
+            graphics.device.setTexture(2, *graphics.genericTexture);
         }
         else if(pass == RenderPass::MainDepth)
         {
@@ -159,4 +161,6 @@ void Scene::endType(Graphics &graphics)
 
     graphics.device.setTexture(1);
     graphics.device.setTextureFilter(1, Gx::Texture::Filter::Linear);
+
+    graphics.device.setTexture(2);
 }
