@@ -57,15 +57,15 @@ unsigned VertexBuffer::capacity() const
 
 void VertexBuffer::renderTriangleList(Gx::GraphicsDevice &device, unsigned stride) const
 {
-    device.renderTriangleList(vb, (n / stride) / 3);
+    device.renderTriangleList(vb, 0, (n / stride) / 3);
 }
 
 void VertexBuffer::renderLineList(Gx::GraphicsDevice &device, unsigned stride) const
 {
-    device.renderLineList(vb, (n / stride) / 2);
+    device.renderLineList(vb, 0, (n / stride) / 2);
 }
 
 void VertexBuffer::renderPointList(Gx::GraphicsDevice &device, unsigned stride) const
 {
-    device.renderPointList(vb, n / stride);
+    device.renderPointList(vb, 0, n / stride);
 }
