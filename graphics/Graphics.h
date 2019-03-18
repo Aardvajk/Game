@@ -59,7 +59,6 @@ public:
     Handle<Gx::PixelShader> shadowPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
-    Handle<Gx::Texture> genericTexture;
 
     Gx::SizeF size;
 

@@ -6,8 +6,6 @@ matrix mainWorldviewproj;
 sampler mainShadow : register(s1);
 float mainTexel;
 
-sampler diffuse : register(s2);
-
 struct PS_INPUT
 {
     vector diffuse : COLOR;
@@ -66,7 +64,7 @@ PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
 
-    output.diffuse = input.diffuse * tex2D(diffuse, input.texcoord);
+    output.diffuse = input.diffuse;
 
     if(dot(input.normal, float3(0, 1, 0)) >= 0.3f)
     {
