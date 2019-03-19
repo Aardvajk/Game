@@ -1,5 +1,7 @@
 #include "Model.h"
 
+#include "application/ResourcePath.h"
+
 #include "scene/Scene.h"
 #include "scene/nodes/StaticMeshNode.h"
 
@@ -11,13 +13,16 @@
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
 
+#include <GxGraphics/GxTexture.h>
+
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 
-#include <map>
+#include <unordered_map>
 
 #include <pcx/datastream.h>
+#include <pcx/str.h>
 
 namespace
 {
@@ -50,7 +55,8 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         return false;
     }
 
-    std::map<std::string, VertexBuffer*> bufferMap;
+    std::unordered_map<std::string, VertexBuffer*> bufferMap;
+    std::unordered_map<std::string, Gx::Texture*> textureMap;
 
     ds.get<int>();
 
@@ -66,6 +72,14 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
             bodies.push_back(physics.createBody(new Gx::PolyhedronShape(vs, fs), Gx::Matrix::translation(pos), 0));
         }
+        else if(tag == "texture")
+        {
+            auto id = ds.get<std::string>();
+            auto path = ds.get<std::string>();
+
+            textures.push_back(graphics.resources.add(new Gx::Texture(graphics.device, resourcePath(pcx::str("assets/textures/", path)), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed})));
+            textureMap[id] = textures.back().get();
+        }
         else if(tag == "internalmesh")
         {
             auto id = ds.get<std::string>();
@@ -76,6 +90,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         else if(tag == "staticmeshinstance")
         {
             auto id = ds.get<std::string>();
+            auto diffuse = ds.get<std::string>();
             auto pos = ds.get<Gx::Vec3>();
 
             nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], Gx::Matrix::translation(pos))));

@@ -39,6 +39,8 @@ public:
 
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
+    std::vector<Graphics::Handle<Gx::Texture> > textures;
+
     pcx::ptr_vector<SceneNode> nodes;
     pcx::ptr_vector<Gx::Body> bodies;
     pcx::ptr_vector<Entity> entities;

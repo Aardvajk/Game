@@ -132,10 +132,10 @@ void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, Scen
             graphics.currentPixelShader()->setFloat(graphics.device, "mainTexel", 1.0f / static_cast<float>(mainDepthTex->size().width));
 
             graphics.device.setTexture(0, *playerDepthTex);
-            graphics.device.setTextureFilter(0, Gx::Texture::Filter::None);
+            graphics.device.setTextureFilter(0, Gx::Graphics::Filter::None);
 
             graphics.device.setTexture(1, *mainDepthTex);
-            graphics.device.setTextureFilter(1, Gx::Texture::Filter::None);
+            graphics.device.setTextureFilter(1, Gx::Graphics::Filter::None);
         }
         else if(pass == RenderPass::MainDepth)
         {
@@ -155,10 +155,10 @@ void Scene::endType(Graphics &graphics)
     graphics.setPixelShader();
 
     graphics.device.setTexture(0);
-    graphics.device.setTextureFilter(0, Gx::Texture::Filter::Linear);
+    graphics.device.setTextureFilter(0, Gx::Graphics::Filter::Linear);
 
     graphics.device.setTexture(1);
-    graphics.device.setTextureFilter(1, Gx::Texture::Filter::Linear);
+    graphics.device.setTextureFilter(1, Gx::Graphics::Filter::Linear);
 
     graphics.device.setTexture(2);
 }

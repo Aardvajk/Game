@@ -12,7 +12,9 @@ INCLUDEPATH += "C:/Projects/Gx/Gx" \
 LIBS += "C:/Projects/Gx/build-Gx/release/libgx.a" \
         "C:/Projects/pcx/build-pcx/release/libpcx.a"
 
-QMAKE_CXXFLAGS += -std=gnu++11
+QMAKE_CXXFLAGS += -std=gnu++11 \
+                  -include "GxCore/GxDebug.h"
+
 QMAKE_LFLAGS += -Wl,--exclude-all-symbols
 
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unknown-pragmas -Wno-comment -Wno-maybe-uninitialized -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-attributes
