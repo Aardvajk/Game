@@ -1,7 +1,7 @@
 #if defined(SHADOWS)
-matrix pcWorldviewproj;
-sampler pcShadow : register(s0);
-float pcTexel;
+matrix objWorldviewproj;
+sampler objShadow : register(s0);
+float objTexel;
 
 matrix mainWorldviewproj;
 sampler mainShadow : register(s1);
@@ -84,7 +84,7 @@ PS_OUTPUT main(PS_INPUT input)
         output.diffuse *= sampleShadow(input, mainWorldviewproj, mainShadow, mainTexel);
     }
 
-    output.diffuse *= sampleShadow(input, pcWorldviewproj, pcShadow, pcTexel);
+    output.diffuse *= sampleShadow(input, objWorldviewproj, objShadow, objTexel);
 #endif
 
     output.diffuse.a = 1;

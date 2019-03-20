@@ -119,9 +119,9 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
 
             if(key.shadows())
             {
-                graphics.currentPixelShader()->setMatrix(graphics.device, "pcWorldviewproj", params.objectDepthMatrix);
+                graphics.currentPixelShader()->setMatrix(graphics.device, "objWorldviewproj", params.objectDepthMatrix);
                 graphics.currentPixelShader()->setMatrix(graphics.device, "mainWorldviewproj", params.mainDepthMatrix);
-                graphics.currentPixelShader()->setFloat(graphics.device, "pcTexel", 1.0f / static_cast<float>(objectDepthTex->size().width));
+                graphics.currentPixelShader()->setFloat(graphics.device, "objTexel", 1.0f / static_cast<float>(objectDepthTex->size().width));
                 graphics.currentPixelShader()->setFloat(graphics.device, "mainTexel", 1.0f / static_cast<float>(mainDepthTex->size().width));
 
                 graphics.device.setTexture(0, *objectDepthTex);
