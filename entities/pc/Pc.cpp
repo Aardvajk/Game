@@ -58,7 +58,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 void Pc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
-    params.playerDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 1, 0), bp + Gx::Vec3(0, -1, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 0.6f, 0.6f }, { -100, 100 });
+    params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 1, 0), bp + Gx::Vec3(0, -1, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 0.6f, 0.6f }, { -100, 100 });
 
     node->updateTransform(Gx::Matrix::translation(bp));
 }

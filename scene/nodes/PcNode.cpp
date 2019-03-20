@@ -13,12 +13,17 @@ PcNode::PcNode(const VertexBuffer *mesh, const Gx::Matrix &transform) : mesh(mes
 
 bool PcNode::pass(RenderPass type) const
 {
-    return type != RenderPass::MainDepth;
+    return type != RenderPass::EnvironmentDepth;
 }
 
 RenderType PcNode::type() const
 {
-    return RenderType::Player;
+    return RenderType::Object;
+}
+
+RenderKey PcNode::key() const
+{
+    return { };
 }
 
 void PcNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const

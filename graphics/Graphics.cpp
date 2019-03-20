@@ -54,10 +54,9 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
 
     colorVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/colorvertex.dat"))));
-    meshVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/meshvertex.dat"))));
     screenVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/screenvertex.dat"))));
     depthVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/depthvertex.dat"))));
-    surfaceVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/surfacevertex.dat"))));
+    meshVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/meshvertex.dat"))));
 
     depthPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/depthpixel.dat"))));
     unpackPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/unpackpixel.dat"))));

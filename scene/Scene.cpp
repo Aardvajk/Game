@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include "models/Model.h"
+
 #include "scene/SceneParams.h"
 #include "scene/nodes/SceneNode.h"
 
@@ -11,38 +13,42 @@
 #include <GxGraphics/GxDepthStencilSurface.h>
 #include <GxGraphics/GxRenderContext.h>
 
+#include <pcx/optional.h>
+
 namespace
 {
 
-Gx::Size playerDepthSize = { 256, 256 };
+Gx::Size objectDepthSize = { 256, 256 };
 Gx::Size mainDepthSize = { 2048, 2048 };
 
 }
 
-Scene::Scene(Graphics &graphics)
+Scene::Scene(Model &model, Graphics &graphics) : model(model)
 {
-    playerDepthTex = graphics.resources.add(new Gx::Texture(graphics.device, { playerDepthSize, 1, Gx::Graphics::Usage::Flag::RenderTarget, Gx::Graphics::Format::X8R8G8B8, Gx::Graphics::Pool::Default }));
-    playerDepthStencil = graphics.resources.add(new Gx::DepthStencilSurface(graphics.device, { playerDepthSize, Gx::DepthStencilSurface::Format::D24S8 }));
+    objectDepthTex = graphics.resources.add(new Gx::Texture(graphics.device, { objectDepthSize, 1, Gx::Graphics::Usage::Flag::RenderTarget, Gx::Graphics::Format::X8R8G8B8, Gx::Graphics::Pool::Default }));
+    objectDepthStencil = graphics.resources.add(new Gx::DepthStencilSurface(graphics.device, { objectDepthSize, Gx::DepthStencilSurface::Format::D24S8 }));
 
     mainDepthTex = graphics.resources.add(new Gx::Texture(graphics.device, { mainDepthSize, 1, Gx::Graphics::Usage::Flag::RenderTarget, Gx::Graphics::Format::X8R8G8B8, Gx::Graphics::Pool::Default }));
     mainDepthStencil = graphics.resources.add(new Gx::DepthStencilSurface(graphics.device, { mainDepthSize, Gx::DepthStencilSurface::Format::D24S8 }));
 }
 
+Scene::~Scene() = default;
+
 void Scene::render(Graphics &graphics, SceneParams &params)
 {
     Gx::RenderContext old(graphics.device);
-    Gx::RenderContext playerDepth(*playerDepthTex, *playerDepthStencil);
+    Gx::RenderContext playerDepth(*objectDepthTex, *objectDepthStencil);
     Gx::RenderContext mainDepth(*mainDepthTex, *mainDepthStencil);
 
     playerDepth.apply(graphics.device);
     graphics.device.clear({ 0, 0, 0 }, 1.0f);
 
-    render(RenderPass::PlayerDepth, graphics, params);
+    render(RenderPass::ObjectDepth, graphics, params);
 
     mainDepth.apply(graphics.device);
     graphics.device.clear({ 0, 0, 0 }, 1.0f);
 
-    render(RenderPass::MainDepth, graphics, params);
+    render(RenderPass::EnvironmentDepth, graphics, params);
 
     old.apply(graphics.device);
     graphics.device.clear({ 0.4f, 0.6f, 0.8f }, 1.0f);
@@ -52,23 +58,27 @@ void Scene::render(Graphics &graphics, SceneParams &params)
 
 void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)
 {
-    RenderType curr = RenderType::Null;
+    pcx::optional<RenderType> currType;
+    pcx::optional<RenderKey> currKey;
 
     for(auto i: ns)
     {
         if(i->pass(pass))
         {
-            RenderType type = i->type();
+            auto type = i->type();
+            auto key = i->key();
 
-            if(curr != type)
+            if(currType != type || currKey != key)
             {
                 endType(graphics);
 
-                curr = type;
-                beginType(pass, type, graphics, params);
+                currType = type;
+                currKey = key;
+
+                beginType(pass, type, key, graphics, params);
             }
 
-            if(curr != RenderType::Null)
+            if(currType)
             {
                 i->render(pass, graphics, params);
             }
@@ -78,7 +88,7 @@ void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)
     endType(graphics);
 }
 
-void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, SceneParams &params)
+void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Graphics &graphics, SceneParams &params)
 {
     if(type == RenderType::Color)
     {
@@ -94,7 +104,7 @@ void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, Scen
             graphics.device.setZWriteEnable(false);
         }
     }
-    else if(type == RenderType::Player)
+    else if(type == RenderType::Object || type == RenderType::Environment)
     {
         graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
 
@@ -104,43 +114,32 @@ void Scene::beginType(RenderPass pass, RenderType type, Graphics &graphics, Scen
 
             graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.viewMatrix * params.projMatrix);
             graphics.currentVertexShader()->setVector(graphics.device, "light", params.light);
+
+            graphics.setPixelShader(model.pixelShader(key.features()));
+
+            if(key.shadows())
+            {
+                graphics.currentPixelShader()->setMatrix(graphics.device, "pcWorldviewproj", params.objectDepthMatrix);
+                graphics.currentPixelShader()->setMatrix(graphics.device, "mainWorldviewproj", params.mainDepthMatrix);
+                graphics.currentPixelShader()->setFloat(graphics.device, "pcTexel", 1.0f / static_cast<float>(objectDepthTex->size().width));
+                graphics.currentPixelShader()->setFloat(graphics.device, "mainTexel", 1.0f / static_cast<float>(mainDepthTex->size().width));
+
+                graphics.device.setTexture(0, *objectDepthTex);
+                graphics.device.setTextureFilter(0, Gx::Graphics::Filter::None);
+
+                graphics.device.setTexture(1, *mainDepthTex);
+                graphics.device.setTextureFilter(1, Gx::Graphics::Filter::None);
+            }
+
+            if(key.diffuse())
+            {
+                graphics.device.setTexture(2, *key.diffuse());
+            }
         }
-        else if(pass == RenderPass::PlayerDepth)
+        else if(pass == RenderPass::ObjectDepth || pass == RenderPass::EnvironmentDepth)
         {
             graphics.setVertexShader(*graphics.depthVertexShader);
-            graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.playerDepthMatrix);
-
-            graphics.setPixelShader(*graphics.depthPixelShader);
-        }
-    }
-    else if(type == RenderType::Surface)
-    {
-        graphics.device.setVertexDeclaration(*graphics.meshVertexDec);
-
-        if(pass == RenderPass::Normal)
-        {
-            graphics.setVertexShader(*graphics.surfaceVertexShader);
-
-            graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.viewMatrix * params.projMatrix);
-            graphics.currentVertexShader()->setVector(graphics.device, "light", params.light);
-
-            graphics.setPixelShader(*graphics.shadowPixelShader);
-
-            graphics.currentPixelShader()->setMatrix(graphics.device, "pcWorldviewproj", params.playerDepthMatrix);
-            graphics.currentPixelShader()->setMatrix(graphics.device, "mainWorldviewproj", params.mainDepthMatrix);
-            graphics.currentPixelShader()->setFloat(graphics.device, "pcTexel", 1.0f / static_cast<float>(playerDepthTex->size().width));
-            graphics.currentPixelShader()->setFloat(graphics.device, "mainTexel", 1.0f / static_cast<float>(mainDepthTex->size().width));
-
-            graphics.device.setTexture(0, *playerDepthTex);
-            graphics.device.setTextureFilter(0, Gx::Graphics::Filter::None);
-
-            graphics.device.setTexture(1, *mainDepthTex);
-            graphics.device.setTextureFilter(1, Gx::Graphics::Filter::None);
-        }
-        else if(pass == RenderPass::MainDepth)
-        {
-            graphics.setVertexShader(*graphics.depthVertexShader);
-            graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.mainDepthMatrix);
+            graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", pass == RenderPass::ObjectDepth ? params.objectDepthMatrix : params.mainDepthMatrix);
 
             graphics.setPixelShader(*graphics.depthPixelShader);
         }

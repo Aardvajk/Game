@@ -19,13 +19,14 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     auto r = [](){ return (std::rand() % 100) / 100.0f; };
 
     int type = std::rand() % 5;
+    float mass = 0.2f;
 
     if(type == 0)
     {
         auto m = DebugMesh::cuboid(dims);
 
         mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(m, Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), 1.0f);
+        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), mass);
     }
     else if(type == 1)
     {
@@ -33,7 +34,7 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         float height = radius * (3 + (std::rand() % 2));
 
         mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(16, 16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::CapsuleShape(radius, height), Gx::Matrix::translation(position), 1.0f);
+        body = physics.createBody(new Gx::CapsuleShape(radius, height), Gx::Matrix::translation(position), mass);
     }
     else if(type == 2)
     {
@@ -47,7 +48,7 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         auto m = DebugMesh::tetrahedron(dims.x * 0.5f);
 
         mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::flatMesh(m, Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), 1.0f);
+        body = physics.createBody(new Gx::PolyhedronShape(m.vs, m.fs), Gx::Matrix::translation(position), mass);
     }
     else if(type == 4)
     {
@@ -55,10 +56,10 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         float height = radius * (2 + (std::rand() % 2));
 
         mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cone(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
-        body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), 1.0f);
+        body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), mass);
     }
 
-    node = scene.addNode(new StaticMeshNode(mesh.get(), Gx::Matrix::translation(position)));
+    node = scene.addNode(new StaticMeshNode(mesh.get(), { }, Gx::Matrix::translation(position)));
 }
 
 TestBox::~TestBox()

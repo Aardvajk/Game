@@ -52,12 +52,13 @@ SOURCES += \
     graphics/vertices/TextureVertex.cpp \
     states/State.cpp \
     entities/Entity.cpp \
-    debug/ShaderCompiler.cpp \
+    application/ShaderCompiler.cpp \
     scene/nodes/PcNode.cpp \
     entities/TestBox.cpp \
     application/FpsCounter.cpp \
     debug/DebugText.cpp \
-    debug/MemUsage.cpp
+    debug/MemUsage.cpp \
+    scene/RenderKey.cpp
         
 
 HEADERS += \
@@ -86,20 +87,21 @@ HEADERS += \
     graphics/vertices/TextureVertex.h \
     application/FrameParams.h \
     scene/RenderTypes.h \
-    debug/ShaderCompiler.h \
+    application/ShaderCompiler.h \
     scene/nodes/PcNode.h \
     entities/TestBox.h \
     application/FpsCounter.h \
     debug/DebugText.h \
-    debug/MemUsage.h
+    debug/MemUsage.h \
+    scene/RenderKey.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \
     assets/shaders/depthvertex.txt \
-    assets/shaders/meshvertex.txt \
     assets/shaders/screenvertex.txt \
     assets/shaders/depthpixel.txt \
     assets/shaders/unpackpixel.txt \
     assets/shaders/shadowpixel.txt \
-    assets/shaders/surfacevertex.txt
+    assets/shaders/meshvertex.txt \
+    assets/shaders/meshpixel.txt
 

@@ -14,6 +14,7 @@ public:
 
     virtual bool pass(RenderPass type) const override;
     virtual RenderType type() const override;
+    virtual RenderKey key() const override;
 
     virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const override;
 

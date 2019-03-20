@@ -3,8 +3,11 @@
 
 #include "graphics/Graphics.h"
 
+#include "scene/RenderKey.h"
+
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include <pcx/non_copyable.h>
 #include <pcx/ptr_vector.h>
@@ -37,9 +40,14 @@ public:
     void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta);
     void prepareScene(SceneParams &params, float blend);
 
+    Gx::PixelShader &pixelShader(RenderKey::Features features);
+
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     std::vector<Graphics::Handle<Gx::Texture> > textures;
+    std::vector<Graphics::Handle<Gx::PixelShader> > pixelShaders;
+
+    std::unordered_map<RenderKey::Features, Gx::PixelShader*> pixelShaderMapping;
 
     pcx::ptr_vector<SceneNode> nodes;
     pcx::ptr_vector<Gx::Body> bodies;

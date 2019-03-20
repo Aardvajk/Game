@@ -49,10 +49,9 @@ public:
     Handle<Gx::VertexDeclaration> textureVertexDec;
 
     Handle<Gx::VertexShader> colorVertexShader;
-    Handle<Gx::VertexShader> meshVertexShader;
     Handle<Gx::VertexShader> screenVertexShader;
     Handle<Gx::VertexShader> depthVertexShader;
-    Handle<Gx::VertexShader> surfaceVertexShader;
+    Handle<Gx::VertexShader> meshVertexShader;
 
     Handle<Gx::PixelShader> depthPixelShader;
     Handle<Gx::PixelShader> unpackPixelShader;

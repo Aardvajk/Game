@@ -9,8 +9,10 @@
 
 #include <pcx/non_copyable.h>
 
+class Model;
 class SceneParams;
 class SceneNode;
+class RenderKey;
 
 namespace Gx
 {
@@ -23,7 +25,8 @@ class DepthStencilSurface;
 class Scene : public pcx::non_copyable
 {
 public:
-    explicit Scene(Graphics &graphics);
+    Scene(Model &model, Graphics &graphics);
+    ~Scene();
 
     template<typename T> T *addNode(T *node){ ns.push_back(node); return node; }
 
@@ -32,11 +35,13 @@ public:
 private:
     void render(RenderPass pass, Graphics &graphics, SceneParams &params);
 
-    void beginType(RenderPass pass, RenderType type, Graphics &graphics, SceneParams &params);
+    void beginType(RenderPass pass, RenderType type, const RenderKey &key, Graphics &graphics, SceneParams &params);
     void endType(Graphics &graphics);
 
-    Graphics::Handle<Gx::Texture> playerDepthTex;
-    Graphics::Handle<Gx::DepthStencilSurface> playerDepthStencil;
+    Model &model;
+
+    Graphics::Handle<Gx::Texture> objectDepthTex;
+    Graphics::Handle<Gx::DepthStencilSurface> objectDepthStencil;
 
     Graphics::Handle<Gx::Texture> mainDepthTex;
     Graphics::Handle<Gx::DepthStencilSurface> mainDepthStencil;

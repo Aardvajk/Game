@@ -91,6 +91,13 @@ Gx::Vec3 separatingVector(Gx::PhysicsModel &physics, const Gx::Shape &shape, con
                     result += r->separatingVector;
                     to = Gx::Matrix::translation(result);
 
+                    auto me = result;
+                    auto them = b->transform().position();
+
+                    auto dir = Gx::Vec3(them - me).normalized();
+
+                    b->applyCentralForce(dir * 3);
+
                     loop = true;
                 }
             }

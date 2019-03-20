@@ -7,18 +7,23 @@
 
 #include <GxGraphics/GxShader.h>
 
-StaticMeshNode::StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &transform) : mesh(mesh), tr(transform)
+StaticMeshNode::StaticMeshNode(const VertexBuffer *mesh, const RenderKey &key, const Gx::Matrix &transform) : mesh(mesh), rk(key), tr(transform)
 {
 }
 
 bool StaticMeshNode::pass(RenderPass type) const
 {
-    return type == RenderPass::Normal || type == RenderPass::MainDepth;
+    return type == RenderPass::Normal || type == RenderPass::EnvironmentDepth;
 }
 
 RenderType StaticMeshNode::type() const
 {
-    return RenderType::Surface;
+    return RenderType::Environment;
+}
+
+RenderKey StaticMeshNode::key() const
+{
+    return rk;
 }
 
 void StaticMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const

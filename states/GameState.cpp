@@ -20,9 +20,15 @@
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxRange.h>
 
-#include <GxGraphics/GxBufferStream.h>
+namespace
+{
 
-GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(graphics), drawPhysics(false)
+int num = 0;
+float time = 0;
+
+}
+
+GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(model, graphics), drawPhysics(false)
 {
     cx.connect(events.keyDown, this, &keyPressed);
 
@@ -46,6 +52,23 @@ bool GameState::update(AppParams &app, Events &events, float delta)
     params.camera = cam;
 
     model.update(params, events, physics, delta);
+
+if(num < 200)
+{
+    time += delta;
+    if(time > 0.25f)
+    {
+        time = 0;
+        ++num;
+
+        auto r = [](){ return 1.0f + ((std::rand() % 16) / 20.0f); };
+
+        auto dims = Gx::Vec3(r(), r(), r());
+        auto pos = Gx::Vec3((std::rand() % 30) - 15, 10, (std::rand() % 20) - 10);
+
+        model.addEntity(new TestBox(graphics, scene, physics, dims, pos));
+    }
+}
 
     return true;
 }

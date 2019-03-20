@@ -12,7 +12,7 @@ public:
     Gx::Matrix viewMatrix;
     Gx::Matrix projMatrix;
 
-    Gx::Matrix playerDepthMatrix;
+    Gx::Matrix objectDepthMatrix;
     Gx::Matrix mainDepthMatrix;
 
     Gx::Vec3 light;

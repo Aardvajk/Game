@@ -10,10 +10,11 @@ class VertexBuffer;
 class StaticMeshNode : public SceneNode
 {
 public:
-    StaticMeshNode(const VertexBuffer *mesh, const Gx::Matrix &transform);
+    StaticMeshNode(const VertexBuffer *mesh, const RenderKey &key, const Gx::Matrix &transform);
 
     virtual bool pass(RenderPass type) const override;
     virtual RenderType type() const override;
+    virtual RenderKey key() const override;
 
     virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const override;
 
@@ -21,6 +22,7 @@ public:
 
 private:
     const VertexBuffer *mesh;
+    RenderKey rk;
     Gx::Matrix tr;
 };
 

@@ -2,6 +2,7 @@
 #define SCENENODE_H
 
 #include "scene/RenderTypes.h"
+#include "scene/RenderKey.h"
 
 #include <pcx/non_copyable.h>
 
@@ -15,6 +16,7 @@ public:
 
     virtual bool pass(RenderPass type) const = 0;
     virtual RenderType type() const = 0;
+    virtual RenderKey key() const = 0;
 
     virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const = 0;
 };

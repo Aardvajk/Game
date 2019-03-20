@@ -1,6 +1,7 @@
 #include "Model.h"
 
 #include "application/ResourcePath.h"
+#include "application/ShaderCompiler.h"
 
 #include "scene/Scene.h"
 #include "scene/nodes/StaticMeshNode.h"
@@ -14,12 +15,13 @@
 #include <GxMaths/GxMatrix.h>
 
 #include <GxGraphics/GxTexture.h>
+#include <GxGraphics/GxShader.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxPolyhedronShape.h>
 
-#include <unordered_map>
+#include <unordered_set>
 
 #include <pcx/datastream.h>
 #include <pcx/str.h>
@@ -42,6 +44,23 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &
     return ds;
 }
 
+std::vector<char> loadShader(const std::string &path)
+{
+    std::ifstream is(path.c_str(), std::ios::binary);
+    if(!is.is_open())
+    {
+        throw std::runtime_error("unable to open - " + path);
+    }
+
+    DWORD n;
+    is.read(reinterpret_cast<char*>(&n), sizeof(DWORD));
+
+    std::vector<char> bs(n);
+    is.read(bs.data(), n);
+
+    return bs;
+}
+
 }
 
 Model::Model() = default;
@@ -57,6 +76,9 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
     std::unordered_map<std::string, VertexBuffer*> bufferMap;
     std::unordered_map<std::string, Gx::Texture*> textureMap;
+
+    std::unordered_set<RenderKey::Features> featureSet;
+    featureSet.insert(static_cast<RenderKey::Feature>(0));
 
     ds.get<int>();
 
@@ -93,10 +115,21 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
             auto diffuse = ds.get<std::string>();
             auto pos = ds.get<Gx::Vec3>();
 
-            nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], Gx::Matrix::translation(pos))));
+            RenderKey key(true, textureMap[diffuse]);
+            featureSet.insert(key.features());
+
+            nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], key, Gx::Matrix::translation(pos))));
         }
 
         tag = ds.get<std::string>();
+    }
+
+    for(auto perm: featureSet)
+    {
+        auto data = loadShader(resourcePath(pcx::str("assets/shaders/", pixelShaderName("mesh", perm))));
+
+        pixelShaders.push_back(graphics.resources.add(new Gx::PixelShader(graphics.device, data)));
+        pixelShaderMapping[perm] = pixelShaders.back().get();
     }
 
     entities.push_back(new Pc(graphics, scene));
@@ -124,3 +157,9 @@ void Model::prepareScene(SceneParams &params, float blend)
         e.prepareScene(params, blend);
     }
 }
+
+Gx::PixelShader &Model::pixelShader(RenderKey::Features features)
+{
+    return *pixelShaderMapping[features];
+}
+

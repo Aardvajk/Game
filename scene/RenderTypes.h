@@ -4,15 +4,15 @@
 enum class RenderPass
 {
     Normal,
-    PlayerDepth,
-    MainDepth
+    ObjectDepth,
+    EnvironmentDepth
 };
 
 enum class RenderType
 {
     Color,
-    Player,
-    Surface,
+    Object,
+    Environment,
     Null
 };
 
