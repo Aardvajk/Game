@@ -5,6 +5,10 @@
 #include "scene/SceneParams.h"
 #include "scene/nodes/SceneNode.h"
 
+#include "debug/DebugRender.h"
+
+#include <GxMaths/GxRect.h>
+
 #include <GxGraphics/GxVertexDeclaration.h>
 #include <GxGraphics/GxShader.h>
 #include <GxGraphics/GxTexture.h>
@@ -52,6 +56,9 @@ void Scene::render(Graphics &graphics, SceneParams &params)
     graphics.device.clear({ 0.4f, 0.6f, 0.8f }, 1.0f);
 
     render(RenderPass::Normal, graphics, params);
+
+    DebugRender::drawScreenTexture(graphics, { { 5, 5 }, { 128, 128 } }, *environmentDepthTex, graphics.unpackPixelShader.get());
+    DebugRender::drawScreenTexture(graphics, { { 138, 5 }, { 64, 64 } }, *objectDepthTex, graphics.unpackPixelShader.get());
 }
 
 void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)

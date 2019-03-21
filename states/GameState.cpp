@@ -63,10 +63,10 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
     model.update(params, events, physics, delta);
 
-    if(shapes < 200)
+    if(shapes < 100)
     {
         time += delta;
-        if(time > 0.25f)
+        if(time > 0.05f)
         {
             time = 0;
             ++shapes;
@@ -78,6 +78,11 @@ bool GameState::update(AppParams &app, Events &events, float delta)
     return !hasClosed;
 }
 
+Gx::Matrix computeDepthMatrix(const Camera &cam, const SceneParams &params)
+{
+    return Gx::Matrix::lookAt(Gx::Vec3(0, 10, 0), Gx::Vec3(5, 1, 5), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 60.0f, 60.0f }, { -10, 30 });
+}
+
 void GameState::render(Graphics &graphics, float blend)
 {
     auto pos = cam.transform().position();
@@ -86,9 +91,9 @@ void GameState::render(Graphics &graphics, float blend)
 
     params.viewMatrix = cam.viewMatrix(blend);
     params.projMatrix = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
-    params.environmentDepthMatrix = Gx::Matrix::lookAt(Gx::Vec3(0, 10, 0), Gx::Vec3(3, 1, 3), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 60.0f, 60.0f }, { -10, 30 });
-
     params.light = Gx::Vec3(-1.2f, 1, -0.8f);
+
+    params.environmentDepthMatrix = computeDepthMatrix(cam, params);
 
     model.prepareScene(params, blend);
     scene.render(graphics, params);
