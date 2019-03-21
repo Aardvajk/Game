@@ -54,11 +54,12 @@ SOURCES += \
     entities/Entity.cpp \
     application/ShaderCompiler.cpp \
     scene/nodes/PcNode.cpp \
-    entities/TestBox.cpp \
     application/FpsCounter.cpp \
     debug/DebugText.cpp \
     debug/MemUsage.cpp \
-    scene/RenderKey.cpp
+    scene/RenderKey.cpp \
+    entities/TestShape.cpp \
+    scene/SceneParams.cpp
         
 
 HEADERS += \
@@ -89,11 +90,11 @@ HEADERS += \
     scene/RenderTypes.h \
     application/ShaderCompiler.h \
     scene/nodes/PcNode.h \
-    entities/TestBox.h \
     application/FpsCounter.h \
     debug/DebugText.h \
     debug/MemUsage.h \
-    scene/RenderKey.h
+    scene/RenderKey.h \
+    entities/TestShape.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \
@@ -101,7 +102,6 @@ DISTFILES += \
     assets/shaders/screenvertex.txt \
     assets/shaders/depthpixel.txt \
     assets/shaders/unpackpixel.txt \
-    assets/shaders/shadowpixel.txt \
     assets/shaders/meshvertex.txt \
     assets/shaders/meshpixel.txt
 

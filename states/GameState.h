@@ -36,6 +36,10 @@ private:
     Camera cam;
 
     bool drawPhysics;
+    bool hasClosed;
+
+    int shapes;
+    float time;
 };
 
 #endif // GAMESTATE_H

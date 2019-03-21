@@ -19,7 +19,6 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         compileVertexShader("screen");
 
         compilePixelShader("depth");
-        compilePixelShader("shadow");
         compilePixelShader("unpack");
 
         compilePixelShaderSet("mesh", { });

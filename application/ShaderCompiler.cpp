@@ -8,8 +8,8 @@
 #include <pcx/str.h>
 #include <pcx/flags.h>
 
-#include <fstream>
 #include <vector>
+#include <fstream>
 #include <string>
 #include <stdexcept>
 #include <d3dx9.h>

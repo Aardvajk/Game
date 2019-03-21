@@ -43,8 +43,8 @@ private:
     Graphics::Handle<Gx::Texture> objectDepthTex;
     Graphics::Handle<Gx::DepthStencilSurface> objectDepthStencil;
 
-    Graphics::Handle<Gx::Texture> mainDepthTex;
-    Graphics::Handle<Gx::DepthStencilSurface> mainDepthStencil;
+    Graphics::Handle<Gx::Texture> environmentDepthTex;
+    Graphics::Handle<Gx::DepthStencilSurface> environmentDepthStencil;
 
     std::vector<SceneNode*> ns;
 };

@@ -1,5 +1,5 @@
-#ifndef TESTBOX_H
-#define TESTBOX_H
+#ifndef TESTSHAPE_H
+#define TESTSHAPE_H
 
 #include "entities/Entity.h"
 
@@ -22,11 +22,11 @@ class Body;
 
 }
 
-class TestBox : public Entity
+class TestShape : public Entity
 {
 public:
-    TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position);
-    virtual ~TestBox() override;
+    TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position);
+    virtual ~TestShape() override;
 
     virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) override;
     virtual void prepareScene(SceneParams &params, float blend) override;
@@ -38,4 +38,4 @@ private:
     Gx::BlendTransform tr;
 };
 
-#endif // TESTBOX_H
+#endif // TESTSHAPE_H

@@ -17,23 +17,6 @@
 namespace
 {
 
-std::vector<char> load(const std::string &path)
-{
-    std::ifstream is(path.c_str(), std::ios::binary);
-    if(!is.is_open())
-    {
-        throw std::runtime_error("unable to open - " + path);
-    }
-
-    DWORD n;
-    is.read(reinterpret_cast<char*>(&n), sizeof(DWORD));
-
-    std::vector<char> bs(n);
-    is.read(bs.data(), n);
-
-    return bs;
-}
-
 class Cache
 {
 public:
@@ -53,14 +36,13 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
     textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
 
-    colorVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/colorvertex.dat"))));
-    screenVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/screenvertex.dat"))));
-    depthVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/depthvertex.dat"))));
-    meshVertexShader = resources.add(new Gx::VertexShader(device, load(resourcePath("assets/shaders/meshvertex.dat"))));
+    colorVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/colorvertex.dat"))));
+    screenVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/screenvertex.dat"))));
+    depthVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/depthvertex.dat"))));
+    meshVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/meshvertex.dat"))));
 
-    depthPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/depthpixel.dat"))));
-    unpackPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/unpackpixel.dat"))));
-    shadowPixelShader = resources.add(new Gx::PixelShader(device, load(resourcePath("assets/shaders/shadowpixel.dat"))));
+    depthPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/depthpixel.dat"))));
+    unpackPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/unpackpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }

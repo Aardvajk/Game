@@ -55,7 +55,6 @@ public:
 
     Handle<Gx::PixelShader> depthPixelShader;
     Handle<Gx::PixelShader> unpackPixelShader;
-    Handle<Gx::PixelShader> shadowPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
 

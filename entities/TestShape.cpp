@@ -1,4 +1,4 @@
-#include "TestBox.h"
+#include "TestShape.h"
 
 #include "graphics/VertexBuffer.h"
 
@@ -14,7 +14,7 @@
 #include <GxPhysics/GxShapes/GxSphereShape.h>
 #include <GxPhysics/GxShapes/GxConeShape.h>
 
-TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position) : tr(Gx::Transform(position, { 0, 0 }))
+TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const Gx::Vec3 &dims, const Gx::Vec3 &position) : tr(Gx::Transform(position, { 0, 0 }))
 {
     auto r = [](){ return (std::rand() % 100) / 100.0f; };
 
@@ -62,17 +62,17 @@ TestBox::TestBox(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     node = scene.addNode(new StaticMeshNode(mesh.get(), { }, Gx::Matrix::translation(position)));
 }
 
-TestBox::~TestBox()
+TestShape::~TestShape()
 {
 }
 
-void TestBox::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
+void TestShape::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     tr.store();
     tr.set(body->transform());
 }
 
-void TestBox::prepareScene(SceneParams &params, float blend)
+void TestShape::prepareScene(SceneParams &params, float blend)
 {
     auto t = tr.value(blend);
     node->updateTransform(t.rotation().matrix() * Gx::Matrix::translation(t.position()));

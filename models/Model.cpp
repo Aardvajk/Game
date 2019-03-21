@@ -44,23 +44,6 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &
     return ds;
 }
 
-std::vector<char> loadShader(const std::string &path)
-{
-    std::ifstream is(path.c_str(), std::ios::binary);
-    if(!is.is_open())
-    {
-        throw std::runtime_error("unable to open - " + path);
-    }
-
-    DWORD n;
-    is.read(reinterpret_cast<char*>(&n), sizeof(DWORD));
-
-    std::vector<char> bs(n);
-    is.read(bs.data(), n);
-
-    return bs;
-}
-
 }
 
 Model::Model() = default;
@@ -126,7 +109,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
     for(auto perm: featureSet)
     {
-        auto data = loadShader(resourcePath(pcx::str("assets/shaders/", pixelShaderName("mesh", perm))));
+        auto data = loadRawData(resourcePath(pcx::str("assets/shaders/", pixelShaderName("mesh", perm))));
 
         pixelShaders.push_back(graphics.resources.add(new Gx::PixelShader(graphics.device, data)));
         pixelShaderMapping[perm] = pixelShaders.back().get();
