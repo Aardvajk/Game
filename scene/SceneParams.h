@@ -5,6 +5,7 @@
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
+#include <GxMaths/GxTransform.h>
 
 class SceneParams
 {
@@ -19,6 +20,7 @@ public:
     Gx::Matrix objectDepthMatrix;
     Gx::Matrix environmentDepthMatrix;
 
+    Gx::Transform camera;
     Gx::Vec3 light;
 };
 

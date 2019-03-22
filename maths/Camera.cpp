@@ -52,6 +52,11 @@ Gx::Transform Camera::transform() const
     return tr.value();
 }
 
+Gx::Transform Camera::transform(float blend) const
+{
+    return tr.value(blend);
+}
+
 Gx::Matrix Camera::viewMatrix(float blend) const
 {
     auto look = Gx::Vec3(0, 0, 1).transformedNormal(tr.value(blend).rotation().matrix());

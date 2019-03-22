@@ -1,0 +1,24 @@
+matrix worldviewproj;
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+    vector normal   : TEXCOORD;
+};
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+    output.position = mul(input.position, worldviewproj);
+    output.position.z = output.position.w;
+
+    output.normal = input.position;
+
+    return output;
+}

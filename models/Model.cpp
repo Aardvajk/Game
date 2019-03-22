@@ -4,9 +4,12 @@
 #include "application/ShaderCompiler.h"
 
 #include "scene/Scene.h"
+
 #include "scene/nodes/StaticMeshNode.h"
+#include "scene/nodes/SkyBoxNode.h"
 
 #include "graphics/VertexBuffer.h"
+#include "graphics/SkyBox.h"
 
 #include "entities/Entity.h"
 #include "entities/pc/Pc.h"
@@ -15,6 +18,7 @@
 #include <GxMaths/GxMatrix.h>
 
 #include <GxGraphics/GxTexture.h>
+#include <GxGraphics/GxCubeMap.h>
 #include <GxGraphics/GxShader.h>
 
 #include <GxPhysics/GxPhysicsModel.h>
@@ -105,6 +109,23 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         }
 
         tag = ds.get<std::string>();
+    }
+
+    if(true)
+    {
+        buffers.push_back(graphics.resources.add(skyBoxBuffer(graphics, 10)));
+
+        std::vector<std::string> files = { "right", "left", "top", "bottom", "front", "back" };
+
+        std::vector<std::string> paths;
+        for(auto s: files)
+        {
+            paths.push_back(resourcePath(pcx::str("assets/skyboxes/skybox/", s, ".png")));
+        }
+
+        cubeMaps.push_back(graphics.resources.add(new Gx::CubeMap(graphics.device, paths, { 256, 0, { }, Gx::Graphics::Format::X8R8G8B8, Gx::Graphics::Pool::Managed })));
+
+        nodes.push_back(scene.addNode(new SkyBoxNode(buffers.back().get(), cubeMaps.back().get())));
     }
 
     for(auto perm: featureSet)

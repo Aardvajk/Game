@@ -17,9 +17,11 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         compileVertexShader("depth");
         compileVertexShader("mesh");
         compileVertexShader("screen");
+        compileVertexShader("skybox");
 
         compilePixelShader("depth");
         compilePixelShader("unpack");
+        compilePixelShader("skybox");
 
         compilePixelShaderSet("mesh", { });
         compilePixelShaderSet("mesh", RenderKey::Feature::Shadows);

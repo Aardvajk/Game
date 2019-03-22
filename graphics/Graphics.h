@@ -47,14 +47,17 @@ public:
     Handle<Gx::VertexDeclaration> colorVertexDec;
     Handle<Gx::VertexDeclaration> meshVertexDec;
     Handle<Gx::VertexDeclaration> textureVertexDec;
+    Handle<Gx::VertexDeclaration> positionVertexDec;
 
     Handle<Gx::VertexShader> colorVertexShader;
     Handle<Gx::VertexShader> screenVertexShader;
     Handle<Gx::VertexShader> depthVertexShader;
     Handle<Gx::VertexShader> meshVertexShader;
+    Handle<Gx::VertexShader> skyBoxVertexShader;
 
     Handle<Gx::PixelShader> depthPixelShader;
     Handle<Gx::PixelShader> unpackPixelShader;
+    Handle<Gx::PixelShader> skyBoxPixelShader;
 
     Handle<VertexBuffer> genericBuffer;
 

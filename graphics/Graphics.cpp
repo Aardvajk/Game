@@ -3,9 +3,11 @@
 #include "application/ResourcePath.h"
 
 #include "graphics/VertexBuffer.h"
+
 #include "graphics/vertices/ColorVertex.h"
 #include "graphics/vertices/MeshVertex.h"
 #include "graphics/vertices/TextureVertex.h"
+#include "graphics/vertices/PositionVertex.h"
 
 #include <GxGraphics/GxGraphicsTypes.h>
 #include <GxGraphics/GxVertexDeclaration.h>
@@ -35,14 +37,17 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
     textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
+    positionVertexDec = resources.add(new Gx::VertexDeclaration(device, PositionVertex::declaration()));
 
     colorVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/colorvertex.dat"))));
     screenVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/screenvertex.dat"))));
     depthVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/depthvertex.dat"))));
     meshVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/meshvertex.dat"))));
+    skyBoxVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/skyboxvertex.dat"))));
 
     depthPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/depthpixel.dat"))));
     unpackPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/unpackpixel.dat"))));
+    skyBoxPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/skyboxpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
 }

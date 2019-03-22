@@ -149,6 +149,18 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
             graphics.setPixelShader(*graphics.depthPixelShader);
         }
     }
+    else if(type == RenderType::SkyBox)
+    {
+        if(pass == RenderPass::Normal)
+        {
+            graphics.device.setVertexDeclaration(*graphics.positionVertexDec);
+
+            graphics.setVertexShader(*graphics.skyBoxVertexShader);
+            graphics.currentVertexShader()->setMatrix(graphics.device, "worldviewproj", Gx::Matrix::translation(params.camera.position()) * params.viewMatrix * params.projMatrix);
+
+            graphics.setPixelShader(*graphics.skyBoxPixelShader);
+        }
+    }
 }
 
 void Scene::endType(Graphics &graphics)

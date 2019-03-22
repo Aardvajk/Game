@@ -59,7 +59,10 @@ SOURCES += \
     debug/MemUsage.cpp \
     scene/RenderKey.cpp \
     entities/TestShape.cpp \
-    scene/SceneParams.cpp
+    scene/SceneParams.cpp \
+    graphics/vertices/PositionVertex.cpp \
+    scene/nodes/SkyBoxNode.cpp \
+    graphics/SkyBox.cpp
         
 
 HEADERS += \
@@ -94,7 +97,10 @@ HEADERS += \
     debug/DebugText.h \
     debug/MemUsage.h \
     scene/RenderKey.h \
-    entities/TestShape.h
+    entities/TestShape.h \
+    graphics/vertices/PositionVertex.h \
+    scene/nodes/SkyBoxNode.h \
+    graphics/SkyBox.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \
@@ -103,5 +109,7 @@ DISTFILES += \
     assets/shaders/depthpixel.txt \
     assets/shaders/unpackpixel.txt \
     assets/shaders/meshvertex.txt \
-    assets/shaders/meshpixel.txt
+    assets/shaders/meshpixel.txt \
+    assets/shaders/skyboxpixel.txt \
+    assets/shaders/skyboxvertex.txt
 

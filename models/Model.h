@@ -22,6 +22,8 @@ class Events;
 namespace Gx
 {
 
+class CubeMap;
+
 class PhysicsModel;
 class Body;
 
@@ -45,6 +47,7 @@ public:
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     std::vector<Graphics::Handle<Gx::Texture> > textures;
+    std::vector<Graphics::Handle<Gx::CubeMap> > cubeMaps;
     std::vector<Graphics::Handle<Gx::PixelShader> > pixelShaders;
 
     std::unordered_map<RenderKey::Features, Gx::PixelShader*> pixelShaderMapping;
