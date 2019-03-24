@@ -12,16 +12,6 @@
 #include <pcx/scoped_ptr.h>
 #include <pcx/datastream.h>
 
-namespace
-{
-
-pcx::data_ostream &operator<<(pcx::data_ostream &ds, const Gx::Vec3 &v)
-{
-    return ds << v.x << v.y << v.z;
-}
-
-}
-
 VertexBuffer *skyBoxBuffer(Graphics &graphics, float size)
 {
     std::vector<Gx::Vec3> vertices;

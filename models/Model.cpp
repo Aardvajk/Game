@@ -33,11 +33,6 @@
 namespace
 {
 
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Vec3 &v)
-{
-    return ds >> v.x >> v.y >> v.z;
-}
-
 pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &v)
 {
     v.clear();

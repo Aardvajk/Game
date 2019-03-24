@@ -44,39 +44,6 @@ float lookAngle(const Gx::Vec3 &v)
     return a + float(M_PI);
 }
 
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Vec3 &v)
-{
-    return ds >> v.x >> v.y >> v.z;
-}
-
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Quaternion &q)
-{
-    return ds >> q.x >> q.y >> q.z >> q.w;
-}
-
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::JointTransform &t)
-{
-    return ds >> t.rotation >> t.translation;
-}
-
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::KeyFrame &k)
-{
-    k.position = ds.get<float>();
-    k.transforms = ds.get<std::vector<Gx::JointTransform> >();
-
-    return ds;
-}
-
-pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::AnimationEvent &e)
-{
-    auto position = ds.get<float>();
-    auto data = ds.get<std::string>();
-
-    e = Gx::AnimationEvent(position, data);
-
-    return ds;
-}
-
 }
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
@@ -166,7 +133,7 @@ void Pc::prepareScene(SceneParams &params, float blend)
 
     node->updateTransform(tr);
 
-    auto &a = anims["Run"];
+    auto &a = anims["Walk"];
 
     skeleton.setKeyFrame(a.keyFrame(time.value(blend) / a.duration()));
     node->updatePalette(skeleton.palette());

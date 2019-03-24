@@ -10,9 +10,6 @@
 namespace
 {
 
-inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
-inline pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
-
 Gx::Vec3 normal(const Gx::Vec3 &v0, const Gx::Vec3 &v1, const Gx::Vec3 &v2)
 {
     Gx::Vec3 a = v0;
