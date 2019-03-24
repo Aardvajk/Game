@@ -54,6 +54,29 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Quaternion &q)
     return ds >> q.x >> q.y >> q.z >> q.w;
 }
 
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::JointTransform &t)
+{
+    return ds >> t.rotation >> t.translation;
+}
+
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::KeyFrame &k)
+{
+    k.position = ds.get<float>();
+    k.transforms = ds.get<std::vector<Gx::JointTransform> >();
+
+    return ds;
+}
+
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::AnimationEvent &e)
+{
+    auto position = ds.get<float>();
+    auto data = ds.get<std::string>();
+
+    e = Gx::AnimationEvent(position, data);
+
+    return ds;
+}
+
 }
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
@@ -65,8 +88,8 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
 
     pos.set(kcc.position());
 
-    auto joints = ds.get<unsigned>();
-    for(unsigned i = 0; i < joints; ++i)
+    auto joints = ds.get<std::size_t>();
+    for(std::size_t i = 0; i < joints; ++i)
     {
         auto name = ds.get<std::string>();
         auto offset = ds.get<Gx::Vec3>();
@@ -82,47 +105,16 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
         skeleton.addJoint(name, { offset, parent });
     }
 
-    auto animations = ds.get<unsigned>();
-    for(unsigned i = 0; i < animations; ++i)
+    auto animations = ds.get<std::size_t>();
+    for(std::size_t i = 0; i < animations; ++i)
     {
         auto name = ds.get<std::string>();
 
-        auto count = ds.get<unsigned>();
+        auto count = ds.get<std::size_t>();
         auto duration = ds.get<float>();
 
-        std::vector<Gx::KeyFrame> keys;
-        std::vector<Gx::AnimationEvent> events;
-
-        auto keyCount = ds.get<unsigned>();
-        for(unsigned i = 0; i < keyCount; ++i)
-        {
-            auto position = ds.get<float>();
-            auto transformCount = ds.get<unsigned>();
-
-            Gx::KeyFrame key;
-            key.position = position;
-
-            for(unsigned j = 0; j < transformCount; ++j)
-            {
-                Gx::JointTransform t;
-
-                t.rotation = ds.get<Gx::Quaternion>();
-                t.translation = ds.get<Gx::Vec3>();
-
-                key.transforms.push_back(t);
-            }
-
-            keys.push_back(key);
-        }
-
-        auto eventCount = ds.get<unsigned>();
-        for(unsigned i = 0; i < eventCount; ++i)
-        {
-            auto position = ds.get<float>();
-            auto data = ds.get<std::string>();
-
-            events.push_back(Gx::AnimationEvent(position, data));
-        }
+        auto keys = ds.get<std::vector<Gx::KeyFrame> >();
+        auto events = ds.get<std::vector<Gx::AnimationEvent> >();
 
         anims[name] = Gx::Animation(count, duration, keys, events, true);
     }
