@@ -154,7 +154,7 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
         {
             graphics.setVertexShader(*graphics.rigVertexShader);
 
-            graphics.currentVertexShader()->setVector(graphics.device, "light", params.light);
+            graphics.currentVertexShader()->setVector(graphics.device, "light", Gx::Vec3(-2, 4, -3));
             graphics.currentVertexShader()->setMatrix(graphics.device, "view", params.viewMatrix);
             graphics.currentVertexShader()->setMatrix(graphics.device, "proj", params.projMatrix);
         }

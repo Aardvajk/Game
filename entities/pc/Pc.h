@@ -28,7 +28,9 @@ private:
     pcx::scoped_ptr<RigMeshNode> node;
 
     Kcc kcc;
+
     Gx::BlendVec3 pos;
+    Gx::BlendFloat ang;
 };
 
 #endif // PC_H

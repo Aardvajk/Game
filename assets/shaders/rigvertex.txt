@@ -33,12 +33,13 @@ VS_OUTPUT main(VS_INPUT input)
     output.position = mul(output.position, mul(mul(world, view), proj));
 
     float3 normal = mul(input.normal, (float3x3)skinning);
+    normal = mul(normal, (float3x3)world);
     normal = normalize(normal);
 
     float3 tolight = normalize(light);
 
     float s = dot(normal, tolight);
-    if(s < 0.3f) s = 0.3f;
+    if(s < 0.5f) s = 0.5f;
 
     output.diffuse = vector(1, 1, 1, 1) * s;
     output.diffuse.a = 1;

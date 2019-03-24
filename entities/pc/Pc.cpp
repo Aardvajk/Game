@@ -24,6 +24,24 @@
 
 #include <pcx/datastream.h>
 
+#include <cmath>
+
+namespace
+{
+
+float lookAngle(const Gx::Vec3 &v)
+{
+    float a = std::acos(Gx::Vec3(0, 0, 1).dot(v));
+    if(v.x < 0)
+    {
+        a *= -1;
+    }
+
+    return a + float(M_PI);
+}
+
+}
+
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
 {
     pcx::data_ifstream ds(resourcePath("assets/models/model.dat"));
@@ -37,6 +55,7 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
 void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     pos.store();
+    ang.store();
 
     Gx::Vec3 forw, right;
     params.camera.transform().flatVectors(forw, right);
@@ -58,6 +77,11 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     kcc.move(physics, step);
     pos.set(kcc.position());
+
+    if(step.length())
+    {
+        ang.set(lookAngle(step.normalized()));
+    }
 }
 
 void Pc::prepareScene(SceneParams &params, float blend)
@@ -65,7 +89,9 @@ void Pc::prepareScene(SceneParams &params, float blend)
     auto bp = pos.value(blend);
     params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
 
-    node->updateTransform(Gx::Matrix::translation(bp));
+    auto ba = ang.value(blend);
+
+    node->updateTransform(Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp));
 
     if(params.drawPhysics)
     {
