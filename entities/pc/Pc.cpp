@@ -132,6 +132,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 {
     pos.store();
     ang.store();
+    time.store();
 
     Gx::Vec3 forw, right;
     params.camera.transform().flatVectors(forw, right);
@@ -159,9 +160,6 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
         ang.set(lookAngle(step.normalized()));
     }
 
-    auto old = time.value();
-
-    time.store();
     time.add(delta);
 }
 
