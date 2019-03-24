@@ -18,6 +18,8 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         compileVertexShader("mesh");
         compileVertexShader("screen");
         compileVertexShader("skybox");
+        compileVertexShader("rig");
+        compileVertexShader("rigdepth");
 
         compilePixelShader("depth");
         compilePixelShader("unpack");

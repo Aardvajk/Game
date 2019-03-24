@@ -62,7 +62,9 @@ SOURCES += \
     scene/SceneParams.cpp \
     graphics/vertices/PositionVertex.cpp \
     scene/nodes/SkyBoxNode.cpp \
-    graphics/SkyBox.cpp
+    graphics/SkyBox.cpp \
+    graphics/vertices/RigVertex.cpp \
+    scene/nodes/RigMeshNode.cpp
         
 
 HEADERS += \
@@ -100,7 +102,9 @@ HEADERS += \
     entities/TestShape.h \
     graphics/vertices/PositionVertex.h \
     scene/nodes/SkyBoxNode.h \
-    graphics/SkyBox.h
+    graphics/SkyBox.h \
+    graphics/vertices/RigVertex.h \
+    scene/nodes/RigMeshNode.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \
@@ -111,5 +115,7 @@ DISTFILES += \
     assets/shaders/meshvertex.txt \
     assets/shaders/meshpixel.txt \
     assets/shaders/skyboxpixel.txt \
-    assets/shaders/skyboxvertex.txt
+    assets/shaders/skyboxvertex.txt \
+    assets/shaders/rigdepthvertex.txt \
+    assets/shaders/rigvertex.txt
 

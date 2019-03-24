@@ -56,9 +56,6 @@ void Scene::render(Graphics &graphics, SceneParams &params)
     graphics.device.clear({ 0.4f, 0.6f, 0.8f }, 1.0f);
 
     render(RenderPass::Normal, graphics, params);
-
-    DebugRender::drawScreenTexture(graphics, { { 5, 5 }, { 128, 128 } }, *environmentDepthTex, graphics.unpackPixelShader.get());
-    DebugRender::drawScreenTexture(graphics, { { 138, 5 }, { 64, 64 } }, *objectDepthTex, graphics.unpackPixelShader.get());
 }
 
 void Scene::render(RenderPass pass, Graphics &graphics, SceneParams &params)
@@ -144,6 +141,26 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
         else if(pass == RenderPass::ObjectDepth || pass == RenderPass::EnvironmentDepth)
         {
             graphics.setVertexShader(*graphics.depthVertexShader);
+            graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.depthMatrix(pass));
+
+            graphics.setPixelShader(*graphics.depthPixelShader);
+        }
+    }
+    else if(type == RenderType::Rig)
+    {
+        graphics.device.setVertexDeclaration(*graphics.rigVertexDec);
+
+        if(pass == RenderPass::Normal)
+        {
+            graphics.setVertexShader(*graphics.rigVertexShader);
+
+            graphics.currentVertexShader()->setVector(graphics.device, "light", params.light);
+            graphics.currentVertexShader()->setMatrix(graphics.device, "view", params.viewMatrix);
+            graphics.currentVertexShader()->setMatrix(graphics.device, "proj", params.projMatrix);
+        }
+        else if(pass == RenderPass::ObjectDepth)
+        {
+            graphics.setVertexShader(*graphics.rigDepthVertexShader);
             graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.depthMatrix(pass));
 
             graphics.setPixelShader(*graphics.depthPixelShader);

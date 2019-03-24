@@ -48,11 +48,14 @@ public:
     Handle<Gx::VertexDeclaration> meshVertexDec;
     Handle<Gx::VertexDeclaration> textureVertexDec;
     Handle<Gx::VertexDeclaration> positionVertexDec;
+    Handle<Gx::VertexDeclaration> rigVertexDec;
 
     Handle<Gx::VertexShader> colorVertexShader;
     Handle<Gx::VertexShader> screenVertexShader;
     Handle<Gx::VertexShader> depthVertexShader;
     Handle<Gx::VertexShader> meshVertexShader;
+    Handle<Gx::VertexShader> rigVertexShader;
+    Handle<Gx::VertexShader> rigDepthVertexShader;
     Handle<Gx::VertexShader> skyBoxVertexShader;
 
     Handle<Gx::PixelShader> depthPixelShader;

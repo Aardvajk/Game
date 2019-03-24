@@ -12,7 +12,7 @@ VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, unsigned bytes, Gx::Graph
     vb.reset(device, { bytes, usage, pool });
 }
 
-VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, const pcx::buffer &buffer, Gx::Graphics::Usage::Flags usage, Gx::Graphics::Pool pool)
+VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, const pcx::buffer &buffer, Gx::Graphics::Usage::Flags usage, Gx::Graphics::Pool pool) : n(0)
 {
     n = buffer.size();
     vb.reset(device, { n, usage, pool });
@@ -21,7 +21,7 @@ VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, const pcx::buffer &buffer
     os.write(buffer.data(), n);
 }
 
-VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, pcx::data_istream &ds, Gx::Graphics::Usage::Flags usage, Gx::Graphics::Pool pool)
+VertexBuffer::VertexBuffer(Gx::GraphicsDevice &device, pcx::data_istream &ds, Gx::Graphics::Usage::Flags usage, Gx::Graphics::Pool pool) : n(0)
 {
     n = ds.get<unsigned>();
     vb.reset(device, { n, usage, pool });

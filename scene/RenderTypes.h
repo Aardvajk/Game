@@ -13,6 +13,7 @@ enum class RenderType
     Color,
     Object,
     Environment,
+    Rig,
     SkyBox,
     Null
 };

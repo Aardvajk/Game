@@ -35,6 +35,7 @@ VS_OUTPUT main(VS_INPUT input)
     if(s < 0.3f) s = 0.3f;
 
     output.diffuse = input.diffuse * s;
+    output.diffuse.a = 1;
 
     output.vpos = mul(input.position, world);
     output.normal = mul(input.normal, (float3x3)world);

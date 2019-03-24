@@ -1,0 +1,47 @@
+matrix world;
+matrix view;
+matrix proj;
+
+float4x3 bones[33];
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+    float3 normal   : NORMAL;
+    int4 indices    : BLENDINDICES;
+    float4 weights  : BLENDWEIGHT;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+    vector diffuse  : COLOR;
+};
+
+float3 light;
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+    float4x3 skinning = 0;
+    skinning += bones[input.indices[0]] * input.weights[0];
+    skinning += bones[input.indices[1]] * input.weights[1];
+
+    output.position = float4(mul(input.position, skinning), 1);
+
+    output.position = mul(output.position, mul(mul(world, view), proj));
+
+    float3 normal = mul(input.normal, (float3x3)skinning);
+    normal = normalize(normal);
+
+    float3 tolight = normalize(light);
+
+    float s = dot(normal, tolight);
+    if(s < 0.3f) s = 0.3f;
+
+    output.diffuse = vector(1, 1, 1, 1) * s;
+    output.diffuse.a = 1;
+
+    return output;
+}

@@ -8,6 +8,7 @@
 #include "graphics/vertices/MeshVertex.h"
 #include "graphics/vertices/TextureVertex.h"
 #include "graphics/vertices/PositionVertex.h"
+#include "graphics/vertices/RigVertex.h"
 
 #include <GxGraphics/GxGraphicsTypes.h>
 #include <GxGraphics/GxVertexDeclaration.h>
@@ -38,11 +39,14 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     meshVertexDec = resources.add(new Gx::VertexDeclaration(device, MeshVertex::declaration()));
     textureVertexDec = resources.add(new Gx::VertexDeclaration(device, TextureVertex::declaration()));
     positionVertexDec = resources.add(new Gx::VertexDeclaration(device, PositionVertex::declaration()));
+    rigVertexDec = resources.add(new Gx::VertexDeclaration(device, RigVertex::declaration()));
 
     colorVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/colorvertex.dat"))));
     screenVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/screenvertex.dat"))));
     depthVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/depthvertex.dat"))));
     meshVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/meshvertex.dat"))));
+    rigVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/rigvertex.dat"))));
+    rigDepthVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/rigdepthvertex.dat"))));
     skyBoxVertexShader = resources.add(new Gx::VertexShader(device, loadRawData(resourcePath("assets/shaders/skyboxvertex.dat"))));
 
     depthPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/depthpixel.dat"))));

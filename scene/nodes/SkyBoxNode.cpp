@@ -27,6 +27,5 @@ RenderKey SkyBoxNode::key() const
 void SkyBoxNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const
 {
     graphics.device.setTexture(0, *diffuse);
-if(mesh)
     mesh->renderTriangleList(graphics.device, sizeof(PositionVertex));
 }

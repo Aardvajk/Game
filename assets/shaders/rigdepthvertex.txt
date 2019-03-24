@@ -1,0 +1,48 @@
+matrix world;
+matrix viewproj;
+
+float4x3 bones[33];
+
+struct VS_INPUT
+{
+    vector position : POSITION;
+    float3 normal   : NORMAL;
+    int4 indices    : BLENDINDICES;
+    float4 weights  : BLENDWEIGHT;
+};
+
+struct VS_OUTPUT
+{
+    vector position : POSITION;
+    vector depth    : TEXCOORD;
+};
+
+vector pack(float depth)
+{
+    const vector bias = vector(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0, 0.0);
+
+    vector color;
+
+    color.r = depth;
+    color.g = frac(color.r * 255.0);
+    color.b = frac(color.g * 255.0);
+    color.a = frac(color.b * 255.0);
+
+    return color - (color.rgba * bias);
+}
+
+VS_OUTPUT main(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+
+    float4x3 skinning = 0;
+    skinning += bones[input.indices[0]] * input.weights[0];
+    skinning += bones[input.indices[1]] * input.weights[1];
+
+    output.position = float4(mul(input.position, skinning), 1);
+
+    output.position = mul(output.position, mul(world, viewproj));
+    output.depth = pack(1 - (output.position.z / output.position.w));
+
+    return output;
+}

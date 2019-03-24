@@ -48,7 +48,7 @@ float newsample(float2 c, float d, sampler shadow, float texel)
     return s * (1.0f / 9.0f);
 }
 
-float sampleShadow(PS_INPUT input, matrix worldviewproj, sampler shadow, float texel)
+float sampleShadow(PS_INPUT input, matrix worldviewproj, sampler shadow, float texel, float offset)
 {
     vector diffuse = input.diffuse;
 
@@ -57,7 +57,7 @@ float sampleShadow(PS_INPUT input, matrix worldviewproj, sampler shadow, float t
     float2 c = 0.5f * pos.xy / pos.w + float2(0.5f, 0.5f);
     c.y = 1.0f - c.y;
 
-    float s = 1 - newsample(c, (1 - (pos.z / pos.w)) + 0.005f, shadow, texel);
+    float s = 1 - newsample(c, (1 - (pos.z / pos.w)) + offset, shadow, texel);
 
     if(c.x >= 0 && c.x <= 1 && c.y >= 0 && c.y <= 1)
     {
@@ -81,10 +81,10 @@ PS_OUTPUT main(PS_INPUT input)
 #if defined(SHADOWS)
     if(dot(input.normal, float3(0, 1, 0)) >= 0.3f)
     {
-        output.diffuse *= sampleShadow(input, environmentWorldviewproj, environmentShadow, environmentTexel);
+        output.diffuse *= sampleShadow(input, environmentWorldviewproj, environmentShadow, environmentTexel, 0.005f);
     }
 
-    output.diffuse *= sampleShadow(input, objectWorldviewproj, objectShadow, objectTexel);
+    output.diffuse *= sampleShadow(input, objectWorldviewproj, objectShadow, objectTexel, 0.0001f);
 #endif
 
     output.diffuse.a = 1;
