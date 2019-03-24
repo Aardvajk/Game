@@ -69,9 +69,9 @@ bool GameState::update(AppParams &app, Events &events, float delta)
         if(time > 0.05f)
         {
             time = 0;
-            ++shapes;
+//            ++shapes;
 
-            addTestShape(model, graphics, scene, physics);
+//            addTestShape(model, graphics, scene, physics);
         }
     }
 
@@ -94,6 +94,8 @@ void GameState::render(Graphics &graphics, float blend)
     params.light = Gx::Vec3(-1.2f, 1, -0.8f);
 
     params.environmentDepthMatrix = computeDepthMatrix(cam, params);
+
+    params.drawPhysics = drawPhysics;
 
     model.prepareScene(params, blend);
     scene.render(graphics, params);

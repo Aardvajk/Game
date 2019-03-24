@@ -12,6 +12,7 @@
 #include "scene/nodes/RigMeshNode.h"
 
 #include "debug/DebugMesh.h"
+#include "debug/DebugRender.h"
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
@@ -65,4 +66,9 @@ void Pc::prepareScene(SceneParams &params, float blend)
     params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
 
     node->updateTransform(Gx::Matrix::translation(bp));
+
+    if(params.drawPhysics)
+    {
+        DebugLines::addShape(Gx::CapsuleShape(0.45f, 2.0f), Gx::Matrix::translation(bp));
+    }
 }

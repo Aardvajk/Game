@@ -22,6 +22,8 @@ public:
 
     Gx::Transform camera;
     Gx::Vec3 light;
+
+    bool drawPhysics;
 };
 
 #endif // SCENEPARAMS_H

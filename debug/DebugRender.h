@@ -13,6 +13,8 @@ class Rect;
 class Texture;
 class PixelShader;
 class PhysicsModel;
+class Shape;
+class Matrix;
 
 }
 
@@ -32,6 +34,7 @@ namespace DebugLines
 void clear();
 void addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color);
 
+void addShape(const Gx::Shape &shape, const Gx::Matrix &tr);
 void addPhysics(const Gx::PhysicsModel &physics);
 
 void render(Graphics &graphics, const SceneParams &params);
