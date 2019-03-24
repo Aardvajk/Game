@@ -10,7 +10,6 @@
 #include "scene/SceneParams.h"
 
 #include "scene/nodes/RigMeshNode.h"
-#include "scene/nodes/PcNode.h"
 
 #include "debug/DebugMesh.h"
 

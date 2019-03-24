@@ -53,7 +53,6 @@ SOURCES += \
     states/State.cpp \
     entities/Entity.cpp \
     application/ShaderCompiler.cpp \
-    scene/nodes/PcNode.cpp \
     application/FpsCounter.cpp \
     debug/DebugText.cpp \
     debug/MemUsage.cpp \
@@ -94,7 +93,6 @@ HEADERS += \
     application/FrameParams.h \
     scene/RenderTypes.h \
     application/ShaderCompiler.h \
-    scene/nodes/PcNode.h \
     application/FpsCounter.h \
     debug/DebugText.h \
     debug/MemUsage.h \

@@ -14,7 +14,6 @@
 
 class Scene;
 class RigMeshNode;
-class PcNode;
 
 class Pc : public Entity
 {
