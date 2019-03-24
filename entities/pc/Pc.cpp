@@ -64,5 +64,5 @@ void Pc::prepareScene(SceneParams &params, float blend)
     auto bp = pos.value(blend);
     params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
 
-    node->updateTransform(Gx::Matrix::translation(bp + Gx::Vec3(0, -0.05f, 0)));
+    node->updateTransform(Gx::Matrix::translation(bp + Gx::Vec3(0, -0.1f, 0)));
 }
