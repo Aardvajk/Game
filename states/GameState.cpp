@@ -38,7 +38,7 @@ void addTestShape(Model &model, Graphics &graphics, Scene &scene, Gx::PhysicsMod
 
 }
 
-GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(model, graphics), drawPhysics(false), hasClosed(false), shapes(0), time(0)
+GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(model, graphics), drawPhysics(false), drawSkeleton(false), hasClosed(false), shapes(0), time(0)
 {
     cx.connect(events.keyDown, this, &keyPressed);
 
@@ -52,7 +52,7 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
     if(drawPhysics)
     {
-        DebugLines::addPhysics(physics);
+        DebugLines::addPhysics(physics, { 0, 1, 1 });
     }
 
     cam.update(events, app.size, delta);
@@ -96,6 +96,7 @@ void GameState::render(Graphics &graphics, float blend)
     params.environmentDepthMatrix = computeDepthMatrix(cam, params);
 
     params.drawPhysics = drawPhysics;
+    params.drawSkeleton = drawSkeleton;
 
     model.prepareScene(params, blend);
     scene.render(graphics, params);
@@ -117,6 +118,11 @@ void GameState::keyPressed(int key)
     if(key == 'O')
     {
         drawPhysics = !drawPhysics;
+    }
+
+    if(key == 'I')
+    {
+        drawSkeleton = !drawSkeleton;
     }
 
     if(key == VK_ESCAPE)

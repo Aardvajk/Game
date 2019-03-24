@@ -36,6 +36,7 @@ private:
     Camera cam;
 
     bool drawPhysics;
+    bool drawSkeleton;
     bool hasClosed;
 
     int shapes;

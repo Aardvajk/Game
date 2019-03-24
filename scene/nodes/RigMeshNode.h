@@ -5,6 +5,8 @@
 
 #include <GxMaths/GxMatrix.h>
 
+#include <vector>
+
 class VertexBuffer;
 
 class RigMeshNode : public SceneNode
@@ -19,10 +21,12 @@ public:
     virtual void render(RenderPass pass, Graphics &graphics, SceneParams &params) const override;
 
     void updateTransform(const Gx::Matrix &value);
+    void updatePalette(const std::vector<Gx::Matrix> &value);
 
 private:
     const VertexBuffer *mesh;
     Gx::Matrix tr;
+    std::vector<Gx::Matrix> palette;
 };
 
 #endif // RIGMESHNODE_H

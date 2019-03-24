@@ -34,8 +34,8 @@ namespace DebugLines
 void clear();
 void addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color);
 
-void addShape(const Gx::Shape &shape, const Gx::Matrix &tr);
-void addPhysics(const Gx::PhysicsModel &physics);
+void addShape(const Gx::Shape &shape, const Gx::Matrix &tr, const Gx::Color &color);
+void addPhysics(const Gx::PhysicsModel &physics, const Gx::Color &color);
 
 void render(Graphics &graphics, const SceneParams &params);
 

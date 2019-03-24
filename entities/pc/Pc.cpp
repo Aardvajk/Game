@@ -18,9 +18,13 @@
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxTransform.h>
 #include <GxMaths/GxRange.h>
+#include <GxMaths/GxQuaternion.h>
 
 #include <GxPhysics/GxBody.h>
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
+#include <GxPhysics/GxShapes/GxSphereShape.h>
+
+#include <GxAnimation/GxSkeletonJoint.h>
 
 #include <pcx/datastream.h>
 
@@ -40,6 +44,16 @@ float lookAngle(const Gx::Vec3 &v)
     return a + float(M_PI);
 }
 
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Vec3 &v)
+{
+    return ds >> v.x >> v.y >> v.z;
+}
+
+pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::Quaternion &q)
+{
+    return ds >> q.x >> q.y >> q.z >> q.w;
+}
+
 }
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
@@ -50,6 +64,68 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
     node = scene.addNode(new RigMeshNode(mesh.get(), Gx::Matrix::translation(kcc.position())));
 
     pos.set(kcc.position());
+
+    auto joints = ds.get<unsigned>();
+    for(unsigned i = 0; i < joints; ++i)
+    {
+        auto name = ds.get<std::string>();
+        auto offset = ds.get<Gx::Vec3>();
+
+        pcx::optional<std::uint8_t> parent;
+
+        auto p = ds.get<std::uint8_t>();
+        if(p != static_cast<std::uint8_t>(-1))
+        {
+            parent = p;
+        }
+
+        skeleton.addJoint(name, { offset, parent });
+    }
+
+    auto animations = ds.get<unsigned>();
+    for(unsigned i = 0; i < animations; ++i)
+    {
+        auto name = ds.get<std::string>();
+
+        auto count = ds.get<unsigned>();
+        auto duration = ds.get<float>();
+
+        std::vector<Gx::KeyFrame> keys;
+        std::vector<Gx::AnimationEvent> events;
+
+        auto keyCount = ds.get<unsigned>();
+        for(unsigned i = 0; i < keyCount; ++i)
+        {
+            auto position = ds.get<float>();
+            auto transformCount = ds.get<unsigned>();
+
+            Gx::KeyFrame key;
+            key.position = position;
+
+            for(unsigned j = 0; j < transformCount; ++j)
+            {
+                Gx::JointTransform t;
+
+                t.rotation = ds.get<Gx::Quaternion>();
+                t.translation = ds.get<Gx::Vec3>();
+
+                key.transforms.push_back(t);
+            }
+
+            keys.push_back(key);
+        }
+
+        auto eventCount = ds.get<unsigned>();
+        for(unsigned i = 0; i < eventCount; ++i)
+        {
+            auto position = ds.get<float>();
+            auto data = ds.get<std::string>();
+
+            events.push_back(Gx::AnimationEvent(position, data));
+        }
+
+        anims[name] = Gx::Animation(count, duration, keys, events, true);
+    }
 }
 
 void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
@@ -82,19 +158,48 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     {
         ang.set(lookAngle(step.normalized()));
     }
+
+    auto old = time.value();
+
+    time.store();
+    time.add(delta);
 }
 
 void Pc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
-    params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
-
     auto ba = ang.value(blend);
 
-    node->updateTransform(Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp));
+    params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
+
+    auto tr = Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp);
+
+    node->updateTransform(tr);
+
+    auto &a = anims["Run"];
+
+    skeleton.setKeyFrame(a.keyFrame(time.value(blend) / a.duration()));
+    node->updatePalette(skeleton.palette());
+
+    if(params.drawSkeleton)
+    {
+        for(std::size_t i = 0; i < skeleton.size(); ++i)
+        {
+            auto j = skeleton.joint(i);
+            if(j.parent)
+            {
+                DebugLines::addLine(j.offset.transformedCoord(skeleton.transform(i) * tr), skeleton.joint(*j.parent).offset.transformedCoord(skeleton.transform(*j.parent) * tr), { 1, 0, 0 });
+            }
+        }
+
+        for(std::size_t i = 0; i < skeleton.size(); ++i)
+        {
+            DebugLines::addShape(Gx::SphereShape(0.05f), Gx::Matrix::translation(skeleton.joint(i).offset) * skeleton.transform(i) * tr, { 0, 1, 0 });
+        }
+    }
 
     if(params.drawPhysics)
     {
-        DebugLines::addShape(Gx::CapsuleShape(0.45f, 2.0f), Gx::Matrix::translation(bp));
+        DebugLines::addShape(Gx::CapsuleShape(0.45f, 2.0f), Gx::Matrix::translation(bp), { 0, 1, 1 });
     }
 }

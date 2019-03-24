@@ -121,7 +121,7 @@ void DebugLines::addLine(const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::C
     lines.push_back({ start, end, color });
 }
 
-void DebugLines::addShape(const Gx::Shape &shape, const Gx::Matrix &tr)
+void DebugLines::addShape(const Gx::Shape &shape, const Gx::Matrix &tr, const Gx::Color &color)
 {
     DebugMesh m;
 
@@ -154,18 +154,18 @@ void DebugLines::addShape(const Gx::Shape &shape, const Gx::Matrix &tr)
 
     for(auto edge: edges)
     {
-        addLine(m.vs[edge.first].transformedCoord(tr), m.vs[edge.second].transformedCoord(tr), { 1, 1, 1 });
+        addLine(m.vs[edge.first].transformedCoord(tr), m.vs[edge.second].transformedCoord(tr), color);
     }
 }
 
-void DebugLines::addPhysics(const Gx::PhysicsModel &physics)
+void DebugLines::addPhysics(const Gx::PhysicsModel &physics, const Gx::Color &color)
 {
     for(int index = 0; index < physics.count(); ++index)
     {
         auto &body = physics.body(index);
         auto tr = body.matrix();
 
-        addShape(body.shape(), tr);
+        addShape(body.shape(), tr, color);
     }
 }
 

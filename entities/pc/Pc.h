@@ -10,7 +10,12 @@
 #include <GxMaths/GxBlendValue.h>
 #include <GxMaths/GxVector.h>
 
+#include <GxAnimation/GxSkeleton.h>
+#include <GxAnimation/GxAnimation.h>
+
 #include <pcx/scoped_ptr.h>
+
+#include <unordered_map>
 
 class Scene;
 class RigMeshNode;
@@ -28,9 +33,14 @@ private:
     pcx::scoped_ptr<RigMeshNode> node;
 
     Kcc kcc;
+    Gx::Skeleton skeleton;
+
+    std::unordered_map<std::string, Gx::Animation> anims;
 
     Gx::BlendVec3 pos;
     Gx::BlendFloat ang;
+
+    Gx::BlendFloat time;
 };
 
 #endif // PC_H

@@ -28,11 +28,8 @@ RenderKey RigMeshNode::key() const
 
 void RigMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const
 {
-    std::vector<Gx::Matrix> bv;
-    for(int i = 0; i < 33; ++i) bv.push_back(Gx::Matrix::identity());
-
     graphics.currentVertexShader()->setMatrix(graphics.device, "world", tr);
-    graphics.currentVertexShader()->setMatrixArray(graphics.device, "bones", bv);
+    graphics.currentVertexShader()->setMatrixArray(graphics.device, "bones", palette);
 
     mesh->renderTriangleList(graphics.device, sizeof(RigVertex));
 }
@@ -40,4 +37,9 @@ void RigMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &param
 void RigMeshNode::updateTransform(const Gx::Matrix &value)
 {
     tr = value;
+}
+
+void RigMeshNode::updatePalette(const std::vector<Gx::Matrix> &value)
+{
+    palette = value;
 }

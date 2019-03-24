@@ -24,6 +24,7 @@ public:
     Gx::Vec3 light;
 
     bool drawPhysics;
+    bool drawSkeleton;
 };
 
 #endif // SCENEPARAMS_H
