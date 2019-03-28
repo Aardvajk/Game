@@ -12,7 +12,6 @@
 #include "graphics/SkyBox.h"
 
 #include "entities/Entity.h"
-#include "entities/pc/Pc.h"
 
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
@@ -69,6 +68,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     {
         if(tag == "staticpolyhedron")
         {
+            ds.get<std::string>();
             auto pos = ds.get<Gx::Vec3>();
 
             auto vs = ds.get<std::vector<Gx::Vec3> >();
@@ -130,8 +130,6 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         pixelShaders.push_back(graphics.resources.add(new Gx::PixelShader(graphics.device, data)));
         pixelShaderMapping[perm] = pixelShaders.back().get();
     }
-
-    entities.push_back(new Pc(graphics, scene));
 
     return true;
 }

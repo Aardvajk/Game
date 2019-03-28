@@ -44,6 +44,10 @@ float lookAngle(const Gx::Vec3 &v)
     return a + float(M_PI);
 }
 
+float bl[2] = { 0, 0 };
+
+float clamp(float v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
 }
 
 Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
@@ -119,23 +123,65 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
         ang.set(lookAngle(step.normalized()));
     }
 
+    float blMod[2] = { 0, 0 };
+
+    if(events.isKeyDown('1')) blMod[0] = -1;
+    if(events.isKeyDown('2')) blMod[0] = 1;
+
+    if(events.isKeyDown('3')) blMod[1] = -1;
+    if(events.isKeyDown('4')) blMod[1] = 1;
+
+    for(int i = 0; i < 2; ++i)
+    {
+        bl[i] = clamp(bl[i] + blMod[i] * delta);
+    }
+
     time.add(delta);
 }
+
+struct WeightedKey
+{
+    Gx::KeyFrame key;
+    float weight;
+};
 
 void Pc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
     auto ba = ang.value(blend);
 
-    params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 1.0f, 1.0f }, { -100, 100 });
+    params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 2.2f, 2.2f }, { -100, 100 });
 
     auto tr = Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp);
 
     node->updateTransform(tr);
 
-    auto &a = anims["Walk"];
+    float t = std::fmod(time.value(blend), 1.0f);
 
-    skeleton.setKeyFrame(a.keyFrame(time.value(blend) / a.duration()));
+    std::vector<WeightedKey> keys;
+
+    float total = bl[0] + bl[1];
+
+    if(total < 1.0f) keys.push_back({ { }, 1.0f - total });
+    if(bl[0]) keys.push_back({ anims["Walk"].keyFrame(t), bl[0] });
+    if(bl[1]) keys.push_back({ anims["Run"].keyFrame(t), bl[1] });
+
+    while(keys.size() > 1)
+    {
+        auto a = keys.back();
+        keys.pop_back();
+
+        auto b = keys.back();
+        keys.pop_back();
+
+        float total = a.weight + b.weight;
+        auto c = Gx::Interpolator<Gx::KeyFrame>()(a.key, b.key, b.weight / total);
+
+        keys.push_back({ c, total });
+    }
+
+    skeleton.setKeyFrame(keys.back().key);
+
     node->updatePalette(skeleton.palette());
 
     if(params.drawSkeleton)

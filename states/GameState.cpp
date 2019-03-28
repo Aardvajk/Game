@@ -10,6 +10,7 @@
 #include "scene/SceneParams.h"
 
 #include "entities/TestShape.h"
+#include "entities/pc/Pc.h"
 
 #include "debug/DebugRender.h"
 #include "debug/DebugText.h"
@@ -38,11 +39,12 @@ void addTestShape(Model &model, Graphics &graphics, Scene &scene, Gx::PhysicsMod
 
 }
 
-GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(model, graphics), drawPhysics(false), drawSkeleton(false), hasClosed(false), shapes(0), time(0)
+GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), scene(model, graphics), pc(nullptr), shapes(0), time(0), drawPhysics(false), drawSkeleton(false), hasClosed(false)
 {
     cx.connect(events.keyDown, this, &keyPressed);
 
     model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
+    model.addEntity(pc = new Pc(graphics, scene));
 }
 
 bool GameState::update(AppParams &app, Events &events, float delta)
@@ -103,9 +105,6 @@ void GameState::render(Graphics &graphics, float blend)
 
     DebugPoints::render(graphics, params);
     DebugLines::render(graphics, params);
-
-    auto s = pcx::str("Shapes: ", shapes);
-    DebugText::draw(2, 768 - (DebugText::height() + 2), s);
 }
 
 void GameState::keyPressed(int key)

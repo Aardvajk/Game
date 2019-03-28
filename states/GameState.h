@@ -14,6 +14,7 @@
 #include <pcx/signals.h>
 
 class Graphics;
+class Pc;
 
 class GameState : public State
 {
@@ -35,12 +36,13 @@ private:
     Scene scene;
     Camera cam;
 
+    Pc *pc;
+    int shapes;
+    float time;
+
     bool drawPhysics;
     bool drawSkeleton;
     bool hasClosed;
-
-    int shapes;
-    float time;
 };
 
 #endif // GAMESTATE_H

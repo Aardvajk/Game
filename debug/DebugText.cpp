@@ -34,7 +34,7 @@ int DebugText::height()
     return Gx::FontMetrics(*font).height();
 }
 
-void DebugText::draw(int x, int y, const std::string &text)
+void DebugText::draw(int x, int y, const std::string &text, const Gx::Color &color)
 {
-    font->draw(x, y, text, { 0.9f, 0.9f, 0.9f });
+    font->draw(x, y, text, color);
 }
