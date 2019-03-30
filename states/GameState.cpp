@@ -93,7 +93,6 @@ void GameState::render(Graphics &graphics, float blend)
     params.projMatrix = Gx::Matrix::perspective(M_PI * 0.25f, graphics.size.width / graphics.size.height, { 0.1f, 100.0f });
 
     params.camera = cam.transform(blend);
-    params.light = Gx::Vec3(-1.2f, 1, -0.8f);
 
     params.environmentDepthMatrix = computeDepthMatrix(cam, params);
 
@@ -128,4 +127,6 @@ void GameState::keyPressed(int key)
     {
         hasClosed = true;
     }
+
+    if(key == 'L') model.swapLight();
 }

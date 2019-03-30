@@ -4,6 +4,7 @@
 #include "application/ShaderCompiler.h"
 
 #include "scene/Scene.h"
+#include "scene/SceneParams.h"
 
 #include "scene/nodes/StaticMeshNode.h"
 #include "scene/nodes/SkyBoxNode.h"
@@ -13,7 +14,6 @@
 
 #include "entities/Entity.h"
 
-#include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
 
 #include <GxGraphics/GxTexture.h>
@@ -62,6 +62,8 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
     featureSet.insert(static_cast<RenderKey::Feature>(0));
 
     ds.get<int>();
+
+    globalLight = ds.get<Gx::Vec3>();
 
     auto tag = ds.get<std::string>();
     while(tag.length())
@@ -149,6 +151,8 @@ void Model::update(const FrameParams &params, Events &events, Gx::PhysicsModel &
 
 void Model::prepareScene(SceneParams &params, float blend)
 {
+    params.light = globalLight;
+
     for(auto &e: entities)
     {
         e.prepareScene(params, blend);

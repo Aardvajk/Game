@@ -5,6 +5,8 @@
 
 #include "scene/RenderKey.h"
 
+#include <GxMaths/GxVector.h>
+
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -44,6 +46,8 @@ public:
 
     Gx::PixelShader &pixelShader(RenderKey::Features features);
 
+void swapLight(){ globalLight.x *= -1; }
+
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     std::vector<Graphics::Handle<Gx::Texture> > textures;
@@ -51,6 +55,8 @@ private:
     std::vector<Graphics::Handle<Gx::PixelShader> > pixelShaders;
 
     std::unordered_map<RenderKey::Features, Gx::PixelShader*> pixelShaderMapping;
+
+    Gx::Vec3 globalLight;
 
     pcx::ptr_vector<SceneNode> nodes;
     pcx::ptr_vector<Gx::Body> bodies;
