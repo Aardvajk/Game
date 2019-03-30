@@ -46,8 +46,6 @@ public:
 
     Gx::PixelShader &pixelShader(RenderKey::Features features);
 
-void swapLight(){ globalLight.x *= -1; }
-
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     std::vector<Graphics::Handle<Gx::Texture> > textures;

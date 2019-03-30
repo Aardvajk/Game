@@ -130,6 +130,7 @@ void compilePixelShaderSet(const std::string &name, RenderKey::Features features
 
     if(features & RenderKey::Feature::Shadows) m.push_back({ "SHADOWS", nullptr });
     if(features & RenderKey::Feature::Diffuse) m.push_back({ "DIFFUSE", nullptr });
+    if(features & RenderKey::Feature::Normal) m.push_back({ "NORMAL", nullptr });
 
     m.push_back({ });
 

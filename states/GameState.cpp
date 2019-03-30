@@ -127,6 +127,4 @@ void GameState::keyPressed(int key)
     {
         hasClosed = true;
     }
-
-    if(key == 'L') model.swapLight();
 }

@@ -12,12 +12,19 @@ float environmentTexel;
 sampler diffuse : register(s2);
 #endif
 
+#if defined(NORMAL)
+sampler normalTex : register(s3);
+#endif
+
+float3 light;
+
 struct PS_INPUT
 {
     vector diffuse : COLOR;
     vector vpos    : TEXCOORD0;
     float3 normal  : TEXCOORD1;
     float2 texcoord: TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 
 struct PS_OUTPUT
@@ -68,14 +75,39 @@ float sampleShadow(PS_INPUT input, matrix worldviewproj, sampler shadow, float t
 }
 #endif
 
+#if defined(NORMAL)
+float3 getNormal(float3 normal_sample, float3 normal, float3 tangent)
+{
+    normal_sample = (normal_sample * 2.0f) - 1.0f;
+
+    tangent = normalize(tangent - dot(tangent, normal) * normal);
+
+    float3 bitangent = cross(normal, -tangent);
+    float3x3 texspace = float3x3(tangent, bitangent, normal);
+
+    return normalize(mul((float3)normal_sample, texspace));
+}
+#endif
+
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
 
+    float3 normal = normalize(input.normal);
+
+#if defined(NORMAL)
+     normal = getNormal(tex2D(normalTex, input.texcoord).rgb, normal, input.tangent);
+#endif
+
+    float3 tolight = normalize(light);
+
+    float s = dot(normal, tolight);
+    if(s < 0.3f) s = 0.3f;
+
 #if defined(DIFFUSE)
-    output.diffuse = input.diffuse * tex2D(diffuse, input.texcoord);
+    output.diffuse = input.diffuse * tex2D(diffuse, input.texcoord) * s;
 #else
-    output.diffuse = input.diffuse;
+    output.diffuse = input.diffuse * s;
 #endif
 
 #if defined(SHADOWS)

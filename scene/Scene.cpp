@@ -115,9 +115,9 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
             graphics.setVertexShader(*graphics.meshVertexShader);
 
             graphics.currentVertexShader()->setMatrix(graphics.device, "viewproj", params.viewMatrix * params.projMatrix);
-            graphics.currentVertexShader()->setVector(graphics.device, "light", params.light);
 
             graphics.setPixelShader(model.pixelShader(key.features()));
+            graphics.currentPixelShader()->setVector(graphics.device, "light", params.light);
 
             if(key.shadows())
             {
@@ -136,6 +136,11 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
             if(key.diffuse())
             {
                 graphics.device.setTexture(2, *key.diffuse());
+            }
+
+            if(key.normal())
+            {
+                graphics.device.setTexture(3, *key.normal());
             }
         }
         else if(pass == RenderPass::ObjectDepth || pass == RenderPass::EnvironmentDepth)
@@ -194,4 +199,5 @@ void Scene::endType(Graphics &graphics)
     graphics.device.setTextureFilter(1, Gx::Graphics::Filter::Linear);
 
     graphics.device.setTexture(2);
+    graphics.device.setTexture(3);
 }

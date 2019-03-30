@@ -59,7 +59,7 @@ TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics
         body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), mass);
     }
 
-    node = scene.addNode(new StaticMeshNode(mesh.get(), RenderKey(true, nullptr), Gx::Matrix::translation(position)));
+    node = scene.addNode(new StaticMeshNode(mesh.get(), RenderKey(true, nullptr, nullptr), Gx::Matrix::translation(position)));
 }
 
 TestShape::~TestShape()

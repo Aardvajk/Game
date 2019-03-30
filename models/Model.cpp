@@ -97,9 +97,10 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
         {
             auto id = ds.get<std::string>();
             auto diffuse = ds.get<std::string>();
+            auto normal = ds.get<std::string>();
             auto pos = ds.get<Gx::Vec3>();
 
-            RenderKey key(true, textureMap[diffuse]);
+            RenderKey key(true, textureMap[diffuse], textureMap[normal]);
             featureSet.insert(key.features());
 
             nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], key, Gx::Matrix::translation(pos))));

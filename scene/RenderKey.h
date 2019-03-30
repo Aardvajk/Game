@@ -18,21 +18,24 @@ public:
     enum class Feature
     {
         Shadows = 1,
-        Diffuse = 2
+        Diffuse = 2,
+        Normal = 4
     };
 
     using Features = pcx::flags<Feature>;
 
     RenderKey();
-    RenderKey(bool shadows, const Gx::Texture *diffuse);
+    RenderKey(bool shadows, const Gx::Texture *diffuse, const Gx::Texture *normal);
 
     bool shadows() const { return s; }
     const Gx::Texture *diffuse() const { return d; }
+    const Gx::Texture *normal() const { return n; }
     Features features() const { return f; }
 
 private:
     bool s;
     const Gx::Texture *d;
+    const Gx::Texture *n;
 
     Features f;
 };

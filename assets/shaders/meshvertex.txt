@@ -7,6 +7,7 @@ struct VS_INPUT
     float3 normal   : NORMAL;
     vector diffuse  : COLOR;
     float2 texcoords: TEXCOORD;
+    float3 tangent  : TANGENT;
 };
 
 struct VS_OUTPUT
@@ -16,9 +17,8 @@ struct VS_OUTPUT
     vector vpos     : TEXCOORD0;
     float3 normal   : TEXCOORD1;
     float2 texcoords: TEXCOORD2;
+    float3 tangent  : TEXCOORD3;
 };
-
-float3 light;
 
 VS_OUTPUT main(VS_INPUT input)
 {
@@ -27,19 +27,12 @@ VS_OUTPUT main(VS_INPUT input)
     output.position = mul(input.position, mul(world, viewproj));
 
     float3 normal = mul(input.normal, (float3x3)world);
-    normal = normalize(normal);
 
-    float3 tolight = normalize(light);
-
-    float s = dot(normal, tolight);
-    if(s < 0.3f) s = 0.3f;
-
-    output.diffuse = input.diffuse * s;
-    output.diffuse.a = 1;
-
+    output.diffuse = input.diffuse;
     output.vpos = mul(input.position, world);
     output.normal = mul(input.normal, (float3x3)world);
     output.texcoords = input.texcoords;
+    output.tangent = input.tangent;
 
     return output;
 }
