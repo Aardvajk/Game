@@ -15,8 +15,10 @@ void Camera::update(Events &events, const Gx::SizeF &size, float delta)
     auto pos = tr.value().position();
     auto ang = tr.value().angle();
 
-    Gx::Vec3 forw, right;
-    tr.value().flatVectors(forw, right);
+    auto m = Gx::Matrix::rotationY(ang.x);
+
+    auto forw = Gx::Vec3(0, 0, 1).transformedNormal(m).normalized();
+    auto right = Gx::Vec3(1, 0, 0).transformedNormal(m).normalized();
 
     float speed = 10.0f * delta;
 

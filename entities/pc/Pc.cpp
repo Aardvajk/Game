@@ -96,8 +96,10 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     pos.store();
     time.store();
 
-    Gx::Vec3 forw, right;
-    params.camera.transform().flatVectors(forw, right);
+    auto m = Gx::Matrix::rotationY(params.camera.transform().rotation().x);
+
+    auto forw = Gx::Vec3(0, 0, 1).transformedNormal(m).normalized();
+    auto right = Gx::Vec3(1, 0, 0).transformedNormal(m).normalized();
 
     float speed = 4.0f * delta;
     Gx::Vec3 step(0, 0, 0);
@@ -119,7 +121,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     if(step.length())
     {
-        ang.setRange(ang.value(), Gx::Quaternion::axisRotation({ 0, lookAngle(step.normalized()), 0 }), 0.25f);
+        ang.setRange(ang.value(), Gx::Quaternion::axisRotation({ 0, lookAngle(step.normalized()), 0 }), 0.05f);
     }
 
     float blMod[2] = { 0, 0 };
@@ -147,12 +149,9 @@ struct WeightedKey
 void Pc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
-    //auto ba = ang.value(blend);
+    auto tr = ang.value(blend).matrix() * Gx::Matrix::translation(bp);
 
     params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 2.2f, 2.2f }, { -100, 100 });
-
-//    auto tr = Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp);
-    auto tr = ang.value(blend).matrix() * Gx::Matrix::translation(bp);
 
     node->updateTransform(tr);
 
