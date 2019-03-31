@@ -1,7 +1,12 @@
 #include "Events.h"
 
-Events::Events() : act(true), rawMouse(0, 0)
+Events::Events() : act(true), rawMouse(0, 0), tm(0)
 {
+}
+
+void Events::update(float delta)
+{
+    tm += delta;
 }
 
 Gx::Vec2 Events::rawMouseDelta() const
@@ -12,4 +17,9 @@ Gx::Vec2 Events::rawMouseDelta() const
 bool Events::isKeyDown(int key) const
 {
     return keys.find(key) != keys.end();
+}
+
+float Events::time() const
+{
+    return tm;
 }

@@ -3,6 +3,7 @@
 
 #include "entities/Entity.h"
 
+#include "maths/FadeValue.h"
 #include "maths/Kcc.h"
 
 #include "graphics/Graphics.h"
@@ -23,7 +24,7 @@ class RigMeshNode;
 class Pc : public Entity
 {
 public:
-    Pc(Graphics &graphics, Scene &scene);
+    Pc(Events &events, Graphics &graphics, Scene &scene);
 
     virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) override;
     virtual void prepareScene(SceneParams &params, float blend) override;
@@ -38,7 +39,7 @@ private:
     std::unordered_map<std::string, Gx::Animation> anims;
 
     Gx::BlendVec3 pos;
-    Gx::BlendFloat ang;
+    FadeFloat ang;
 
     Gx::BlendFloat time;
 };

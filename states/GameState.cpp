@@ -13,7 +13,6 @@
 #include "entities/pc/Pc.h"
 
 #include "debug/DebugRender.h"
-#include "debug/DebugText.h"
 
 #include <GxCore/GxDebug.h>
 
@@ -44,7 +43,7 @@ GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), s
     cx.connect(events.keyDown, this, &keyPressed);
 
     model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
-    model.addEntity(pc = new Pc(graphics, scene));
+    model.addEntity(pc = new Pc(events, graphics, scene));
 }
 
 bool GameState::update(AppParams &app, Events &events, float delta)

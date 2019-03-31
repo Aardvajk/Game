@@ -83,6 +83,7 @@ void Application::update(float &accumulator, float delta)
 {
     while(accumulator >= delta)
     {
+        events.update(delta);
         fps.update(delta);
 
         if(!state->update(params, events, delta))

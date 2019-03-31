@@ -50,7 +50,7 @@ float clamp(float v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
 
 }
 
-Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
+Pc::Pc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f }), ang(&events, 0)
 {
     pcx::data_ifstream ds(resourcePath("assets/models/model.dat"));
 
@@ -94,7 +94,6 @@ Pc::Pc(Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f })
 void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     pos.store();
-    ang.store();
     time.store();
 
     Gx::Vec3 forw, right;
@@ -120,7 +119,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     if(step.length())
     {
-        ang.set(lookAngle(step.normalized()));
+        ang.setRange(ang.value(), lookAngle(step.normalized()), 0.25f);
     }
 
     float blMod[2] = { 0, 0 };

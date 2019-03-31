@@ -102,7 +102,8 @@ HEADERS += \
     scene/nodes/SkyBoxNode.h \
     graphics/SkyBox.h \
     graphics/vertices/RigVertex.h \
-    scene/nodes/RigMeshNode.h
+    scene/nodes/RigMeshNode.h \
+    maths/FadeValue.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \

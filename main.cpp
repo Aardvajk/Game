@@ -25,13 +25,10 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         compilePixelShader("unpack");
         compilePixelShader("skybox");
 
-        compilePixelShaderSet("mesh", { });
-        compilePixelShaderSet("mesh", RenderKey::Feature::Shadows);
-        compilePixelShaderSet("mesh", RenderKey::Feature::Diffuse);
-        compilePixelShaderSet("mesh", RenderKey::Feature::Normal);
-        compilePixelShaderSet("mesh", RenderKey::Feature::Shadows | RenderKey::Feature::Diffuse);
-        compilePixelShaderSet("mesh", RenderKey::Feature::Shadows | RenderKey::Feature::Normal);
-        compilePixelShaderSet("mesh", RenderKey::Feature::Shadows | RenderKey::Feature::Diffuse | RenderKey::Feature::Normal);
+        for(int i = 0; i < 8; ++i)
+        {
+            compilePixelShaderSet("mesh", static_cast<RenderKey::Feature>(i));
+        }
 
         Application app({ { 1024, 768 }, Gx::DisplaySettings::Flag::Windowed | Gx::DisplaySettings::Flag::VSync });
         return app.exec();
