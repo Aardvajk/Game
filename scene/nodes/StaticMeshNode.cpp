@@ -29,6 +29,12 @@ RenderKey StaticMeshNode::key() const
 void StaticMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &params) const
 {
     graphics.currentVertexShader()->setMatrix(graphics.device, "world", tr);
+
+if(graphics.currentPixelShader())
+{
+    graphics.currentPixelShader()->setMatrix(graphics.device, "world", tr);
+}
+
     mesh->renderTriangleList(graphics.device, sizeof(MeshVertex));
 }
 

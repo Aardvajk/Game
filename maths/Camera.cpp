@@ -66,3 +66,4 @@ Gx::Matrix Camera::viewMatrix(float blend) const
 
     return Gx::Matrix::lookAt(pos, pos + look, up);
 }
+

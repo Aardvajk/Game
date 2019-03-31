@@ -21,7 +21,7 @@ float3 light;
 struct PS_INPUT
 {
     vector diffuse : COLOR;
-    vector vpos    : TEXCOORD0;
+    float3 vpos    : TEXCOORD0;
     float3 normal  : TEXCOORD1;
     float2 texcoord: TEXCOORD2;
     float3 tangent : TEXCOORD3;
@@ -59,7 +59,7 @@ float sampleShadow(PS_INPUT input, matrix worldviewproj, sampler shadow, float t
 {
     vector diffuse = input.diffuse;
 
-    vector pos = mul(input.vpos + vector(input.normal * 0.01f, 0), worldviewproj);
+    vector pos = mul(float4(input.vpos, 1) + vector(input.normal * 0.01f, 0), worldviewproj);
 
     float2 c = 0.5f * pos.xy / pos.w + float2(0.5f, 0.5f);
     c.y = 1.0f - c.y;

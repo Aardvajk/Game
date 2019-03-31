@@ -67,18 +67,18 @@ pcx::buffer complexMesh(const DebugMesh &m, const Gx::Color &color, bool mixed)
             {
                 auto n = normal(m.vs[i[0]], m.vs[i[j]], m.vs[i[j + 1]]);
 
-                ds << m.vs[i[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-                ds << m.vs[i[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-                ds << m.vs[i[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+                ds << m.vs[i[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+                ds << m.vs[i[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
             }
         }
         else
         {
             for(std::size_t j = 1; j < i.size() - 1; ++j)
             {
-                ds << m.vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-                ds << m.vs[i[j]] << vn[i[j]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
-                ds << m.vs[i[j + 1]] << vn[i[j + 1]] << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                ds << m.vs[i[0]] << vn[i[0]] << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+                ds << m.vs[i[j]] << vn[i[j]] << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+                ds << m.vs[i[j + 1]] << vn[i[j + 1]] << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
             }
         }
     }
@@ -260,9 +260,9 @@ pcx::buffer DebugMesh::flatMesh(const DebugMesh &m, const Gx::Color &color)
 
         for(std::size_t j = 1; j < e.size() - 1; ++j)
         {
-            ds << m.vs[e[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-            ds << m.vs[e[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-            ds << m.vs[e[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+            ds << m.vs[e[0]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+            ds << m.vs[e[j]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
+            ds << m.vs[e[j + 1]] << n << Gx::Rgba(color) << Gx::Vec2(0, 0) << Gx::Vec3(0, 0, 0);
         }
     }
 

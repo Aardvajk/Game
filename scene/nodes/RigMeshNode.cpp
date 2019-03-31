@@ -31,6 +31,11 @@ void RigMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &param
     graphics.currentVertexShader()->setMatrix(graphics.device, "world", tr);
     graphics.currentVertexShader()->setMatrixArray(graphics.device, "bones", palette);
 
+if(graphics.currentPixelShader())
+{
+    graphics.currentPixelShader()->setMatrix(graphics.device, "world", tr);
+}
+
     mesh->renderTriangleList(graphics.device, sizeof(RigVertex));
 }
 
