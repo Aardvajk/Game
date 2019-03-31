@@ -10,6 +10,7 @@
 
 #include <GxMaths/GxBlendValue.h>
 #include <GxMaths/GxVector.h>
+#include <GxMaths/GxQuaternion.h>
 
 #include <GxAnimation/GxSkeleton.h>
 #include <GxAnimation/GxAnimation.h>
@@ -39,7 +40,7 @@ private:
     std::unordered_map<std::string, Gx::Animation> anims;
 
     Gx::BlendVec3 pos;
-    FadeFloat ang;
+    FadeValue<Gx::Quaternion> ang;
 
     Gx::BlendFloat time;
 };

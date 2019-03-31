@@ -25,8 +25,6 @@ public:
 
     bool drawPhysics;
     bool drawSkeleton;
-
-    float test;
 };
 
 #endif // SCENEPARAMS_H

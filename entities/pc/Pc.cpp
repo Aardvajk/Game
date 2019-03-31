@@ -50,7 +50,7 @@ float clamp(float v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
 
 }
 
-Pc::Pc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f }), ang(&events, 0)
+Pc::Pc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f }), ang(&events, Gx::Quaternion::identity())
 {
     pcx::data_ifstream ds(resourcePath("assets/models/model.dat"));
 
@@ -119,7 +119,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     if(step.length())
     {
-        ang.setRange(ang.value(), lookAngle(step.normalized()), 0.25f);
+        ang.setRange(ang.value(), Gx::Quaternion::axisRotation({ 0, lookAngle(step.normalized()), 0 }), 0.25f);
     }
 
     float blMod[2] = { 0, 0 };
@@ -147,11 +147,12 @@ struct WeightedKey
 void Pc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
-    auto ba = ang.value(blend);
+    //auto ba = ang.value(blend);
 
     params.objectDepthMatrix = Gx::Matrix::lookAt(bp + Gx::Vec3(0, 2, 0), bp + Gx::Vec3(0, -2, 0), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 2.2f, 2.2f }, { -100, 100 });
 
-    auto tr = Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp);
+//    auto tr = Gx::Matrix::rotationY(ba) * Gx::Matrix::translation(bp);
+    auto tr = ang.value(blend).matrix() * Gx::Matrix::translation(bp);
 
     node->updateTransform(tr);
 
