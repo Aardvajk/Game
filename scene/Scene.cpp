@@ -118,6 +118,7 @@ void Scene::beginType(RenderPass pass, RenderType type, const RenderKey &key, Gr
 
             graphics.setPixelShader(model.pixelShader(key.features()));
             graphics.currentPixelShader()->setVector(graphics.device, "light", params.light);
+            graphics.currentPixelShader()->setVector(graphics.device, "eye", params.camera.position());
 
             if(key.shadows())
             {
@@ -193,11 +194,7 @@ void Scene::endType(Graphics &graphics)
     graphics.setPixelShader();
 
     graphics.device.setTexture(0);
-    graphics.device.setTextureFilter(0, Gx::Graphics::Filter::Linear);
-
     graphics.device.setTexture(1);
-    graphics.device.setTextureFilter(1, Gx::Graphics::Filter::Linear);
-
     graphics.device.setTexture(2);
     graphics.device.setTexture(3);
 }

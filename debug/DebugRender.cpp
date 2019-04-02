@@ -160,7 +160,7 @@ void DebugLines::addShape(const Gx::Shape &shape, const Gx::Matrix &tr, const Gx
 
 void DebugLines::addPhysics(const Gx::PhysicsModel &physics, const Gx::Color &color)
 {
-    for(int index = 0; index < physics.count(); ++index)
+    for(int index = 0; index < physics.bodyCount(); ++index)
     {
         auto &body = physics.body(index);
         auto tr = body.matrix();

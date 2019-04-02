@@ -54,6 +54,11 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     skyBoxPixelShader = resources.add(new Gx::PixelShader(device, loadRawData(resourcePath("assets/shaders/skyboxpixel.dat"))));
 
     genericBuffer = resources.add(new VertexBuffer(device, 1000 * sizeof(MeshVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default));
+
+    device.setTextureFilter(0, Gx::Graphics::Filter::None);
+    device.setTextureFilter(1, Gx::Graphics::Filter::None);
+    device.setTextureFilter(2, Gx::Graphics::Filter::Anisotropic);
+    device.setTextureFilter(3, Gx::Graphics::Filter::Anisotropic);
 }
 
 Graphics::~Graphics() = default;

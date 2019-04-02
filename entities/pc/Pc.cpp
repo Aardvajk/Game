@@ -121,7 +121,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
 
     if(step.length())
     {
-        ang.setRange(ang.value(), Gx::Quaternion::axisRotation({ 0, lookAngle(step.normalized()), 0 }), 0.05f);
+        ang.setRange(ang.value(), Gx::Quaternion::axisRotation({ 0, lookAngle(step.normalized()), 0 }), 0.1f);
     }
 
     float blMod[2] = { 0, 0 };
