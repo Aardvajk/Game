@@ -30,10 +30,7 @@ void StaticMeshNode::render(RenderPass pass, Graphics &graphics, SceneParams &pa
 {
     graphics.currentVertexShader()->setMatrix(graphics.device, "world", tr);
 
-if(graphics.currentPixelShader())
-{
-    graphics.currentPixelShader()->setMatrix(graphics.device, "world", tr);
-}
+    graphics.currentPixelShader()->setFloat(graphics.device, "specFac", 1);
 
     mesh->renderTriangleList(graphics.device, sizeof(MeshVertex));
 }

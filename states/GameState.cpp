@@ -42,7 +42,7 @@ GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), s
 {
     cx.connect(events.keyDown, this, &keyPressed);
 
-    model.load(graphics, scene, physics, resourcePath("assets/map.dat"));
+    model.load(graphics, scene, physics, light, resourcePath("assets/map.dat"));
     model.addEntity(pc = new Pc(events, graphics, scene));
 }
 
@@ -64,24 +64,27 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
     model.update(params, events, physics, delta);
 
-    if(shapes < 100)
+    if(shapes < 10)
     {
         time += delta;
         if(time > 0.05f)
         {
             time = 0;
-//            ++shapes;
+            ++shapes;
 
-//            addTestShape(model, graphics, scene, physics);
+            addTestShape(model, graphics, scene, physics);
         }
     }
 
     return !hasClosed;
 }
 
-Gx::Matrix computeDepthMatrix(const Camera &cam, const SceneParams &params)
+Gx::Matrix computeDepthMatrix(const Camera &cam, SceneParams &params)
 {
-    return Gx::Matrix::lookAt(Gx::Vec3(0, 10, 0), Gx::Vec3(5, 1, 5), Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 60.0f, 60.0f }, { -10, 30 });
+    auto l = -params.light.normalized();
+    auto c = Gx::Vec3(-10, 10, -10);
+
+    return Gx::Matrix::lookAt(c, c + l, Gx::Vec3(0, 0, 1)) * Gx::Matrix::ortho({ 50.0f, 50.0f }, { -10, 50 });
 }
 
 void GameState::render(Graphics &graphics, float blend)
@@ -93,12 +96,14 @@ void GameState::render(Graphics &graphics, float blend)
 
     params.camera = cam.transform(blend);
 
-    params.environmentDepthMatrix = computeDepthMatrix(cam, params);
-
     params.drawPhysics = drawPhysics;
     params.drawSkeleton = drawSkeleton;
 
+    params.light = light;
+    params.environmentDepthMatrix = computeDepthMatrix(cam, params);
+
     model.prepareScene(params, blend);
+
     scene.render(graphics, params);
 
     DebugPoints::render(graphics, params);
@@ -126,4 +131,6 @@ void GameState::keyPressed(int key)
     {
         hasClosed = true;
     }
+
+    if(key == 'T') model.test();
 }

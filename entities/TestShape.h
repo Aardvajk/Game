@@ -31,6 +31,8 @@ public:
     virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) override;
     virtual void prepareScene(SceneParams &params, float blend) override;
 
+    Gx::Body *physicsBody(){ return body.get(); }
+
 private:
     Graphics::Handle<VertexBuffer> mesh;
     pcx::scoped_ptr<StaticMeshNode> node;

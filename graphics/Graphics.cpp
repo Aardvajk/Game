@@ -59,6 +59,7 @@ Graphics::Graphics(HWND hw, const Gx::DisplaySettings &settings) : device(hw, se
     device.setTextureFilter(1, Gx::Graphics::Filter::None);
     device.setTextureFilter(2, Gx::Graphics::Filter::Anisotropic);
     device.setTextureFilter(3, Gx::Graphics::Filter::Anisotropic);
+    device.setTextureFilter(4, Gx::Graphics::Filter::Linear);
 }
 
 Graphics::~Graphics() = default;

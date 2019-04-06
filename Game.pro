@@ -112,9 +112,9 @@ DISTFILES += \
     assets/shaders/depthpixel.txt \
     assets/shaders/unpackpixel.txt \
     assets/shaders/meshvertex.txt \
-    assets/shaders/meshpixel.txt \
     assets/shaders/skyboxpixel.txt \
     assets/shaders/skyboxvertex.txt \
     assets/shaders/rigdepthvertex.txt \
-    assets/shaders/rigvertex.txt
+    assets/shaders/rigvertex.txt \
+    assets/shaders/litpixel.txt
 

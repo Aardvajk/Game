@@ -27,7 +27,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
         for(int i = 0; i < 8; ++i)
         {
-            compilePixelShaderSet("mesh", static_cast<RenderKey::Feature>(i));
+            compilePixelShaderSet("lit", static_cast<RenderKey::Feature>(i));
         }
 
         Application app({ { 1024, 768 }, Gx::DisplaySettings::Flag::Windowed | Gx::DisplaySettings::Flag::VSync });

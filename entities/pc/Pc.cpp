@@ -96,7 +96,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     pos.store();
     time.store();
 
-    auto m = Gx::Matrix::rotationY(params.camera.transform().rotation().x);
+    auto m = Gx::Matrix::rotationY(params.camera.transform().angle().x);
 
     auto forw = Gx::Vec3(0, 0, 1).transformedNormal(m).normalized();
     auto right = Gx::Vec3(1, 0, 0).transformedNormal(m).normalized();
@@ -104,7 +104,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     float speed = 4.0f * delta;
     Gx::Vec3 step(0, 0, 0);
 
-    if(!events.isKeyDown(VK_RBUTTON))
+    if(!events.isKeyDown(VK_RBUTTON) && !events.isKeyDown(VK_SHIFT))
     {
         if(events.isKeyDown('W')) step += forw * speed;
         if(events.isKeyDown('S')) step -= forw * speed;

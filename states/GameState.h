@@ -36,6 +36,8 @@ private:
     Scene scene;
     Camera cam;
 
+    Gx::Vec3 light;
+
     Pc *pc;
     int shapes;
     float time;

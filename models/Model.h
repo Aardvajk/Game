@@ -37,7 +37,7 @@ public:
     Model();
     ~Model();
 
-    bool load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path);
+    bool load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, Gx::Vec3 &light, const std::string &path);
 
     void addEntity(Entity *e);
 
@@ -46,6 +46,8 @@ public:
 
     Gx::PixelShader &pixelShader(RenderKey::Features features);
 
+    void test();
+
 private:
     std::vector<Graphics::Handle<VertexBuffer> > buffers;
     std::vector<Graphics::Handle<Gx::Texture> > textures;
@@ -53,8 +55,6 @@ private:
     std::vector<Graphics::Handle<Gx::PixelShader> > pixelShaders;
 
     std::unordered_map<RenderKey::Features, Gx::PixelShader*> pixelShaderMapping;
-
-    Gx::Vec3 globalLight;
 
     pcx::ptr_vector<SceneNode> nodes;
     pcx::ptr_vector<Gx::Body> bodies;

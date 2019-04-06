@@ -16,6 +16,8 @@ struct VS_OUTPUT
 {
     vector position : POSITION;
     vector diffuse  : COLOR;
+    float3 wpos     : TEXCOORD0;
+    float3 normal   : TEXCOORD1;
 };
 
 float3 light;
@@ -28,20 +30,13 @@ VS_OUTPUT main(VS_INPUT input)
     skinning += bones[input.indices[0]] * input.weights[0];
     skinning += bones[input.indices[1]] * input.weights[1];
 
-    output.position = float4(mul(input.position, skinning), 1);
+    float4 skinned = float4(mul(input.position, skinning), 1);
 
-    output.position = mul(output.position, mul(mul(world, view), proj));
+    output.position = mul(skinned, mul(mul(world, view), proj));
+    output.wpos = mul(skinned, world).xyz;
+    output.normal = mul(mul(input.normal, (float3x3)skinning), (float3x3)world);
 
-    float3 normal = mul(input.normal, (float3x3)skinning);
-    normal = mul(normal, (float3x3)world);
-    normal = normalize(normal);
-
-    float3 tolight = normalize(light);
-
-    float s = dot(normal, tolight);
-    if(s < 0.5f) s = 0.5f;
-
-    output.diffuse = vector(1, 1, 1, 1) * s;
+    output.diffuse = vector(1, 1, 1, 1);
     output.diffuse.a = 1;
 
     return output;

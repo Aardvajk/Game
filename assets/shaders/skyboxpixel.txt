@@ -1,4 +1,4 @@
-sampler cube : register(s0);
+sampler cube : register(s4);
 
 struct PS_INPUT
 {

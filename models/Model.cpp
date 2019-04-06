@@ -47,7 +47,7 @@ pcx::data_istream &operator>>(pcx::data_istream &ds, Gx::PolyhedronShape::Face &
 Model::Model() = default;
 Model::~Model() = default;
 
-bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, const std::string &path)
+bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, Gx::Vec3 &light, const std::string &path)
 {
     pcx::data_ifstream ds(path);
     if(!ds.is_open())
@@ -63,7 +63,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
     ds.get<int>();
 
-    globalLight = ds.get<Gx::Vec3>();
+    light = ds.get<Gx::Vec3>();
 
     auto tag = ds.get<std::string>();
     while(tag.length())
@@ -100,7 +100,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
             auto normal = ds.get<std::string>();
             auto pos = ds.get<Gx::Vec3>();
 
-            RenderKey key(false, textureMap[diffuse], textureMap[normal]);
+            RenderKey key(true, textureMap[diffuse], textureMap[normal]);
             featureSet.insert(key.features());
 
             nodes.push_back(scene.addNode(new StaticMeshNode(bufferMap[id], key, Gx::Matrix::translation(pos))));
@@ -128,7 +128,7 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, co
 
     for(auto perm: featureSet)
     {
-        auto data = loadRawData(resourcePath(pcx::str("assets/shaders/", pixelShaderName("mesh", perm))));
+        auto data = loadRawData(resourcePath(pcx::str("assets/shaders/", pixelShaderName("lit", perm))));
 
         pixelShaders.push_back(graphics.resources.add(new Gx::PixelShader(graphics.device, data)));
         pixelShaderMapping[perm] = pixelShaders.back().get();
@@ -152,8 +152,6 @@ void Model::update(const FrameParams &params, Events &events, Gx::PhysicsModel &
 
 void Model::prepareScene(SceneParams &params, float blend)
 {
-    params.light = globalLight;
-
     for(auto &e: entities)
     {
         e.prepareScene(params, blend);
@@ -163,5 +161,20 @@ void Model::prepareScene(SceneParams &params, float blend)
 Gx::PixelShader &Model::pixelShader(RenderKey::Features features)
 {
     return *pixelShaderMapping[features];
+}
+
+#include "entities/TestShape.h"
+
+void Model::test()
+{
+    auto r = [](){ return (((std::rand() % 1000) / 500) - 1.0f) * 50; };
+
+    for(auto &e: entities)
+    {
+        if(auto t = dynamic_cast<TestShape*>(&e))
+        {
+            t->physicsBody()->applyCentralForce({ r(), 100, r() });
+        }
+    }
 }
 
