@@ -11,7 +11,7 @@
 
 #include <pcx/str.h>
 
-Application::Application(const Gx::DisplaySettings &settings) : Gx::Application(settings.size), params{ settings.size }, graphics(hwnd(), settings)
+Application::Application(const Gx::Point &position, const Gx::DisplaySettings &settings) : Gx::Application(position, settings.size), params{ settings.size }, graphics(hwnd(), settings)
 {
     DebugText::acquire(graphics);
 

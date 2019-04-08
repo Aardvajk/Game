@@ -24,6 +24,7 @@
 #include <GxPhysics/GxShapes/GxCapsuleShape.h>
 #include <GxPhysics/GxShapes/GxSphereShape.h>
 #include <GxPhysics/GxShapes/GxConeShape.h>
+#include <GxPhysics/GxShapes/GxCylinderShape.h>
 
 #include <vector>
 #include <unordered_set>
@@ -140,6 +141,15 @@ void DebugLines::addShape(const Gx::Shape &shape, const Gx::Matrix &tr, const Gx
     else if(auto c = dynamic_cast<const Gx::ConeShape*>(&shape))
     {
         m = DebugMesh::cone(8, c->radius(), c->height());
+    }
+    else if(auto c = dynamic_cast<const Gx::CylinderShape*>(&shape))
+    {
+        m = DebugMesh::cylinder(8, c->radius(), c->height());
+    }
+
+    for(auto &vert: m.vs)
+    {
+        DebugPoints::addPoint(vert.transformedCoord(tr), { 1, 1, 1 });
     }
 
     std::unordered_set<std::pair<std::size_t, std::size_t>, EdgeHash> edges;

@@ -112,8 +112,8 @@ PS_OUTPUT main(PS_INPUT input)
 
     float3 tolight = normalize(light);
 
-    float s = dot(normal, tolight);
-    if(s < 0.3f) s = 0.3f;
+    float s = saturate(dot(normal, tolight));
+    s = 0.5f + (s * 0.5f);
 
 #if defined(DIFFUSE)
     output.diffuse = input.diffuse * tex2D(diffuse, input.texcoord) * s;

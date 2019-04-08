@@ -225,9 +225,11 @@ DebugMesh DebugMesh::cone(unsigned segments, float radius, float height)
 
     m.vs.push_back({ 0, halfHt, 0 });
 
-    for(float a = 0; a < twoPi; a += inc)
+    float a = 0;
+    for(unsigned i = 0; i < segments; ++i)
     {
         m.vs.push_back({ std::sin(a) * radius, -halfHt, std::cos(a) * radius });
+        a += inc;
     }
 
     for(std::size_t i = 1; i < m.vs.size(); ++i)
@@ -243,6 +245,50 @@ DebugMesh DebugMesh::cone(unsigned segments, float radius, float height)
         std::size_t j = i < m.vs.size() - 1 ? i + 1 : 2;
 
         m.fs.push_back({ 1, j, i });
+        m.ft.push_back(FaceType::Flat);
+    }
+
+    return m;
+}
+
+DebugMesh DebugMesh::cylinder(unsigned segments, float radius, float height)
+{
+    DebugMesh m;
+
+    const float twoPi = M_PI * 2;
+    const float halfHt = height / 2;
+    const float inc = twoPi / segments;
+
+    float a = 0;
+    for(unsigned i = 0; i < segments; ++i)
+    {
+        m.vs.push_back({ std::sin(twoPi - a) * radius, halfHt, std::cos(twoPi - a) * radius });
+        a += inc;
+    }
+
+    a = 0;
+    for(unsigned i = 0; i < segments; ++i)
+    {
+        m.vs.push_back({ std::sin(twoPi - a) * radius, -halfHt, std::cos(twoPi - a) * radius });
+        a += inc;
+    }
+
+    for(std::size_t i = 0; i < segments; ++i)
+    {
+        std::size_t j = i < segments - 1 ? i + 1 : 0;
+
+        m.fs.push_back({ i, j, j + segments, i + segments});
+        m.ft.push_back(FaceType::Smooth);
+    }
+
+    for(std::size_t i = 1; i < segments; ++i)
+    {
+        std::size_t j = i < segments - 1 ? i + 1 : 0;
+
+        m.fs.push_back({ 0, j, i });
+        m.ft.push_back(FaceType::Flat);
+
+        m.fs.push_back({ segments, i + segments, j + segments });
         m.ft.push_back(FaceType::Flat);
     }
 

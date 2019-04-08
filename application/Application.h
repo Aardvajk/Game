@@ -16,7 +16,7 @@ class State;
 class Application : public Gx::Application
 {
 public:
-    Application(const Gx::DisplaySettings &settings);
+    Application(const Gx::Point &position, const Gx::DisplaySettings &settings);
     virtual ~Application() override;
 
     int exec();
