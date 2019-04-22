@@ -161,7 +161,7 @@ void Pc::prepareScene(SceneParams &params, float blend)
 
     float total = bl[0] + bl[1];
 
-    if(total < 1.0f) keys.push_back({ { }, 1.0f - total });
+    if(total < 1.0f) keys.push_back({ anims["Idle"].keyFrame(t), 1.0f - total });
     if(bl[0]) keys.push_back({ anims["Walk"].keyFrame(t), bl[0] });
     if(bl[1]) keys.push_back({ anims["Run"].keyFrame(t), bl[1] });
 

@@ -21,6 +21,7 @@ TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics
 
     int type = std::rand() % 6;
     float mass = 0.2f;
+    unsigned detail = 32;
 
     if(type == 0)
     {
@@ -34,14 +35,14 @@ TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics
         float radius = dims.x * 0.5f;
         float height = radius * (3 + (std::rand() % 2));
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(16, 16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::capsule(detail, detail, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::CapsuleShape(radius, height), Gx::Matrix::translation(position), mass);
     }
     else if(type == 2)
     {
         float radius = dims.x * 0.5f;
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::sphere(16, 16, radius), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::smoothMesh(DebugMesh::sphere(detail, detail, radius), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::SphereShape(radius), Gx::Matrix::translation(position), 1.0f);
     }
     else if(type == 3)
@@ -56,7 +57,7 @@ TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics
         float radius = dims.x * 0.5f;
         float height = radius * (2 + (std::rand() % 2));
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cone(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cone(detail, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::ConeShape(radius, height), Gx::Matrix::translation(position), mass);
     }
     else if(type == 5)
@@ -64,7 +65,7 @@ TestShape::TestShape(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics
         float radius = dims.x * 0.5f;
         float height = radius * (2 + (std::rand() % 2));
 
-        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cylinder(16, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
+        mesh = graphics.resources.add(new VertexBuffer(graphics.device, DebugMesh::mixedMesh(DebugMesh::cylinder(detail, radius, height), Gx::Color(r(), r(), r())), { }, Gx::Graphics::Pool::Managed));
         body = physics.createBody(new Gx::CylinderShape(radius, height), Gx::Matrix::translation(position), mass);
     }
 

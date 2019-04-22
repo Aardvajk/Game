@@ -53,7 +53,7 @@ void Scene::render(Graphics &graphics, SceneParams &params)
     render(RenderPass::EnvironmentDepth, graphics, params);
 
     old.apply(graphics.device);
-    graphics.device.clear({ 0.4f, 0.6f, 0.8f }, 1.0f);
+    graphics.device.clear(1.0f);
 
     render(RenderPass::Normal, graphics, params);
 

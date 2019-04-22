@@ -59,7 +59,9 @@ bool Model::load(Graphics &graphics, Scene &scene, Gx::PhysicsModel &physics, Gx
     std::unordered_map<std::string, Gx::Texture*> textureMap;
 
     std::unordered_set<RenderKey::Features> featureSet;
+
     featureSet.insert(static_cast<RenderKey::Feature>(0));
+    featureSet.insert(RenderKey::Feature::Shadows);
 
     ds.get<int>();
 

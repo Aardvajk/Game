@@ -42,7 +42,7 @@ GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), s
 {
     cx.connect(events.keyDown, this, &keyPressed);
 
-    model.load(graphics, scene, physics, light, resourcePath("assets/map.dat"));
+    model.load(graphics, scene, physics, light, resourcePath("assets/room.dat"));
     model.addEntity(pc = new Pc(events, graphics, scene));
 }
 

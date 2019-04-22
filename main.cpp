@@ -30,7 +30,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
             compilePixelShaderSet("lit", static_cast<RenderKey::Feature>(i));
         }
 
-        Application app({ 100, 100 }, { { 1024, 768 }, Gx::DisplaySettings::Flag::Windowed | Gx::DisplaySettings::Flag::VSync });
+        Application app({ 100, 100 }, { { 1024, 768 }, Gx::DisplaySettings::Flag::Windowed | Gx::DisplaySettings::Flag::VSync, 16 });
         return app.exec();
     }
     
