@@ -117,7 +117,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     }
 
     kcc.move(physics, step);
-    pos.set(kcc.position());
+    pos.set(kcc.position() + Gx::Vec3(0, -0.1f, 0));
 
     if(step.length())
     {
