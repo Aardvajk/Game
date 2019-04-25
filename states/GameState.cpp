@@ -10,7 +10,7 @@
 #include "scene/SceneParams.h"
 
 #include "entities/TestShape.h"
-#include "entities/pc/Pc.h"
+#include "entities/testpc/TestPc.h"
 
 #include "debug/DebugRender.h"
 
@@ -43,7 +43,7 @@ GameState::GameState(Events &events, Graphics &graphics) : graphics(graphics), s
     cx.connect(events.keyDown, this, &keyPressed);
 
     model.load(graphics, scene, physics, light, resourcePath("assets/room.dat"));
-    model.addEntity(pc = new Pc(events, graphics, scene));
+    model.addEntity(pc = new TestPc(events, graphics, scene));
 }
 
 bool GameState::update(AppParams &app, Events &events, float delta)

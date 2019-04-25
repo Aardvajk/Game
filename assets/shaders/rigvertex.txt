@@ -8,6 +8,7 @@ struct VS_INPUT
 {
     vector position : POSITION;
     float3 normal   : NORMAL;
+    vector diffuse  : COLOR;
     int4 indices    : BLENDINDICES;
     float4 weights  : BLENDWEIGHT;
 };
@@ -36,7 +37,7 @@ VS_OUTPUT main(VS_INPUT input)
     output.wpos = mul(skinned, world).xyz;
     output.normal = mul(mul(input.normal, (float3x3)skinning), (float3x3)world);
 
-    output.diffuse = vector(1, 1, 1, 1);
+    output.diffuse = input.diffuse;
     output.diffuse.a = 1;
 
     return output;

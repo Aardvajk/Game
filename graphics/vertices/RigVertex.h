@@ -10,6 +10,7 @@ struct RigVertex
 {
     Gx::Vec3 position;
     Gx::Vec3 normal;
+    Gx::Rgba color;
     unsigned char indices[4];
     float weights[4];
 

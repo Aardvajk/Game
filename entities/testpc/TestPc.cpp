@@ -1,4 +1,4 @@
-#include "Pc.h"
+#include "TestPc.h"
 
 #include "application/FrameParams.h"
 #include "application/Events.h"
@@ -50,7 +50,7 @@ float clamp(float v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
 
 }
 
-Pc::Pc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f }), ang(&events, Gx::Quaternion::identity())
+TestPc::TestPc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0, 1.14f, -0.5f }), ang(&events, Gx::Quaternion::identity())
 {
     pcx::data_ifstream ds(resourcePath("assets/models/model.dat"));
 
@@ -91,7 +91,7 @@ Pc::Pc(Events &events, Graphics &graphics, Scene &scene) : kcc(0.45f, 2.0f, { 0,
     }
 }
 
-void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
+void TestPc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta)
 {
     pos.store();
     time.store();
@@ -117,7 +117,7 @@ void Pc::update(const FrameParams &params, Events &events, Gx::PhysicsModel &phy
     }
 
     kcc.move(physics, step);
-    pos.set(kcc.position() + Gx::Vec3(0, -0.1f, 0));
+    pos.set(kcc.position());
 
     if(step.length())
     {
@@ -146,7 +146,7 @@ struct WeightedKey
     float weight;
 };
 
-void Pc::prepareScene(SceneParams &params, float blend)
+void TestPc::prepareScene(SceneParams &params, float blend)
 {
     auto bp = pos.value(blend);
     auto tr = ang.value(blend).matrix() * Gx::Matrix::translation(bp);

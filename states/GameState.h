@@ -14,7 +14,7 @@
 #include <pcx/signals.h>
 
 class Graphics;
-class Pc;
+class TestPc;
 
 class GameState : public State
 {
@@ -38,7 +38,7 @@ private:
 
     Gx::Vec3 light;
 
-    Pc *pc;
+    TestPc *pc;
     int shapes;
     float time;
 

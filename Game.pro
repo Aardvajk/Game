@@ -42,7 +42,6 @@ SOURCES += \
     scene/nodes/StaticMeshNode.cpp \
     graphics/VertexBuffer.cpp \
     graphics/VertexStream.cpp \
-    entities/pc/Pc.cpp \
     maths/Kcc.cpp \
     application/Events.cpp \
     maths/Camera.cpp \
@@ -63,7 +62,8 @@ SOURCES += \
     scene/nodes/SkyBoxNode.cpp \
     graphics/SkyBox.cpp \
     graphics/vertices/RigVertex.cpp \
-    scene/nodes/RigMeshNode.cpp
+    scene/nodes/RigMeshNode.cpp \
+    entities/testpc/TestPc.cpp
         
 
 HEADERS += \
@@ -80,7 +80,6 @@ HEADERS += \
     graphics/VertexBuffer.h \
     scene/SceneParams.h \
     graphics/VertexStream.h \
-    entities/pc/Pc.h \
     entities/Entity.h \
     maths/Kcc.h \
     application/Events.h \
@@ -103,7 +102,8 @@ HEADERS += \
     graphics/SkyBox.h \
     graphics/vertices/RigVertex.h \
     scene/nodes/RigMeshNode.h \
-    maths/FadeValue.h
+    maths/FadeValue.h \
+    entities/testpc/TestPc.h
 
 DISTFILES += \
     assets/shaders/colorvertex.txt \

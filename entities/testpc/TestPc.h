@@ -1,5 +1,5 @@
-#ifndef PC_H
-#define PC_H
+#ifndef TESTPC_H
+#define TESTPC_H
 
 #include "entities/Entity.h"
 
@@ -22,10 +22,10 @@
 class Scene;
 class RigMeshNode;
 
-class Pc : public Entity
+class TestPc : public Entity
 {
 public:
-    Pc(Events &events, Graphics &graphics, Scene &scene);
+    TestPc(Events &events, Graphics &graphics, Scene &scene);
 
     virtual void update(const FrameParams &params, Events &events, Gx::PhysicsModel &physics, float delta) override;
     virtual void prepareScene(SceneParams &params, float blend) override;
@@ -45,4 +45,4 @@ private:
     Gx::BlendFloat time;
 };
 
-#endif // PC_H
+#endif // TESTPC_H

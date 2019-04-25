@@ -2,5 +2,5 @@
 
 std::vector<Gx::VertexElement> RigVertex::declaration()
 {
-    return { Gx::VertexElement::Position, Gx::VertexElement::Normal, Gx::VertexElement::Indices, Gx::VertexElement::Weights };
+    return { Gx::VertexElement::Position, Gx::VertexElement::Normal, Gx::VertexElement::Color, Gx::VertexElement::Indices, Gx::VertexElement::Weights };
 }
