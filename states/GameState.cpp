@@ -64,7 +64,7 @@ bool GameState::update(AppParams &app, Events &events, float delta)
 
     model.update(params, events, physics, delta);
 
-    if(shapes < 20)
+    if(shapes < 100)
     {
         time += delta;
         if(time > 0.05f)
